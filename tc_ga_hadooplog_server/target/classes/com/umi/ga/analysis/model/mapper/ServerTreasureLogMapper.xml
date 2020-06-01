@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ServerTreasureLog">
+  <resultMap id="BaseResultMap" type="ServerTreasureLog">
+    <result column="gameid" property="gameId" />
+    <result column="channelid" property="channelId" />
+    <result column="mediaid" property="mediaId" />
+    <result column="deviceid" property="deviceId" />
+    <result column="versionname" property="versionName" />
+    <result column="versioncode" property="versionCode" />
+    <result column="userid" property="accountId" />
+    <result column="serverid"  property="serverId" />
+    <result column="logtime"  property="logTime" />
+    <result column="roleid" property="roleId" />
+    <result column="rolename"  property="roleName" />
+    <result column="rolelevel" property="roleLevel" />
+    <result column="rolegender"  property="roleGender" />
+    <result column="battlepoints"  property="rolePower" />
+    <result column="roletype" property="roleType" />
+    <result column="viplevel" property="vipLevel" />
+  </resultMap>
+
+  <select id="findAllTreasure" parameterType="com.umi.ga.entitys.Condition" resultType="int">
+    select count(distinct role_id) from faith_server.server_treasure_log
+    <trim prefix="where" suffixOverrides="and">
+      <if test="null != serverId and '' != serverId">
+        server_id in
+        <foreach collection="stringsArray" item="serverId" index="index" open="(" close=")" separator=",">
+          #{serverId}
+        </foreach>
+        and
+      </if>
+      <if test="startTime != null and startTime != '' and  endTime != null and endTime != ''">
+        from_timestamp(date_time, 'yyyy-MM-dd')  between #{startTime} and #{endTime} and
+      </if>
+      <if test="channelId != null and channelId !='' ">
+        channel_id in
+        <foreach collection="channelArray" item="channelId" index="index" open="(" close=")" separator=",">
+          #{channelId}
+        </foreach>
+      </if>
+    </trim>
+
+
+  </select>
+
+
+
+  <select id="findAllCount" parameterType="com.umi.ga.entitys.Condition" resultType="int">
+    select ifnull(sum(num),0) from faith_server.server_treasure_log
+    <trim prefix="where" suffixOverrides="and">
+      <if test="null != serverId and '' != serverId">
+        server_id in
+        <foreach collection="stringsArray" item="serverId" index="index" open="(" close=")" separator=",">
+          #{serverId}
+        </foreach>
+        and
+      </if>
+      <if test="startTime != null and startTime != '' and  endTime != null and endTime != ''">
+        from_timestamp(date_time, 'yyyy-MM-dd')  between #{startTime} and #{endTime} and
+      </if>
+      <if test="channelId != null and channelId !='' ">
+        channel_id in
+        <foreach collection="channelArray" item="channelId" index="index" open="(" close=")" separator=",">
+          #{channelId}
+        </foreach>
+      </if>
+    </trim>
+
+
+  </select>
+
+
+
+
+
+
+
+
+
+</mapper>

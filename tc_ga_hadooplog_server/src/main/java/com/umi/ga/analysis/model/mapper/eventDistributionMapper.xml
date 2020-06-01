@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="eventDistribution">
+	<resultMap id="event_distributionResult" type="eventDistribution">
+		<result property="id" column="id"/>
+		<result property="achieveNum" column="achieve_num"/>
+		<result property="eventId" column="event_id"/>
+		<result property="logDate" column="log_time"/>
+		<result property="time" column="time"/>
+		<result property="type" column="type"/>
+</resultMap>
+	<resultMap id="event_distributionList" type="eventDistribution">
+		<result property="achieveNum" column="achieve_num"/>
+		<result property="eventId" column="event_id"/>
+		<result property="eventName" column="event_name"/>
+		<result property="eventTypeName" column="event_type_name"/>
+	</resultMap>
+	<sql id="commonColumns">
+	    <![CDATA[
+        `id`,
+        `achieve_num`,
+        `event_id`,
+        `log_time`
+	    ]]>
+	</sql>
+
+	<sql id="dynamicWhere">
+		<where>
+			<if test="@Ognl@isNotEmpty(id)">
+				AND `id` = #{id}
+			</if>
+			<if test="@Ognl@isNotEmpty(achieveNum)">
+				AND `achieve_num` = #{achieveNum}
+			</if>
+			<if test="@Ognl@isNotEmpty(eventId)">
+				AND `event_id` = #{eventId}
+			</if>
+			<if test="@Ognl@isNotEmpty(logTime)">
+				AND `log_time` = #{logTime}
+			</if>
+		</where>
+	</sql>
+
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="eventDistribution">
+    <![CDATA[
+        INSERT INTO `event_distribution` (
+        	`id`,
+        	`achieve_num`,
+        	`event_id`,
+        	`log_time`
+        )
+        VALUES (
+        	#{id},
+        	#{achieveNum},
+        	#{eventId},
+        	#{logTime}
+
+        )
+    ]]>
+	</insert>
+
+	<update id="update" parameterType="eventDistribution">
+    <![CDATA[
+        UPDATE `event_distribution` SET
+	        `id` = #{id},
+	        `achieve_num` = #{achieveNum},
+	        `event_id` = #{eventId},
+	        `log_time` = #{logTime}
+        WHERE 
+	        ID = #{id}
+    ]]>
+	</update>
+
+	<delete id="delete" parameterType="map">
+    <![CDATA[
+        delete from `event_distribution`
+    ]]>
+		<include refid="dynamicWhere"/>
+	</delete>
+
+	<select id="getById" resultMap="event_distributionResult">
+		SELECT <include refid="commonColumns" />
+	    <![CDATA[
+		    FROM `event_distribution`
+	        WHERE
+		        ID = #{id}
+	    ]]>
+	</select>
+
+    <select id="count" resultType="long">
+        SELECT count(*) FROM `event_distribution` 
+		<include refid="dynamicWhere"/>    
+    </select>
+  <select id="pageSelect" resultMap="event_distributionResult">
+    	SELECT 
+    		<include refid="commonColumns" />
+	    FROM `event_distribution` 
+		<include refid="dynamicWhere"/>
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+  </select>
+
+
+
+
+
+
+
+
+
+	<select id="selectEventById" parameterType="com.umi.ga.entitys.Times" resultMap="event_distributionResult">
+select event_id,achieve_num,log_time from event_distribution where log_time  BETWEEN #{startTime} and #{endTime}
+and event_id = #{type}
+	</select>
+	<select id="selectCustomEvent" parameterType="com.umi.ga.entitys.Times" resultMap="event_distributionList">
+SELECT
+	event_id,
+	(SELECT event_type_name FROM event_manage WHERE id = a.event_id) AS event_type_name,
+	sum(achieve_num) as achieve_num,
+	(select event_name from event_manage where id=a.event_id) as event_name
+FROM
+	event_distribution a
+		<where>
+			<if test="@Ognl@isNotEmpty(type)">
+				FIND_IN_SET(event_id,(SELECT event_id_group FROM event_custom where id = #{type}))
+			</if>
+			<if test="@Ognl@isNotEmpty(startTime)">
+				and log_time BETWEEN #{startTime} and #{endTime}
+			</if>
+		</where>
+ GROUP BY event_id
+		<if test="@Ognl@isNotEmpty(condition)">
+			HAVING event_name=#{condition}
+		</if>
+	</select>
+
+	<select id="hiveSelectStartTime" parameterType="com.umi.ga.entitys.Times" resultMap="event_distributionResult">
+		SELECT
+from_unixtime(unix_timestamp(#{startTime},'yyyymmdd'),'yyyy-mm-dd') as time,
+currency['event'] as event_id,
+currency['type'] as type,
+count(currency['type']) as achieve_num
+ from currency where day=#{startTime} group by currency['event'],currency['type']
+	</select>
+
+	<insert id="insertBatch" parameterType="java.util.List">
+		insert into event_distribution
+		(
+		`achieve_num`,
+		`event_id`,
+		`log_time`
+		)
+		values
+		<foreach collection="list" item="item" index="index" separator=",">
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				<if test="item.achieveNum != null and item.eventId!=null">
+					#{item.achieveNum},(select id from event_manage where event_type_id=#{item.eventId} and event_id=#{item.type}),#{item.time}
+				</if>
+			</trim>
+		</foreach>
+	</insert>
+</mapper>

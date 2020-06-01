@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <title>商城购买日志</title>
+  <link rel="shortcut  icon" type="image/x-icon" href="bitbug_favicon (2).ico" media="screen" />
+  <link rel="stylesheet" href="../layui/css/layui.css" />
+  <link rel="stylesheet" href="./css/shopping_mall.css" />
+  <link rel="stylesheet" href="../css/font-awesome.min.css" />
+  <link rel="stylesheet" href="../css/bootstrap.min.css" />
+  <link rel="stylesheet" type="text/css" href="../js/bootstrap-table/bootstrap-table.min.css" />
+  <link href="https://cdn.bootcss.com/element-ui/2.12.0/theme-chalk/index.css" rel="stylesheet">
+  <link rel="stylesheet" href="../js/multiple/bootstrap-multiselect.css" />
+  <link rel="stylesheet" href="../js/loading/jquery.mloading.css" />
+  <style type="text/css">
+    .fixed-table-loading {
+      background: #363636;
+      color: white;
+      top: 80px;
+      border: 0;
+    }
+
+    .pagination>li>a,
+    .pagination>li>span {
+      color: white;
+      background-color: transparent;
+      border: 0;
+    }
+
+    .bootstrap-table .fixed-table-pagination>.pagination-detail .page-list {
+      color: #C0C0C0;
+    }
+
+    .pagination>li>a,
+    .pagination>li>span:hover {
+      background: #464545;
+    }
+
+    .pagination>.disabled>a,
+    .pagination>.disabled>a:focus,
+    .pagination>.disabled>a:hover,
+    .pagination>.disabled>span,
+    .pagination>.disabled>span:focus,
+    .pagination>.disabled>span:hover {
+      color: #C0C0C0;
+      background-color: #464545;
+      border: 0;
+    }
+
+    .pagination>li>a:focus,
+    .pagination>li>a:hover,
+    .pagination>li>span:focus,
+    .pagination>li>span:hover {
+      color: #428BCA;
+      background: #464545;
+      border: 0;
+    }
+
+    .pagination-info {
+      color: #C0C0C0;
+    }
+
+    .checkbox {
+      color: #C0C0C0;
+      font-size: 14px;
+      line-height: 30px;
+    }
+
+    .dropdown-menu,
+    .btn-default {
+      background: #363636;
+      color: #C0C0C0;
+    }
+
+    .btn-default:hover {
+      background: #363636;
+      color: #C0C0C0;
+    }
+
+    .btn-default.active,
+    .btn-default:active,
+    .open>.dropdown-toggle.btn-default {
+      color: #C0C0C0;
+      background: #363636;
+    }
+
+    .btn-default.active.focus,
+    .btn-default.active:focus,
+    .btn-default.active:hover,
+    .btn-default:active.focus,
+    .btn-default:active:focus,
+    .btn-default:active:hover,
+    .open>.dropdown-toggle.btn-default.focus,
+    .open>.dropdown-toggle.btn-default:focus,
+    .open>.dropdown-toggle.btn-default:hover {
+      color: #C0C0C0;
+      background: #363636;
+    }
+
+    .dropdown-menu>.active>a,
+    .dropdown-menu>.active>a:focus,
+    .dropdown-menu>.active>a:hover {
+      background: #363636;
+    }
+
+    .btn-default.focus,
+    .btn-default:focus {
+      background: #363636;
+      color: #C0C0C0;
+    }
+
+    .bootstrap-table {
+      clear: both;
+    }
+
+    .pagination>.active>a,
+    .pagination>.active>a:focus,
+    .pagination>.active>a:hover,
+    .pagination>.active>span,
+    .pagination>.active>span:focus,
+    .pagination>.active>span:hover {
+      background: #555555;
+      border-color: #555555;
+    }
+
+    .pagination>li>a:hover,
+    .pagination>li>span:hover {
+      color: white;
+    }
+
+    .sum_div,
+    .Recharge {
+      height: 100%
+    }
+
+    .bootstrap-table {
+      height: 80%;
+      max-height: 640px;
+    }
+
+    .fixed-table-container {
+      height: 100%;
+    }
+
+    #replace_table thead tr th {
+      border: 0;
+      color: white;
+      height: 50px;
+      font-size: 14px;
+      line-height: 30px;
+    }
+
+    .bootstrap-table .fixed-table-container .fixed-table-header .table thead th {
+      line-height: 34px;
+      background-color: #1a1a1a;
+      color: #fff;
+    }
+  </style>
+</head>
+
+<body style="background: #202020;" onload="lo()">
+  <div id="navs"></div>
+  <div class="layui-layout layui-layout-admin">
+    <div class="layui-body" style="padding: 20px;">
+      <div class="sum_div">
+        <div class="Recharge">
+          <form role="form" class="form-inline" style="height: 140px;">
+            <div class="form-group" style="width: 22%;float: left;">
+              <label for="">区服号</label>
+              <select id="district_service" multiple="multiple"></select>
+            </div>
+            <div class="form-group" style="width: 22%;float: left;">
+              <label for="">账号ID</label>
+              <input type="text" class="form-control" id="accountID" placeholder="请输入账号ID" />
+            </div>
+            <div class="form-group layui-inline" style="width: 23%;float: left;">
+              <label for="">日&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;期</label>
+              <input type="text" class="form-control" id="datatimes" />
+            </div>
+            <div class="form-group" style="width: 23%;float: left;">
+              <label for="">货币类型</label>
+              <select name="currency" id="currency">
+                <option value="" class="">全部</option>
+                <option value="0" class="jingyan">钻石</option>
+                <option value="1" class="youxibi">绑定金币</option>
+                <option value="2" class="bangyouxibi">绑定钻石</option>
+                <option value="3" class="baoshi">魔晶</option>
+                <option value="4" class="bangbaoshi">助战点数</option>
+                <option value="5" class="xinyang">战功</option>
+                <option value="6" class="xinyang">寻宝积分</option>
+                <option value="7" class="xinyang">军团捐赠积分</option>
+                <option value="8" class="xinyang">红钻</option>
+                <option value="9" class="xinyang">跨服币</option>
+              </select>
+            </div>
+            <button type="button" class="layui-btn layui-btn-normal" id="query" onclick="onread()">查询</button>
+            <br /><br /><br /><br />
+            <div class="form-group" style="width: 22%;float: left;">
+              <label for="">角色ID</label>
+              <input type="text" class="form-control" id="roleID" placeholder="请输入角色ID" />
+            </div>
+            <div class="form-group" style="width: 22%;float: left;">
+              <label for="">角色名</label>
+              <input type="text" class="form-control" id="roleName" placeholder="请输入角色名" />
+            </div>
+            <!-- <div class="form-group" style="width: 23%;float: left;">
+              <label for="">登录方式</label>
+              <select id="channel"></select>
+            </div> -->
+            <div class="form-group" style="width: 23%;float: left;">
+              <label for="">充值渠道</label>
+              <select id="reg_channel" multiple="multiple"></select>
+            </div>
+            <!--<button type="button" class="layui-btn layui-btn-normal" id="export">导出</button>-->
+            <br /><br /><br /><br />
+          </form>
+          <!--<div class="replace_area"-->
+          <!--style="width:100%;max-width:1603px;height:50px;position:fixed;overflow-y:hidden;background: #1A1A1A;z-index:99;display:none;">-->
+          <!--<table id="replace_table" class="table table-bordered table-hover"-->
+          <!--style="width:100%;border:1px solid transparent;"></table>-->
+          <!--</div>-->
+          <table id="datatable"></table>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+<script src="../layui/layui.all.js"></script>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/loading/jquery.mloading.js"></script>
+<script src="../js/jquery.cookie.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script src="../js/multiple/bootstrap-multiselect.js"></script>
+<script src="../js/bootstrap-table/bootstrap-table.min.js"></script>
+<script src="./js/urlGet.js"></script>
+<script src="./js/shopping_mall.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="https://cdn.bootcss.com/element-ui/2.12.0/index.js"></script>
+<script>
+  localStorage.setItem('navigation', '2-12')
+  $("#navs").load("navHaddup.html")
+
+  function lo() {
+    $(".319").addClass("layui-this").siblings().removeClass("layui-this")
+    $(".319").parent().parent().addClass("layui-nav-itemed").siblings().removeClass("layui-nav-itemed")
+  }
+  ////layui配置
+  layui.use(['element', 'form'], function () {
+    var element = layui.element;
+    var form = layui.form;
+    element.init();
+  });
+</script>
+
+</html>

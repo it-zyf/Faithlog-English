@@ -1,0 +1,365 @@
+*{
+	margin: 0;
+	padding: 0;
+}
+.pandect-top{
+	width: 100%;
+	height: 100px;
+}
+.pandect-top>.p-float{
+	width: 23%;
+	height: 100px;
+	background-color: #202020;
+	float: left;
+	margin-left: 2%;
+	text-align: center;
+	color: white;
+	opacity: 0.6;
+	font-size: 25px;
+}
+.p-float:hover{
+	background-color: #202020;
+}
+#pandect-p1{
+	margin-left:15px ;
+}
+#histogram{
+	float: left;
+	width: 80px;
+	height: 30px;
+	background-color: #1E9FFF;
+	margin-bottom: 15px;
+	margin-right: 15px;
+	line-height: 5px;
+}
+#sheet{
+	float: left;
+	width: 80px;
+	height: 30px;
+	background-color: #1E9FFF;
+	 line-height: 5px;
+}
+#histogram:hover{
+	background-color: #1E9FFF;
+	color: white;
+}
+#sheet:hover{
+	background-color:#1E9FFF;
+	color: white;
+}
+.yin{
+	display: none;
+}
+.first-table{
+	margin-top: 30px;
+	-webkit-animation-name: fadeIn; /*动画名称*/
+    -webkit-animation-duration: 1s; /*动画持续时间*/
+    -webkit-animation-iteration-count: 1; /*动画次数*/
+    -webkit-animation-delay: 0s; /*延迟时间*/
+}
+#container{
+	-webkit-animation-name: fadeIn; /*动画名称*/
+    -webkit-animation-duration: 1s; /*动画持续时间*/
+    -webkit-animation-iteration-count: 1; /*动画次数*/
+    -webkit-animation-delay: 0s; /*延迟时间*/
+}
+.first-table>table{
+	width: 100%;
+	height: 100%;
+	margin-top: 90px;
+	border: 0;
+}
+
+.first-table>table>thead>tr>th{
+	width: 33%;
+	height: 30px;
+	background-color: #202020;
+	border: 0;
+}
+.first-table>table>tbody>tr>td{
+	width: 33%;
+	height: 30px;
+	border: 0;
+}
+.first-table>table>tbody>tr>th{
+	text-align: center;
+}
+#btn2{
+	float: right;
+	width: 95px;
+	height: 30px;
+	background-color: #1E9FFF;
+	color: white;
+}
+#histogram-one{
+	float: left;
+	width: 80px;
+	height: 30px;
+	background-color: #1E9FFF;
+	color: white;
+	margin-bottom: 15px;
+	margin-right: 15px;
+	line-height: 5px;
+}
+#sheet-one{
+	float: left;
+	width: 80px;
+	height: 30px;
+	background-color: #1E9FFF;
+	color: white;
+	line-height: 5px;
+}
+#histogram-one:hover{
+	background-color: #1E9FFF;
+	color: white;
+}
+#sheet-one:hover{
+	background-color: #1E9FFF;
+	color: white;
+}
+.first-table-one{
+	margin-top: 30px;
+	-webkit-animation-name: fadeIn; /*动画名称*/
+    -webkit-animation-duration: 1s; /*动画持续时间*/
+    -webkit-animation-iteration-count: 1; /*动画次数*/
+    -webkit-animation-delay: 0s; /*延迟时间*/
+}
+#container-one{
+	-webkit-animation-name: fadeIn; /*动画名称*/
+    -webkit-animation-duration: 1s; /*动画持续时间*/
+    -webkit-animation-iteration-count: 1; /*动画次数*/
+    -webkit-animation-delay: 0s; /*延迟时间*/
+}
+.first-table-one>table{
+	width: 100%;
+	height: 100%;
+	border: 0;
+}
+.first-table-one>table>thead>tr>th{
+	width: 33%;
+	height: 30px;
+	background-color: #202020;
+	border: 0;
+	color: white;
+}
+.first-table-one>table>tbody>tr>td{
+	width: 33%;
+	height: 30px;
+	border: 0;
+	background-color: #202020;
+	color: white;
+}
+.first-table-one>table>tbody>tr>th{
+	text-align: center;
+}
+#tbody>tr>td{
+	border-right: 1px solid #C0C0C0;
+	background-color: #202020;
+	color: white;
+}
+#tbody-one>tr>td{
+	border-right: 1px solid #C0C0C0;
+	background-color: #202020;
+	color: white;
+}
+#tbody-two>tr>td{
+	border-right: 1px solid #C0C0C0;
+	background-color: #202020;
+	color: white;
+}
+#tbody-four>tr>td{
+	border-right: 1px solid #C0C0C0;
+	background-color: #202020;
+	color: white;
+}
+#btn2-one{
+	float: right;
+	width: 95px;
+	height: 30px;
+	background-color: #1E9FFF;
+	color: white;
+}
+.yin2{
+	display: none;
+}
+#histogram-two,#histogram-three{
+	float: left;
+	width: 80px;
+	height: 30px;
+	background-color: #1E9FFF;
+	color: white;
+	margin-bottom: 15px;
+	margin-right: 15px;
+	line-height: 5px;
+}
+#sheet-two,#sheet-three{
+	float: left;
+	width: 80px;
+	height: 30px;
+	background-color: #1E9FFF;
+	color: white;
+	line-height: 5px;
+}
+#histogram-two:hover,#histogram-three:hover{
+	background-color: #1E9FFF;
+	color: white;
+}
+#sheet-two:hover,#sheet-three:hover{
+	background-color: #1E9FFF;
+	color: white;
+}
+.first-table-two{
+	margin-top: 30px;
+	-webkit-animation-name: fadeIn; /*动画名称*/
+    -webkit-animation-duration: 1s; /*动画持续时间*/
+    -webkit-animation-iteration-count: 1; /*动画次数*/
+    -webkit-animation-delay: 0s; /*延迟时间*/
+}
+#container-two{
+	-webkit-animation-name: fadeIn; /*动画名称*/
+    -webkit-animation-duration: 1s; /*动画持续时间*/
+    -webkit-animation-iteration-count: 1; /*动画次数*/
+    -webkit-animation-delay: 0s; /*延迟时间*/
+}
+#container-three{
+	-webkit-animation-name: fadeIn; /*动画名称*/
+    -webkit-animation-duration: 1s; /*动画持续时间*/
+    -webkit-animation-iteration-count: 1; /*动画次数*/
+    -webkit-animation-delay: 0s; /*延迟时间*/
+}
+.first-table-two>table{
+	width: 100%;
+	height: 100%;
+	border: 0;
+}
+
+.first-table-two>table>thead>tr>th{
+	width: 33%;
+	height: 30px;
+	background-color: #202020;
+	border: 0;
+	color: white;
+}
+.first-table-two>table>tbody>tr>td{
+	width: 33%;
+	height: 30px;
+	border: 0;
+	background-color: #202020;
+	color: white;
+}
+.first-table-two>table>tbody>tr>th{
+	text-align: center;
+	background-color: #202020;
+	color: white;
+}
+#btn2-two,#btn2-three{
+	float: right;
+	width: 95px;
+	height: 30px;
+	background-color: #1E9FFF;
+	color: white;
+}
+.yin3{
+	display: none;
+}
+#nav{
+	width: 200px;
+	margin-left: 45%;
+}
+#nav>li{
+	width: 100px;
+	float: left;
+	text-align: center;
+	margin-top: 25%;
+	font-size: 16px;
+	cursor: pointer;
+}
+.yin4{
+	display: none;
+}
+
+#histogram-four{
+	float: left;
+	width: 80px;
+	height: 30px;
+	background-color: #1E9FFF;
+	color: white;
+	margin-bottom: 15px;
+	margin-right: 15px;
+	line-height: 5px;
+}
+#sheet-four{
+	float: left;
+	width: 80px;
+	height: 30px;
+	background-color: #1E9FFF;
+	color: white;
+}
+#histogram-four:hover{
+	background-color: #1E9FFF;
+	color: white;
+}
+#sheet-four:hover{
+	background-color: #1E9FFF;
+	color: white;
+}
+.first-table-four{
+	margin-top: 30px;
+	-webkit-animation-name: fadeIn; /*动画名称*/
+    -webkit-animation-duration: 1s; /*动画持续时间*/
+    -webkit-animation-iteration-count: 1; /*动画次数*/
+    -webkit-animation-delay: 0s; /*延迟时间*/
+}
+#container-four{
+	-webkit-animation-name: fadeIn; /*动画名称*/
+    -webkit-animation-duration: 1s; /*动画持续时间*/
+    -webkit-animation-iteration-count: 1; /*动画次数*/
+    -webkit-animation-delay: 0s; /*延迟时间*/
+}
+.first-table-four>table{
+	width: 100%;
+	height: 100%;
+	border: 0;
+}
+.first-table-four>table>thead>tr>th{
+	width: 25%;
+	height: 30px;
+	border: 0;
+	background-color: #202020;
+	color: white;
+}
+.first-table-four>table>tbody>tr>td{
+	width: 25%;
+	height: 30px;
+	border: 0;
+	background-color: #202020;
+	color: white;
+}
+.first-table-four>table>tbody>tr>th{
+	text-align: center;
+	background-color: #202020;
+	color: white;
+}
+#btn2-four{
+	float: right;
+	width: 95px;
+	height: 30px;
+	background-color: #1E9FFF;
+	color: white;
+}
+.yin5{
+	display: none;
+}
+#cha{
+	width: 60px;
+	height: 35px;
+	margin-top:0.8%;
+	color: white;
+	background-color: #1E9FFF;
+}
+.fu{
+	border-bottom: 2px solid #46A5FF;
+}
+#container{
+	/*box-shadow: 3px 3px 18px 7px rgb(12,0,0);*/
+}

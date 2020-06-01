@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="Permission">
+	<resultMap id="permissionResult" type="com.umi.ga.analysis.model.Permission">
+		<result property="permissionId" column="permission_id"/>
+		<result property="perms" column="perms"/>
+		<result property="userId" column="user_id"/>
+		<result property="menuId" column="menu_id"/>
+		<result property="menuPid" column="menu_pid"/>
+</resultMap>
+
+	<sql id="commonColumns">
+	    <![CDATA[
+        `permission_id`,
+        `perms`,
+        `user_id`,
+        `menu_id`,
+        `menu_pid`
+	    ]]>
+	</sql>
+
+	<sql id="dynamicWhere">
+		<where>
+			<if test="@Ognl@isNotEmpty(permissionId)">
+				AND `permission_id` = #{permissionId}
+			</if>
+			<if test="@Ognl@isNotEmpty(perms)">
+				AND `perms` = #{perms}
+			</if>
+			<if test="@Ognl@isNotEmpty(userId)">
+				AND `user_id` = #{userId}
+			</if>
+			<if test="@Ognl@isNotEmpty(menuId)">
+				AND `menu_id` = #{menuId}
+			</if>
+			<if test="@Ognl@isNotEmpty(menuPid)">
+				AND `menu_pid` = #{menuPid}
+			</if>
+		</where>
+	</sql>
+
+	<insert id="insert" useGeneratedKeys="true" keyProperty="permissionId" parameterType="Permission">
+    <![CDATA[
+        INSERT INTO `permission` (
+        	`permission_id`,
+        	`perms`,
+        	`user_id`,
+        	`menu_id`,
+        	`menu_pid`
+        )
+        VALUES (
+        	#{permissionId},
+        	#{perms},
+        	#{userId},
+        	#{menuId},
+        	#{menuPid}
+
+        )
+    ]]>
+	</insert>
+
+	<update id="update" parameterType="Permission">
+    <![CDATA[
+        UPDATE `permission` SET
+	        `permission_id` = #{permissionId},
+	        `perms` = #{perms},
+	        `user_id` = #{userId},
+	        `menu_id` = #{menuId},
+	        `menu_pid` = #{menuPid}
+        WHERE
+	        ID = #{id}
+    ]]>
+	</update>
+
+	<delete id="delete" parameterType="map">
+    <![CDATA[
+        delete from `permission`
+    ]]>
+		<include refid="dynamicWhere"/>
+	</delete>
+
+	<select id="getById" resultMap="permissionResult">
+		SELECT <include refid="commonColumns" />
+	    <![CDATA[
+		    FROM `permission`
+	        WHERE
+		        ID = #{id}
+	    ]]>
+	</select>
+
+    <select id="count" resultType="long">
+        SELECT count(*) FROM `permission`
+		<include refid="dynamicWhere"/>
+    </select>
+  <select id="pageSelect" resultMap="permissionResult">
+    	SELECT
+    		<include refid="commonColumns" />
+	    FROM `permission`
+		<include refid="dynamicWhere"/>
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+  </select>
+
+
+
+
+
+
+	<delete id="clearPermission" parameterType="String">
+		DELETE FROM permission WHERE user_id = #{userId}
+	</delete>
+
+	<select id="queryAllPermissionByUserId" parameterType="String"  resultMap="permissionResult">
+		SELECT * FROM permission where user_id = #{_parameter} and menu_pid = 0
+	</select>
+
+	<select id="queryAllPermission" resultMap="permissionResult">
+		SELECT * FROM permission
+	</select>
+	<select id="queryNextMenu" parameterType="Permission" resultMap="permissionResult">
+		SELECT * FROM permission WHERE menu_pid = #{menuPid} and  user_id = #{userId}
+	</select>
+
+</mapper>

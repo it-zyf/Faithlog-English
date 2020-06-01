@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="StartTimeDistribution">
+	<resultMap id="startTimeDistributionResult" type="StartTimeDistribution">
+		<result property="id" column="id"/>
+		<result property="timepoint" column="timePoint"/>
+		<result property="count" column="count"/>
+		<result property="timedate" column="timeDate"/>
+	</resultMap>
+
+	<resultMap id="timeResultMap" type="com.umi.ga.entitys.StartRetarder">
+		<result column="times" jdbcType="VARCHAR" property="times"/>
+		<result column="timeCount" jdbcType="VARCHAR" property="timeCount"/>
+		<result column="timeNum" jdbcType="VARCHAR" property="timeNum"/>
+	</resultMap>
+
+	<sql id="commonColumns">
+	    <![CDATA[
+        `id`,
+        `timePoint`,
+        `count`,
+        `timeDate`
+	    ]]>
+	</sql>
+
+	<sql id="dynamicWhere">
+		<where>
+			<if test="@Ognl@isNotEmpty(id)">
+				AND `id` = #{id}
+			</if>
+			<if test="@Ognl@isNotEmpty(timepoint)">
+				AND `timePoint` = #{timepoint}
+			</if>
+			<if test="@Ognl@isNotEmpty(count)">
+				AND `count` = #{count}
+			</if>
+			<if test="@Ognl@isNotEmpty(timedate)">
+				AND `timeDate` = #{timedate}
+			</if>
+		</where>
+	</sql>
+
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="StartTimeDistribution">
+    <![CDATA[
+        INSERT INTO `startTime_distribution` (
+        	`timePoint`,
+        	`count`,
+        	`timeDate`
+        )
+        VALUES (
+        	#{timepoint},
+        	#{count},
+        	#{timedate}
+        )
+    ]]>
+	</insert>
+
+	<update id="update" parameterType="StartTimeDistribution">
+    <![CDATA[
+        UPDATE `startTime_distribution` SET
+	        `id` = #{id},
+	        `timePoint` = #{timepoint},
+	        `count` = #{count},
+	        `timeDate` = #{timedate}
+        WHERE
+	        ID = #{id}
+    ]]>
+	</update>
+
+	<delete id="delete" parameterType="map">
+    <![CDATA[
+        delete from `startTime_distribution`
+    ]]>
+		<include refid="dynamicWhere"/>
+	</delete>
+
+	<select id="getById" resultMap="startTimeDistributionResult">
+		SELECT <include refid="commonColumns" />
+	    <![CDATA[
+		    FROM `startTime_distribution`
+	        WHERE
+		        ID = #{id}
+	    ]]>
+	</select>
+
+    <select id="count" resultType="long">
+        SELECT count(*) FROM `startTime_distribution`
+		<include refid="dynamicWhere"/>
+    </select>
+  <select id="pageSelect" resultMap="startTimeDistributionResult">
+    	SELECT
+    		<include refid="commonColumns" />
+	    FROM `startTime_distribution`
+		<include refid="dynamicWhere"/>
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+  </select>
+
+	<!--
+		###
+		###
+	-->
+
+	<select id="selectTimeDate" resultMap="startTimeDistributionResult">
+		select distinct timeDate from startTime_distribution
+	</select>
+
+	<select id="selectMaxTimeDate" resultMap="startTimeDistributionResult">
+		select max(timeDate) as timeDate from startTime_distribution
+	</select>
+
+	<select id="selectStartTime" parameterType="com.umi.ga.entitys.Times" resultMap="startTimeDistributionResult">
+		select
+			<include refid="commonColumns"/>
+		from
+			startTime_distribution
+		where
+			timeDate = #{startTime}
+		order by timePoint ASC
+	</select>
+
+	<select id="selectStartTimeNow" parameterType="com.umi.ga.entitys.Times" resultMap="timeResultMap">
+		select
+			time as times
+		from
+			dataInfo
+		<where>
+			<if test="startTime != null and '' != startTime and endTime != null and '' != endTime">
+				time between #{startTime} and #{endTime}
+			</if>
+		</where>
+	</select>
+
+	<insert id="insertBatch" parameterType="java.util.List">
+		insert into startTime_distribution
+		(
+			`timePoint`,
+			`count`,
+			`timeDate`
+		)
+		values
+		<foreach collection="list" item="item" index="index" separator=",">
+			<trim prefix="(" suffix=")" suffixOverrides="," >
+				#{item.timepoint},#{item.count},#{item.timedate}
+			</trim>
+		</foreach>
+	</insert>
+</mapper>

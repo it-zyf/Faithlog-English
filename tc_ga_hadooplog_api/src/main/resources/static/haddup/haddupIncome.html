@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+  <meta http-equiv="content-type" content="text/html" charset="utf-8">
+  <title>收入分析</title>
+  <!-- Bootstrap Styles-->
+  <link href="http://faithea.umi-game.cn/faithlog/css/bootstrap.min.css" rel="stylesheet" />
+  <script src="http://faithea.umi-game.cn/faithlog/js/jquery.min.js"></script>
+  <script src="http://faithea.umi-game.cn/faithlog/js/bootstrap.min.js"></script>
+  <link href="https://cdn.bootcss.com/element-ui/2.12.0/theme-chalk/index.css" rel="stylesheet">
+  <!--bs multiselect  -->
+  <script src="http://faithea.umi-game.cn/faithlog/js/multiple/bootstrap-multiselect.js"></script>
+  <link rel="stylesheet" href="http://faithea.umi-game.cn/faithlog/js/multiple/bootstrap-multiselect.css" />
+  <link rel="stylesheet" type="text/css" href="http://faithea.umi-game.cn/faithlog/css/animate.min.css" />
+  <!-- FontAwesome Styles-->
+  <link href="http://faithea.umi-game.cn/faithlog/css/font-awesome.css" rel="stylesheet" />
+  <!-- Morris Chart Styles-->
+  <link href="http://faithea.umi-game.cn/faithlog/js/morris/morris-0.4.3.min.css" rel="stylesheet" />
+  <!-- Google Fonts-->
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+  <link rel="stylesheet" href="http://faithea.umi-game.cn/faithlog/css/income.css" />
+  <link rel="stylesheet" href="http://faithea.umi-game.cn/faithlog/js/bootstrap-table/bootstrap-table.css" />
+  <script src="http://faithea.umi-game.cn/faithlog/js/bootstrap-table/bootstrap-table.min.js"></script>
+  <link rel="stylesheet" href="../laydate-master/src/theme/default/laydate.css" />
+  <link rel="stylesheet" href="http://faithea.umi-game.cn/faithlog/js/loading/jquery.mloading.css" />
+  <script src="http://faithea.umi-game.cn/faithlog/js/loading/jquery.mloading.js"></script>
+</head>
+
+<body style="background-color: #202020;min-width:1850px;">
+  <div id="wrapper">
+    <!-- main结构-->
+    <div id="navigation"></div>
+    <div id="page-wrapper" style="overflow-x: hidden;">
+      <div id="page-inner" class="classpageinner" style="min-height: 1020px;color: white;">
+        <div class="form-group col-xs-12"
+          style="float: left;margin-bottom: 20px;width:100%;margin-top:4.5%;border: 1px solid #707070;height: 60px;"
+          id="dangerLine">
+          <div class="col-xs-3 col-sm-3 col-xs-3" style="margin-top: 1%;width:400px;" id="serverCos">
+            <div class="myown">
+              <label style="font-weight:400;font-size: 14px;float:left;margin-right:2%;margin-top:4px"
+                class="lableServer">区服&nbsp;</label>
+              <select name="district" multiple="multiple" size="5" id="district"
+                style=" border-radius: 0; width: 251px;height: 30px;display: none" class="form-control">
+              </select>
+            </div>
+          </div>
+          <div class="form-group col-xs-3 col-xs-pull-0" id="data_5" style="margin-top:1%;width: 16%">
+            <div style="font-size:14px" class="timeTime">
+              日期&nbsp; <el-date-picker class="timePick" value-format="yyyy-MM-dd" v-model="ruleForm.dateValue"
+                type="daterange" align="bottom" unlink-panels range-separator="~" start-placeholder="开始日期"
+                end-placeholder="结束日期" :picker-options="pickerOptions">
+              </el-date-picker>
+            </div>
+          </div>
+          <div class="col-xs-3 col-sm-3 col-xs-3" style="margin-top: 1%;" style="width:400px">
+            <div class="myown">
+              <label style="font-weight:400;font-size: 14px;float:left;margin-right:2%;margin-top:4px"
+                class="lableServer">渠道号</label>
+              <select name="district" multiple="multiple" size="5" id="channel"
+                style=" border-radius: 0; width: 251px;height: 30px;display: none" class="form-control">
+              </select>
+            </div>
+          </div>
+          <button type="button" id="cha" class="btn" onclick="onblu()" style="margin-top: 1%;">查询</button>
+        </div>
+        <div class="real-top" style="cursor: pointer">
+          <p id="paynumber" class="p-float" style="margin-left: 0">
+            <span id="circleB" class="circle"></span>
+            <span class="textN">付费账号</span>
+            <br />
+            <span id='numberpeo' class="number"></span>
+          </p>
+          <p id="inamount" class="p-float">
+            <span id="circleA" class="circle"></span>
+            <span class="textN">付费金额</span>
+            <br />
+            <span id='numberin' class="number"></span>
+          </p>
+          <p id="firstpeo" class="p-float">
+            <span id="circleD" class="circle"></span>
+            <span class="textN">首付账号</span>
+            <br />
+            <span id='numberfirpeo' class="number"></span>
+          </p>
+          <p id="firstpay" class="p-float">
+            <span id="circleC" class="circle"></span>
+            <span class="textN">首付金额</span>
+            <br />
+            <span id='numberfirst' class="number"></span>
+          </p>
+          <p id="paytimes" class="p-float">
+            <span id="circleE" class="circle"></span>
+            <span class="textN">充值次数</span>
+            <br />
+            <span id='numbertimes' class="number"></span>
+          </p>
+        </div>
+        <div id="real-inner" style="float: left;width: 100%;margin-top: 1%;">
+          <div>
+            <span style="margin-left: 50%;font-size: 14px;color: #999999;">收入金额</span>
+            <i style="background: url('../image/exp2.png')" class="real-btnAll" id="btnAmount"></i>
+            <div class="father">
+              <div class="helpDescription">
+                <table style="border-radius: 4px;">
+                  <tr style="height: 30px;line-height: 30px">
+                    <td colspan="8" style="background: #121212;padding-left: 3px;text-align: left">收入金额说明</td>
+                  </tr>
+                  <tr style="height: 30px;line-height: 30px;background: #1B1B1B">
+                    <td colspan="1" style="padding-left: 3px;text-align: left">收入金额</td>
+                    <td colspan="7" style="color: #A4A3AE;padding-left: 15px;text-align: left">
+                      默认为前30日收入金额分析&nbsp;&nbsp;&nbsp;</td>
+                  </tr>
+                </table>
+              </div>
+              <i style="background: url('../image/help2.png');margin-top: -.3%;" class="help"></i>
+            </div>
+          </div>
+          <div id="div-one" style="width: 99.5%"></div>
+          <div class="titleLoadAdd"
+            style="font-size: 12px;float: left;padding-top: 1%;margin-bottom:8%;margin-top:8%;margin-left:50%;text-align: center;color:#ffffff;"
+            id="loadget"><i class="el-icon-loading" style="font-size: 28px;vertical-align: middle;"></i>
+            <div style="margin-top: 5px">加载中...</div>
+          </div>
+        </div>
+        <div id="real-innernex" style="float: left;width: 100%;margin-top: 1%;">
+          <div>
+            <span style="margin-left: 50%;font-size: 14px;color: #999999;">付费率</span>
+            <i style="background: url('../image/exp2.png')" class="real-btnAll" id="btnRate"></i>
+            <div class="father">
+              <div class="helpDescription">
+                <table style="border-radius: 4px;">
+                  <tr style="height: 30px;line-height: 30px">
+                    <td colspan="8" style="background: #121212;padding-left: 3px;text-align: left">付费率说明</td>
+                  </tr>
+                  <tr style="height: 30px;line-height: 30px;background: #1B1B1B">
+                    <td colspan="1" style="padding-left: 3px;text-align: left">付费率</td>
+                    <td colspan="7" style="color: #A4A3AE;padding-left: 15px;text-align: left">
+                      默认为前30日付费率&nbsp;&nbsp;&nbsp;</td>
+                  </tr>
+                </table>
+              </div>
+              <i style="background: url('../image/help2.png');margin-top: -.3%" class="help"></i>
+            </div>
+          </div>
+          <div id="div-two" style="width: 99.5%"></div>
+          <div class="titleLoadAdd"
+            style="font-size: 12px;float: left;padding-top: 1%;margin-bottom:7%;margin-top:7%;margin-left:50%;text-align: center;color:#ffffff;"
+            id="loadpay"><i class="el-icon-loading" style="font-size: 28px;vertical-align: middle;"></i>
+            <div style="margin-top: 5px">加载中...</div>
+          </div>
+        </div>
+        <div style="float: left;width: 100%;margin-top: 1%;border:  1px solid #707070">
+          <div id="real-innerlast">
+            <div>
+              <div style="font-size: 14px;display: flex;cursor: pointer;margin-left: 47%;color: #999999;">
+                <div class="changebtn" id="btnone" style="background: #363636">ARPU</div>
+                <div class="changebtn" id="btntwo" style="margin-left: 2px">ARPPU</div>
+              </div>
+              <i style="background: url('../image/exp2.png');margin-top: -.8%" class="real-btnAll" id="btnAR"></i>
+              <div class="father">
+                <div class="helpDescription">
+                  <table style="border-radius: 4px;">
+                    <tr style="height: 30px;line-height: 30px">
+                      <td colspan="8" style="background: #121212;padding-left: 3px;text-align: left">ARPU/ARPPU说明</td>
+                    </tr>
+                    <tr style="height: 30px;line-height: 30px;background: #1B1B1B">
+                      <td colspan="1" style="padding-left: 3px;text-align: left">ARPU/ARPPU</td>
+                      <td colspan="7" style="color: #A4A3AE;padding-left: 15px;text-align: left">
+                        默认为前30日ARPU/ARPPU&nbsp;&nbsp;&nbsp;</td>
+                    </tr>
+                  </table>
+                </div>
+                <i style="background: url('../image/help2.png');margin-top: -.8%" class="help"
+                  style="margin-top: -.3%"></i>
+              </div>
+            </div>
+            <div id="div-three" style="width: 99.5%"></div>
+            <div id="div-arppu" style="width: 99.5%;display: none"></div>
+            <div class="titleLoadAdd"
+              style="font-size: 12px;float: left;padding-top: 1%;margin-bottom:7%;margin-top:7%;margin-left:50%;text-align: center;color:#ffffff;"
+              id="loadarpu"><i class="el-icon-loading" style="font-size: 28px;vertical-align: middle;"></i>
+              <div style="margin-top: 5px">加载中...</div>
+            </div>
+          </div>
+        </div>
+        <div id="real-innerano" style="float: left;width: 100%;margin-top: 1%;">
+          <div>
+            <span style="margin-left: 50%;font-size: 14px;color: #999999;">渠道收入</span>
+            <i style="background: url('../image/exp2.png')" class="real-btnAll"></i>
+            <div class="father">
+              <div class="helpDescription">
+                <table style="border-radius: 4px;">
+                  <tr style="height: 30px;line-height: 30px">
+                    <td colspan="8" style="background: #121212;padding-left: 3px;text-align: left">渠道收入说明</td>
+                  </tr>
+                  <tr style="height: 30px;line-height: 30px;background: #1B1B1B">
+                    <td colspan="1" style="padding-left: 3px;text-align: left">渠道收入</td>
+                    <td colspan="7" style="color: #A4A3AE;padding-left: 15px;text-align: left">
+                      默认为前30日渠道收入&nbsp;&nbsp;&nbsp;</td>
+                  </tr>
+                </table>
+              </div>
+              <i style="background: url('../image/help2.png');margin-top: -.3%" class="help"></i>
+            </div>
+          </div>
+          <div class="titleLoadAdd"
+            style="font-size: 12px;float: left;padding-top: 1%;margin-bottom:7%;margin-top:7%;margin-left:50%;text-align: center;color:#ffffff;"
+            id="loadway"><i class="el-icon-loading" style="font-size: 28px;vertical-align: middle;"></i>
+            <div style="margin-top: 5px">加载中...</div>
+          </div>
+          <div id="div-four" style="width: 99.5%;height: 290px;margin-top: .8%"></div>
+        </div>
+        <!--收入金额-->
+        <div style="display: none">
+          <div class="real-table-T">
+            <table id="datatableAmount">
+              <thead>
+                <tr>
+                  <th style="color: black">日期</th>
+                  <th style="color: black">收入金额</th>
+                </tr>
+              </thead>
+              <tbody id="tbodyAmount"></tbody>
+            </table>
+          </div>
+        </div>
+        <!--arppu-->
+        <div style="display: none">
+          <div class="real-table-T">
+            <table id="datatableArppu">
+              <thead>
+                <tr>
+                  <th style="color: black">日期</th>
+                  <th style="color: black">ARPPU</th>
+                </tr>
+              </thead>
+              <tbody id="tbodyArppu"></tbody>
+            </table>
+          </div>
+        </div>
+        <!--付费率-->
+        <div style="display: none">
+          <div class="real-table-T">
+            <table id="datatableRate">
+              <thead>
+                <tr>
+                  <th style="color: black">日期</th>
+                  <th style="color: black">付费率</th>
+                </tr>
+              </thead>
+              <tbody id="tbodyRate"></tbody>
+            </table>
+          </div>
+        </div>
+        <!--arpu-->
+        <div style="display: none">
+          <div class="real-table-T">
+            <table id="datatableArpu">
+              <thead>
+                <tr>
+                  <th style="color: black">日期</th>
+                  <th style="color: black">ARPU</th>
+                </tr>
+              </thead>
+              <tbody id="tbodyArpu"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+<script src="../haddup/js/urlGet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="https://cdn.bootcss.com/element-ui/2.12.0/index.js"></script>
+<script src="http://faithea.umi-game.cn/faithlog/js/bootstrap-table/bootstrap-table.min.js"></script>
+<script src="http://cdn.hcharts.cn/highcharts/6.1.1/highcharts.js"></script>
+<script src="http://faithea.umi-game.cn/faithlog/js/highcharts/exporting.js"></script>
+<script src="http://cdn.hcharts.cn/highcharts/6.1.1/modules/data.js"></script>
+<script src="http://faithea.umi-game.cn/faithlog/js/jquery.table2excel.js"></script>
+<script src="../laydate-master/src/laydate.js"></script>
+<script src="https://cdn.bootcss.com/echarts/4.3.0-rc.2/echarts.min.js"></script>
+<script src="../haddup/js/haddupIncome.js"></script>
+<script type="text/javascript">
+  localStorage.setItem('navigation', '6-6-9')
+  $('#navigation').load('navHaddup.html')
+  var vmcome = new Vue({
+    el: '#data_5',
+    data: {
+      msg: 'hello',
+      pickerOptions: {
+        disabledDate(time) {
+          return time.getTime() > (Date.now() - 8.64e7);
+        },
+        shortcuts: [{
+          text: '今日',
+          onClick(picker) {
+            var end = new Date();
+            var start = new Date();
+            start.setTime(start.getTime());
+            picker.$emit('pick', [start, end]);
+          }
+        }, {
+          text: '昨日',
+          onClick(picker) {
+            var end = new Date();
+            var start = new Date();
+            start.setTime(start.getTime() - 3600 * 1000 * 24);
+            end.setTime(end.getTime() - 3600 * 1000 * 24);
+            picker.$emit('pick', [start, end]);
+          }
+        }, {
+          text: '近7日',
+          onClick(picker) {
+            var end = new Date();
+            var start = new Date();
+            end.setTime(end.getTime() - 3600 * 1000 * 24);
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+            picker.$emit('pick', [start, end]);
+          }
+        }, {
+          text: '近30日',
+          onClick(picker) {
+            var end = new Date();
+            var start = new Date();
+            end.setTime(end.getTime() - 3600 * 1000 * 24);
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+            picker.$emit('pick', [start, end]);
+          }
+        }, {
+          text: '全部',
+          onClick(picker) {
+            var end = new Date();
+            var start = new Date('2019-10-9 00:00:00');
+            picker.$emit('pick', [start, end]);
+          }
+        }]
+      },
+      ruleForm: {
+        dateValue: ""
+      },
+    },
+    computed: {
+      timeDefault() {
+        var date = new Date();
+        var s1 = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + (date.getDate());
+        return s1;
+      },
+      timeDefaultLast() {
+        var date = new Date();
+        var oneweekdate = new Date(date - 30 * 24 * 3600 * 1000);
+        var y = oneweekdate.getFullYear();
+        var m = oneweekdate.getMonth() + 1;
+        var d = oneweekdate.getDate();
+        var formatwdate = y + '-' + m + '-' + d;
+        return formatwdate;
+      }
+    },
+    mounted() {
+      // 初始化查询，默认为前一周
+      this.ruleForm.dateValue = [this.timeDefaultLast, this.timeDefault];
+    },
+    methods: {}
+  })
+  window.setInterval(function () {
+    var monthtt = document.getElementsByClassName('el-icon-arrow-right')
+    var yeartt = document.getElementsByClassName('el-icon-d-arrow-right')
+    monthtt[0].disabled = false
+    monthtt[0].classList.remove("is-disabled");
+    yeartt[0].disabled = false
+    yeartt[0].classList.remove("is-disabled");
+  }, 400)
+  //收入金额
+  $("#btnAmount").click(function () {
+    $("#datatableAmount").table2excel({
+      exclude: ".noExl",
+      name: "Excel Document Name",
+      filename: "myFileName",
+      exclude_img: true,
+      exclude_links: true,
+      exclude_inputs: true,
+    });
+  });
+  //付费率
+  $("#btnRate").click(function () {
+    $("#datatableRate").table2excel({
+      exclude: ".noExl",
+      name: "Excel Document Name",
+      filename: "myFileName",
+      exclude_img: true,
+      exclude_links: true,
+      exclude_inputs: true,
+    });
+  });
+  //arpu/arppu
+  $("#btnAR").click(function () {
+    if (arpuCheck === 0) {
+      $("#datatableArpu").table2excel({
+        exclude: ".noExl",
+        name: "Excel Document Name",
+        filename: "ARPU",
+        exclude_img: true,
+        exclude_links: true,
+        exclude_inputs: true,
+      });
+    } else {
+      $("#datatableArppu").table2excel({
+        exclude: ".noExl",
+        name: "Excel Document Name",
+        filename: "ARPPU",
+        exclude_img: true,
+        exclude_links: true,
+        exclude_inputs: true,
+      });
+    }
+
+  });
+  var arpuCheck = 0 //定义一个全局变量，用来判断arpu和arppu
+  $('.p-float').click(function (obj) {
+    $('.p-float').css("background", "#202020")
+    var idcurrent = obj.currentTarget.id
+    $('#' + idcurrent).css("background", "#363636")
+  })
+  $('.changebtn').click(function (obj) {
+    $('.changebtn').css("background", "#121212")
+    var idcurrent = obj.currentTarget.id
+    $('#' + idcurrent).css("background", "#363636")
+    if (idcurrent === 'btnone') {
+      arpuCheck = 0
+      $('#div-arppu').css('display', 'none')
+      $('#div-three').css('display', 'block')
+    } else {
+      arpuCheck = 1
+      $('#div-three').css('display', 'none')
+      $('#div-arppu').css('display', 'block')
+    }
+  })
+  var winWidth = 0,
+    winHeight = 0;
+
+  function changebleWidthHeight() {
+    if (window.innerWidth)
+      winWidth = window.innerWidth;
+    else if ((document.body) && (document.body.clientWidth))
+      winWidth = document.body.clientWidth;
+    //获取窗口高度
+    if (window.innerHeight)
+      winHeight = window.innerHeight;
+    else if ((document.body) && (document.body.clientHeight))
+      winHeight = document.body.clientHeight;
+    //通过深入Document内部对body进行检测，获取窗口大小
+    if (document.documentElement && document.documentElement.clientHeight && document.documentElement.clientWidth) {
+      winHeight = document.documentElement.clientHeight;
+      winWidth = document.documentElement.clientWidth;
+    }
+    document.getElementById("serverCos").style.width = winWidth - 50
+    document.getElementById("data_5").style.width = winWidth - 40
+
+  }
+  window.onresize = changebleWidthHeight();
+</script>
+</body>
+
+</html>

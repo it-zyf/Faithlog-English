@@ -1,0 +1,419 @@
+@media screen and (max-width: 1280px) {
+body{
+width: 1280px;
+}
+}
+/*ý���ѯ����������Դ����iPhone6�ı�׼ģʽ*/
+@media only screen and (min-device-width: 375px)and (-webkit-min-device-pixel-ratio: 2) {
+	/*#page-wrapper{*/
+		/*width: 77% !important;*/
+		/*overflow-x: hidden;*/
+	/*}*/
+	#page-inner{
+		padding-left: 10% !important;
+	}
+	#serverCos{
+		width: 30% !important;
+	}
+	#data_5{
+		width: 20% !important;
+	}
+	/*#dangerLine{*/
+		/*margin-top: 12% !important;*/
+	/*}*/
+	.el-picker-panel__body-wrapper {
+		background: white;
+		width: 150%;
+	}
+	/*#real-datatableAll>thead>tr>th{*/
+		/*width: 130px !important;*/
+	/*}*/
+}
+.el-date-table td.current span{
+	background-color: #4a2aff !important;
+}
+.form-group{
+	margin-bottom: 10px ;
+}
+.timePick .el-date-table td.today span {
+	color: #4a2cf8 !important;
+}
+.nav>li{
+	float:left
+}
+#changett{
+	margin-right: 4% !important;
+}
+.layui-nav-child{
+	margin-left: 24% !important;
+	left: 20%;
+}
+.fixed-table-container thead th .th-inner{
+	text-align: center;
+}
+.fixed-table-container thead{
+	background: #1B1B1B !important;
+}
+.fixed-table-container thead th{
+	border: 0px !important;
+}
+.fixed-table-container{
+	border: 0px !important;
+}
+
+.fixed-table-body{
+	margin-top: -1px;
+}
+.pagination>li>a{
+    border:0;
+    background: #363636 !important;
+	font-size: 14px;
+}
+.pagination>.active>a{
+	background-color: #737AE8 !important;
+}
+.table-striped > tbody > tr:nth-child(2n+1){
+	background-color: #575757 !important;
+}
+.table-striped > tbody > tr:nth-child(2n){
+	background-color: #363636 !important;
+}
+.el-date-table td.in-range div{
+	background-color: #4a2aff !important;
+	color: #ffffff;
+}
+/*.el-date-editor--daterange.el-input__inner:hover{*/
+	/*color: #ffffff !important;*/
+/*}*/
+.el-input__inner{
+	background: #202020 !important;
+	color: #999999 !important;
+	text-align: center !important;
+	height: 28px !important;
+	width: 185px !important;
+	border-color: #707070 !important;
+	border-radius: 0 !important;
+}
+.el-input__suffix{
+	display: none;
+}
+.col-sm-12 {
+    width: 60% !important;
+}
+.timePick{
+	width: 185px !important;
+	background: #363636 !important;
+}
+.el-date-picker.has-sidebar {
+	width: 390px !important;
+}
+.el-date-range-picker.has-sidebar {
+	width: 320px !important;
+}
+.el-picker-panel__content.el-date-range-picker__content.is-right{
+	display: none !important;
+}
+
+.el-date-range-picker .el-picker-panel__body {
+	min-width: 180px !important;
+}
+.el-picker-panel__content.el-date-range-picker__content.is-left{
+	width: 100% !important;
+}
+/*.el-date-range-picker__content {*/
+	/*width: 100% !important;*/
+/*}*/
+.el-picker-panel [slot=sidebar], .el-picker-panel__sidebar {
+	width: 17% !important;
+}
+.el-range-editor.is-active, .el-range-editor.is-active:hover {
+	border-color: #4a2aff !important;
+}
+.el-date-table td.end-date span{
+	background-color: #4a2aff !important;
+}
+.el-date-table td.start-date span{
+	background-color: #4a2aff !important;
+}
+  .el-picker-panel__shortcut:hover {
+	color: #4a2aff !important;
+}
+.el-picker-panel {
+	line-height: 20px !important;
+}
+.el-date-table td.available:hover {
+	color: #4a2aff !important;
+}
+.el-picker-panel__body{
+	margin-left: 18% !important;
+}
+.el-range-input{
+	background: #202020 !important;
+	color: #999999 !important;
+}
+.el-range-separator{
+	color: #999999 !important;
+	line-height: 30px !important;
+}
+.el-picker-panel__sidebar{
+	min-width: 70px !important;
+}
+.el-picker-panel el-date-range-picker el-popper has-sidebar{
+	min-width: 340px !important;
+}
+.laydate-footer-btns span{
+	border: 1px solid #4a2cf8 !important;
+	background-color: #4a2cf8 !important;
+}
+.layui-laydate .layui-this{
+	background-color: #4a2cf8 !important;
+}
+/*.highcharts-container{*/
+	/*background: #363636 !important;*/
+/*}*/
+/*.highcharts-root{*/
+	/*margin-top:10px !important;*/
+	/*width: 1656px !important;*/
+/*}*/
+.partTwo{
+	background: #363636;
+	padding-left: 2%;
+	padding-right: 2%;
+	padding-bottom: 1%;
+	margin-bottom: 1%;
+}
+
+.partTwo>table>tbody>tr{
+	border: none !important;
+}
+.classpageinner{
+	position: relative;
+}
+#page-inner{
+	padding-left: 10.5%;
+}
+.main{
+	margin-top: 3%;
+}
+.calcscrollout{
+	top: 0 !important;
+	left: 0 !important;
+	width: 200px !important;
+	height: 150px !important;
+	overflow: scroll !important;
+}
+.calcscrollout::-webkit-scrollbar,.fixed-table-body::-webkit-scrollbar{
+	width: 7px !important;
+	height: 7px !important;
+	background: #fff !important;
+}
+.calcscrollout::-webkit-scrollbar-track,.fixed-table-body::-webkit-scrollbar-track{
+	background: #fff !important;
+	border: 1px solid #ddd !important;
+	margin-right: 4px !important;
+}
+.calcscrollout::-webkit-scrollbar-thumb,.fixed-table-body::-webkit-scrollbar-thumb{
+	height: 7px !important;
+	border: 1px solid #ccc !important;
+	background-color: #575757 !important;
+}
+.fixed-table-body thead th .th-inner {
+	font-weight: 200;
+}
+.countDownTime{
+	float: left;
+	display:inline;
+	margin-left: 1%;
+	margin-top: .6%;
+	color: #999999;
+	font-size: 13px;
+}
+.el-input__inner{
+	background: #202020 !important;
+	color: #999999 !important;
+	text-align: center !important;
+	height: 28px !important;
+	width: 185px !important;
+	border-color: #707070 !important;
+	padding: 0 !important;
+}
+.el-input__suffix{
+	display: none;
+}
+.el-input__icon{
+	color: #999999;
+	line-height: 10px !important;
+}
+#page-wrapper{
+	padding: 1% 1.5% 2% 1%;
+}
+#real-btnN,#real-btnM,#real-btnQ,#real-btnR{
+	float: right;
+	width: 15px;
+	height: 15px;
+	margin-right: 2.5%;
+
+	cursor: pointer;
+	/*background-color: #1E9FFF;*/
+	/*color: white;*/
+	/*border: none;*/
+	/*border-radius: 4px;*/
+}
+#real-btnN{
+	margin-top: 1.1%;
+}
+.helpDescription{
+	display: none;
+	position: absolute;
+	/*margin-left: 68%;*/
+	margin-top: 1%;
+	z-index: 100;
+	right: 6%;
+}
+
+.father:hover .helpDescription{display: block}
+.help{
+	width: 15px;
+	height: 15px;
+	float: right;
+	margin-right: 1.2%;
+}
+#dangerLine{
+	height: 60px;
+	/* line-height: 0px; */
+	border: 1px solid #707070;
+	padding-left: 0;
+}
+#dangerLineNext{
+	border: 1px solid #707070;
+	width: 100%;
+	margin-top: 1.2%;
+	margin-bottom: 1.2%;
+	height: 60px;
+	padding-left: 0;
+}
+.el-range__icon{
+	line-height: 20px !important;
+	color: #999999 !important;
+}
+.el-range__close-icon{
+	display: none !important;
+}
+.delaytime{
+	margin-top: .6%;
+	width: 100%;
+	height: 300px;
+	border: 1px solid #707070;
+	float: left;
+}
+svg.highcharts-root{
+	padding-left: 0px !important;
+	padding-right: 20px !important;
+}
+#partTop{
+	border: 1px solid #707070;
+}
+#cha:hover,#chaTop:hover{
+	border: 1px solid blue;
+}
+#cha{
+	line-height: 28px;
+	border: 1px solid #707070;
+	float: left;
+	background-color: #707070;
+	color: white;
+	width: 80px;
+	margin-top: 1.1%;
+	/*margin-left: -14%;*/
+	height: 28px;
+}
+#chaTop{
+	line-height: 28px;
+	border: 1px solid #707070;
+	float: left;
+	background-color: #707070;
+	color: white;
+	width: 80px;
+	margin-top: 1.1%;
+	/*margin-left: -14%;*/
+	height: 28px;
+}
+.btn-default {
+	border-color: #707070 !important;
+	height: 28px;
+	color: #999999 !important;
+}
+.btn{
+	border-radius: 0;
+	padding: 0;
+}
+.btn-default:hover {
+	color: #999999 !important;
+	border-color: #707070 !important;
+}
+#partFourLeft,#partFiveRight,#partFiveL,#partFiveR{
+	border: 1px solid #707070;
+}
+#loadfen, #loadphone, #loadver, #loadnet {
+	border: 1px solid #707070;
+	padding-top: 7%;
+
+}
+#partCpu{
+	margin-top: 1.3%;
+	float: left;
+	width: 100%;
+	height: 325px;
+	border: 1px solid #707070;
+	padding-top: 5px;
+}
+#partGPU{
+	margin-top:1.1%;
+	float: left;
+	width: 100%;
+	height: 325px;
+	border: 1px solid #707070;
+	padding-top: 5px;
+}
+.cpuTag,.gpuTag{
+	height: 25px;
+	margin-bottom: 3px;
+	line-height: 25px;
+	width: 295px;
+	color: #ffffff;
+	font-size: 14px;
+	padding-left: 5px;
+}
+.cpuO,.gpuO{
+	background: #10cfbd;
+}
+.cpuT,.gpuT{
+	background: #f55753;
+}
+.cpuTH,.gpuTH{
+	background: #a873ec;
+}
+.cpuF,.gpuF{
+	background: #cf10a2;
+}
+.cpuFI,.gpuFI{
+	background: #42e24f;
+}
+.cpuS,.gpuS{
+	background: #d6731b;
+}
+.cpuSE,.gpuSE{
+	background: #7095f2;
+}
+.cpuE,.gpuE{
+	background: #254077;
+}
+.cpuN,.gpuN{
+	background: #0549f3;
+}
+.cpuTE,.gpuTE{
+	background: #aea923;
+}
+#loaddelay,#loadcpu,#loadgpu{
+	padding-top: 5%;
+}

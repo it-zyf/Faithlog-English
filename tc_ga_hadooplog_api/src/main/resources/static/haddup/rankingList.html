@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+  <meta http-equiv="content-type" content="text/html" charset="utf-8">
+  <title>排行榜</title>
+  <!-- Bootstrap Styles-->
+  <link href="../css/bootstrap.min.css" rel="stylesheet" />
+  <script src="../js/jquery.min.js"></script>
+  <script src="../js/bootstrap.min.js"></script>
+  <link href="https://cdn.bootcss.com/element-ui/2.12.0/theme-chalk/index.css" rel="stylesheet">
+  <!--bs multiselect  -->
+  <script src="../js/multiple/bootstrap-multiselect.js"></script>
+  <link rel="stylesheet" href="../js/multiple/bootstrap-multiselect.css" />
+  <link rel="stylesheet" type="text/css" href="../css/animate.min.css" />
+  <!-- FontAwesome Styles-->
+  <link href="../css/font-awesome.css" rel="stylesheet" />
+  <!-- Morris Chart Styles-->
+  <link href="../js/morris/morris-0.4.3.min.css" rel="stylesheet" />
+  <!-- Google Fonts-->
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+  <link rel="stylesheet" href="./css/playerRanking.css" />
+  <link rel="stylesheet" href="../js/bootstrap-table/bootstrap-table.css" />
+  <script src="../js/bootstrap-table/bootstrap-table.min.js"></script>
+  <link rel="stylesheet" href="../laydate-master/src/theme/default/laydate.css" />
+  <link rel="stylesheet" href="../js/loading/jquery.mloading.css" />
+  <script src="../js/loading/jquery.mloading.js"></script>
+</head>
+
+<body style="background-color: #202020;min-width:1580px;">
+  <div id="wrapper">
+    <!-- main结构-->
+    <div id="navigation"></div>
+    <div id="page-wrapper" style="overflow-x: hidden;">
+      <div id="page-inner" class="classpageinner" style="min-height: 930px;color: white;">
+        <div class="form-group col-xs-12"
+          style="float: left;margin-bottom: 20px;width:100%;margin-top:4.5%;border: 1px solid #707070;height: 60px;"
+          id="dangerLine">
+          <div class="col-xs-3 col-sm-3 col-xs-3" style="margin-top: 1%;width:16%;" id="serverCos">
+            <div class="myown">
+              <label style="line-height: 28px;float:left;margin-right:2%;" class="lableServer">区服&nbsp;</label>
+              <select name="district" multiple="multiple" size="5" id="district"
+                style=" border-radius: 0; width: 251px;height: 30px;display: none" class="form-control">
+              </select>
+            </div>
+          </div>
+          <div class="form-group col-xs-3 col-xs-pull-0 col-sm-3" id="data_5" style="margin-top:1%;width: 16%">
+            <div style="font-size:14px" class="timeTime">
+              <label style="float:left;margin-right:2%;line-height: 28px;" class="lableServer">日期</label>
+              <el-date-picker class="timePick" value-format="yyyy-MM-dd" v-model="ruleForm.dateValue" type="daterange"
+                align="bottom" unlink-panels range-separator="~" start-placeholder="开始日期" end-placeholder="结束日期"
+                :picker-options="pickerOptions">
+              </el-date-picker>
+            </div>
+          </div>
+          <div class="col-xs-3 col-sm-3 col-xs-3" style="margin-top: 1%;width: 16%;">
+            <div class="myown">
+              <label style="float:left;margin-right:2%;line-height: 28px;" class="lableServer">渠道号</label>
+              <select name="district" multiple="multiple" size="5" id="channel"
+                style=" border-radius: 0; width: 251px;height: 30px;display: none" class="form-control">
+
+              </select>
+            </div>
+          </div>
+          <button type="button" id="cha" class="btn" onclick="onblu()">查询</button>
+        </div>
+
+        <div
+          style="float: left;width: 100%;margin-bottom: 2%;padding: 1% 1% 0 1%;margin-top: 1%;border:1px solid #707070">
+          <div class="real-table-All">
+            <div style="margin-bottom: 1%;" class="List">
+              <span style="display: inline-block;width: 5%;">榜单选择：</span>
+              <div class="click-item" style="display:inline-block;width: 5%;text-align: center;cursor: pointer;">总战力
+              </div>
+              <div style="display:inline-block;width: 5%;text-align: center;cursor: pointer;">等级榜</div>
+              <div style="display:inline-block;width: 5%;text-align: center;cursor: pointer;">装备榜</div>
+              <div style="display:inline-block;width: 5%;text-align: center;cursor: pointer;">坐骑榜</div>
+              <div style="display:inline-block;width: 5%;text-align: center;cursor: pointer;">羽翼榜</div>
+              <div style="display:inline-block;width: 5%;text-align: center;cursor: pointer;">精灵榜</div>
+              <div style="display:inline-block;width: 5%;text-align: center;cursor: pointer;">神翎榜</div>
+              <div style="display:inline-block;width: 5%;text-align: center;cursor: pointer;">个人榜</div>
+              <div style="display:inline-block;width: 5%;text-align: center;cursor: pointer;">挑战榜</div>
+              <div style="display:inline-block;width: 5%;text-align: center;cursor: pointer;">伴侣榜</div>
+              <div style="display:inline-block;width: 5%;text-align: center;cursor: pointer;">跨服榜</div>
+            </div>
+            <!--总战力-->
+            <div class="list-group" style="display:block;">
+              <span style="display: inline-block;width: 5%;"></span>
+              <!-- <div id="0" style="display:inline-block;width: 5%;text-align: center;cursor: pointer;">总战力</div> -->
+              <div id="0" class="click-item" style="display:inline-block;width: 5%;text-align: center;cursor: pointer;">
+                全职业</div>
+              <div id="9" style="display:inline-block;width: 5%;text-align: center;cursor: pointer;">狂战士</div>
+              <div id="10" style="display:inline-block;width: 5%;text-align: center;cursor: pointer;">魔法师</div>
+              <div id="11" style="display:inline-block;width: 5%;text-align: center;cursor: pointer;">守护者</div>
+              <div id="12" style="display:inline-block;width: 5%;text-align: center;cursor: pointer;">影舞者</div>
+            </div>
+            <!--等级榜-->
+            <div class="list-group" style="display:none;">
+              <span style="display: inline-block;width: 5%;"></span>
+              <!-- <div style="display:inline-block;width: 5%;text-align: center;cursor: pointer;">总战力</div> -->
+              <div id="1" class="click-item" style="display:inline-block;width: 5%;text-align: center;cursor: pointer;">
+                全职业</div>
+              <div id="13" style="display:inline-block;width: 5%;text-align: center;cursor: pointer;">狂战士</div>
+              <div id="14" style="display:inline-block;width: 5%;text-align: center;cursor: pointer;">魔法师</div>
+              <div id="15" style="display:inline-block;width: 5%;text-align: center;cursor: pointer;">守护者</div>
+              <div id="16" style="display:inline-block;width: 5%;text-align: center;cursor: pointer;">影舞者</div>
+            </div>
+            <!--装备榜-->
+            <div class="list-group" style="display:none;">
+              <span style="display: inline-block;width: 5%;"></span>
+              <div id="17" class="click-item"
+                style="display:inline-block;width: 5%;text-align: center;cursor: pointer;">总战力</div>
+              <div id="18" style="display:inline-block;width: 5%;text-align: center;cursor: pointer;">武器</div>
+              <div id="19" style="display:inline-block;width: 5%;text-align: center;cursor: pointer;">项链</div>
+              <div id="20" style="display:inline-block;width: 5%;text-align: center;cursor: pointer;">衣服</div>
+              <div id="21" style="display:inline-block;width: 5%;text-align: center;cursor: pointer;">裤子</div>
+              <div id="22" style="display:inline-block;width: 5%;text-align: center;cursor: pointer;">头饰</div>
+              <div id="23" style="display:inline-block;width: 5%;text-align: center;cursor: pointer;">鞋子</div>
+              <div id="24" style="display:inline-block;width: 5%;text-align: center;cursor: pointer;">手套</div>
+              <div id="25" style="display:inline-block;width: 5%;text-align: center;cursor: pointer;">戒指</div>
+              <div id="26" style="display:inline-block;width: 5%;text-align: center;cursor: pointer;">耳环</div>
+            </div>
+            <!--坐骑榜-->
+            <div class="list-group" style="display:none;">
+              <span style="display: inline-block;width: 5%;"></span>
+              <div id="5" class="click-item" style="display:inline-block;width: 5%;text-align: center;cursor: pointer;">
+                总战力</div>
+            </div>
+            <!--羽翼榜-->
+            <div class="list-group" style="display:none;">
+              <span style="display: inline-block;width: 5%;"></span>
+              <div id="4" class="click-item" style="display:inline-block;width: 5%;text-align: center;cursor: pointer;">
+                总战力</div>
+            </div>
+            <!--精灵榜-->
+            <div class="list-group" style="display:none;">
+              <span style="display: inline-block;width: 5%;"></span>
+              <div id="54" class="click-item"
+                style="display:inline-block;width: 5%;text-align: center;cursor: pointer;">总战力</div>
+            </div>
+            <!--神翎榜-->
+            <div class="list-group" style="display:none;">
+              <span style="display: inline-block;width: 5%;"></span>
+              <div id="66" class="click-item"
+                style="display:inline-block;width: 5%;text-align: center;cursor: pointer;">总战力</div>
+            </div>
+            <!--个人榜-->
+            <div class="list-group" style="display:none;">
+              <span style="display: inline-block;width: 5%;"></span>
+              <div id="2" class="click-item" style="display:inline-block;width: 5%;text-align: center;cursor: pointer;">
+                金币</div>
+              <div id="6" style="display:inline-block;width: 5%;text-align: center;cursor: pointer;">威望</div>
+              <div id="30" style="display:inline-block;width: 5%;text-align: center;cursor: pointer;">信仰</div>
+              <div id="31" style="display:inline-block;width: 5%;text-align: center;cursor: pointer;">符文</div>
+              <div id="32" style="display:inline-block;width: 5%;text-align: center;cursor: pointer;">火种</div>
+              <div id="33" style="display:inline-block;width: 5%;text-align: center;cursor: pointer;">军衔</div>
+              <div id="34" style="display:inline-block;width: 5%;text-align: center;cursor: pointer;">成就</div>
+            </div>
+            <!--挑战榜-->
+            <div class="list-group" style="display:none;">
+              <span style="display: inline-block;width: 5%;"></span>
+              <div id="7" class="click-item" style="display:inline-block;width: 5%;text-align: center;cursor: pointer;">
+                竞技场</div>
+              <div id="" style="display:inline-block;width: 5%;text-align: center;cursor: pointer;">符文之塔</div>
+            </div>
+            <!--伴侣榜-->
+            <div class="list-group" style="display:none;">
+              <span style="display: inline-block;width: 5%;"></span>
+              <div id="90" class="click-item"
+                style="display:inline-block;width: 5%;text-align: center;cursor: pointer;">灵犀值榜</div>
+            </div>
+            <!--跨服榜-->
+            <div class="list-group" style="display:none;">
+              <span style="display: inline-block;width: 5%;"></span>
+              <div id="63" class="click-item"
+                style="display:inline-block;width: 5%;text-align: center;cursor: pointer;">守护榜</div>
+              <div id="65" style="display:inline-block;width: 5%;text-align: center;cursor: pointer;">天梯榜</div>
+              <div id="91" style="display:inline-block;width: 5%;text-align: center;cursor: pointer;">天启试炼</div>
+            </div>
+            <div>
+              <i style="background: url('../image/exp2.png')" class="real-btnAll"></i>
+            </div>
+            <div class="titleLoadAdd"
+              style="font-size: 12px;float: left;padding-top: 1%;margin-left:50%;margin-bottom:8%;margin-top:8%;text-align: center;color:#ffffff;"
+              id="loadtable"><i class="el-icon-loading" style="font-size: 28px;vertical-align: middle;"></i>
+              <div style="margin-top: 5px">加载中...</div>
+            </div>
+            <table id="real-datatableAll" style="text-align: center;table-layout: fixed;">
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="https://cdn.bootcss.com/element-ui/2.12.0/index.js"></script>
+<script src="../js/bootstrap-table/bootstrap-table.min.js"></script>
+<script src="../js/jquery.table2excel.js"></script>
+<script src="../laydate-master/src/laydate.js"></script>
+<script src="./js/urlGet.js"></script>
+<script src="./js/rankingList.js"></script>
+<script type="text/javascript">
+  localStorage.setItem('navigation', '3-2')
+  $('#navigation').load('navHaddup.html')
+  var vm = new Vue({
+    el: '#data_5',
+    data: {
+      msg: 'hello',
+      pickerOptions: {
+        disabledDate(time) {
+          return time.getTime() > Date.now();
+        },
+        shortcuts: [{
+            text: '今日',
+            onClick(picker) {
+              var end = new Date();
+              var start = new Date();
+              picker.$emit('pick', [start, end]);
+            }
+          },
+          {
+            text: '昨日',
+            onClick(picker) {
+              var end = new Date();
+              var start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24);
+              end.setTime(end.getTime() - 3600 * 1000 * 24);
+              picker.$emit('pick', [start, end]);
+            }
+          }, {
+            text: '近7日',
+            onClick(picker) {
+              var end = new Date();
+              var start = new Date();
+              end.setTime(end.getTime() - 3600 * 1000 * 24);
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit('pick', [start, end]);
+            }
+          }, {
+            text: '近30日',
+            onClick(picker) {
+              var end = new Date();
+              var start = new Date();
+              end.setTime(end.getTime() - 3600 * 1000 * 24);
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+              picker.$emit('pick', [start, end]);
+            }
+          }, {
+            text: '全部',
+            onClick(picker) {
+              var end = new Date();
+              end.setTime(end.getTime() - 3600 * 1000 * 24);
+              var start = new Date('2019-10-9 00:00:00');
+              picker.$emit('pick', [start, end]);
+            }
+          }
+        ]
+      },
+      ruleForm: {
+        dateValue: ""
+      },
+    },
+    computed: {
+      timeDefault() {
+        var date = new Date();
+        var oneweekdate = new Date(date - 24 * 3600 * 1000);
+        var s1 = oneweekdate.getFullYear() + "-" + (oneweekdate.getMonth() + 1) + "-" + (oneweekdate
+          .getDate());
+        return s1;
+      },
+      timeDefaultLast() {
+        var date = new Date();
+        var oneweekdate = new Date(date - 30 * 24 * 3600 * 1000);
+        var y = oneweekdate.getFullYear();
+        var m = oneweekdate.getMonth() + 1;
+        var d = oneweekdate.getDate();
+        var formatwdate = y + '-' + m + '-' + d;
+        return formatwdate;
+      }
+    },
+    mounted() {
+      // 初始化查询，默认为前一周
+      this.ruleForm.dateValue = [this.timeDefaultLast, this.timeDefault];
+    },
+    methods: {
+      handleOpen(key, keyPath) {
+        console.log(key, keyPath);
+      },
+      handleClose(key, keyPath) {
+        console.log(key, keyPath);
+      },
+    }
+  })
+  window.setInterval(function () {
+    var monthtt = document.getElementsByClassName('el-icon-arrow-right')
+    var yeartt = document.getElementsByClassName('el-icon-d-arrow-right')
+    monthtt[0].disabled = false
+    monthtt[0].classList.remove("is-disabled");
+    yeartt[0].disabled = false
+    yeartt[0].classList.remove("is-disabled");
+  }, 400)
+  $("#real-btnT").click(function () {
+    $("#real-datatableT").table2excel({
+      exclude: ".noExl",
+      name: "Excel Document Name",
+      filename: "myFileName",
+      exclude_img: true,
+      exclude_links: true,
+      exclude_inputs: true,
+    });
+  });
+  //付费金额
+  $(".real-btnAll").click(function () {
+    $("#real-datatableAll").table2excel({
+      exclude: ".noExl",
+      name: "Excel Document Name",
+      filename: "myFileName",
+      exclude_img: true,
+      exclude_links: true,
+      exclude_inputs: true,
+    });
+  });
+  var winWidth = 0,
+    winHeight = 0;
+
+  function changebleWidthHeight() {
+    if (window.innerWidth)
+      winWidth = window.innerWidth;
+    else if ((document.body) && (document.body.clientWidth))
+      winWidth = document.body.clientWidth;
+    //获取窗口高度
+    if (window.innerHeight)
+      winHeight = window.innerHeight;
+    else if ((document.body) && (document.body.clientHeight))
+      winHeight = document.body.clientHeight;
+    //通过深入Document内部对body进行检测，获取窗口大小
+    if (document.documentElement && document.documentElement.clientHeight && document.documentElement.clientWidth) {
+      winHeight = document.documentElement.clientHeight;
+      winWidth = document.documentElement.clientWidth;
+    }
+
+    document.getElementById("serverCos").style.width = winWidth - 50
+    document.getElementById("data_5").style.width = winWidth - 40
+
+  }
+  window.onresize = changebleWidthHeight();
+</script>
+</body>
+
+</html>

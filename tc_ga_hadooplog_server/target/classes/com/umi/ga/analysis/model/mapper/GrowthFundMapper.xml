@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="GrowthFund">
+	<resultMap id="growth_fundResult" type="GrowthFund">
+		<result column="game_id" property="gameId" />
+		<result column="channel_id" property="channelId" />
+		<result column="media_id" property="mediaId" />
+		<result column="device_id" property="deviceId" />
+		<result column="version_name" property="versionName" />
+		<result column="version_code" property="versionCode" />
+		<result column="user_id" property="accountId" />
+		<result column="server_id"  property="serverId" />
+		<result column="log_time"  property="logTime" />
+		<result column="role_id" property="roleId" />
+		<result column="role_name"  property="roleName" />
+		<result column="role_level" property="roleVip" />
+		<result column="role_gender"  property="roleGender" />
+		<result column="battle_points"  property="rolePower" />
+		<result column="role_type" property="roleType" />
+		<result column="vip_level" property="roleVip" />
+		<result column="log_name" property="logName" />
+		<result column="purchase_growth_fund_id" property="purchaseGrowthFundId" />
+		<result column="purchase_cost" property="purchaseCost" />
+		<result column="purchase_quantity" property="purchaseQuantity" />
+
+</resultMap>
+	<sql id="Base_Column_List">
+  game_id ,
+   channel_id ,
+   media_id ,
+   device_id ,
+   version_name ,
+   version_code ,
+   user_id ,
+   server_id ,
+   from_timestamp(date_time, 'yyyy-MM-dd HH:mm:ss') as log_time,
+	role_id ,
+	role_name ,
+	role_level ,
+	role_gender ,
+	battle_points ,
+	role_type ,
+	vip_level ,
+	log_name ,
+	purchase_growth_fund_id ,
+	purchase_cost,
+	purchase_quantity
+  </sql>
+
+	<select id="findAll" parameterType="com.umi.ga.entitys.Condition" resultMap="growth_fundResult">
+		select
+		<include refid="Base_Column_List" />
+		from faith_server.server_growth_fund  where  1=1
+
+		<if test="null != serverId and '' != serverId">
+			and	server_Id in
+			<foreach collection="stringsArray" item="serverId" index="index" open="(" close=")" separator=",">
+				#{serverId}
+			</foreach>
+
+		</if>
+		<if test="accountId != null and accountId !='' ">
+			 and user_id = #{accountId}
+		</if>
+		<if test="roleId != null and roleId !='' ">
+			 and   role_Id = #{roleId}
+		</if>
+		<if test="roleName != null and roleName !='' ">
+			 and  role_Name =  #{roleName}
+		</if>
+
+		<if test="startTime != null and startTime != '' and  endTime != null and endTime != ''">
+			 and from_timestamp(date_time, 'yyyy-MM-dd')  between #{startTime} and #{endTime}
+		</if>
+		ORDER BY log_time DESC limit  ${pageSize}  offset ${pageIndex}
+	</select>
+
+
+
+	<select id="findAll_Count" parameterType="com.umi.ga.entitys.Condition" resultType="int">
+		select
+		count(*)
+		from faith_server.server_growth_fund  where  1=1
+
+		<if test="null != serverId and '' != serverId">
+			and	server_Id in
+			<foreach collection="stringsArray" item="serverId" index="index" open="(" close=")" separator=",">
+				#{serverId}
+			</foreach>
+
+		</if>
+		<if test="accountId != null and accountId !='' ">
+			and user_id = #{accountId}
+		</if>
+		<if test="roleId != null and roleId !='' ">
+			and   role_Id = #{roleId}
+		</if>
+		<if test="roleName != null and roleName !='' ">
+			and  role_Name =  #{roleName}
+		</if>
+
+		<if test="startTime != null and startTime != '' and  endTime != null and endTime != ''">
+			and from_timestamp(date_time, 'yyyy-MM-dd')  between #{startTime} and #{endTime}
+		</if>
+	</select>
+
+
+</mapper>

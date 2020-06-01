@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="eventManage">
+	<resultMap id="event_manageResult" type="eventManage">
+		<result property="id" column="id"/>
+		<result property="eventTypeId" column="event_type_id"/>
+		<result property="eventTypeName" column="event_type_name"/>
+		<result property="eventId" column="event_id"/>
+		<result property="eventName" column="event_name"/>
+		<result property="createTime" column="create_time"/>
+		<result property="state" column="state"/>
+</resultMap>
+
+	<sql id="commonColumns">
+	    <![CDATA[
+        `id`,
+        `event_type_id`,
+        `event_type_name`,
+        `event_id`,
+        `event_name`,
+        `create_time`,
+        `state`
+	    ]]>
+	</sql>
+
+	<sql id="dynamicWhere">
+		<where>
+			<if test="@Ognl@isNotEmpty(id)">
+				AND `id` = #{id}
+			</if>
+			<if test="@Ognl@isNotEmpty(eventId)">
+				AND `event_id` = #{eventId}
+			</if>
+			<if test="@Ognl@isNotEmpty(eventName)">
+				AND `event_name` = #{eventName}
+			</if>
+			<if test="@Ognl@isNotEmpty(createTime)">
+				AND `create_time` = #{createTime}
+			</if>
+			<if test="@Ognl@isNotEmpty(state)">
+				AND `state` = #{state}
+			</if>
+		</where>
+	</sql>
+
+	<select id="selectAllEvent" parameterType="com.umi.ga.entitys.Times"  resultMap="event_manageResult">
+		SELECT <include refid="commonColumns" />
+		FROM `event_manage`
+	</select>
+	<select id="getEventManage" parameterType="eventManage"  resultMap="event_manageResult">
+		SELECT <include refid="commonColumns" />
+		FROM `event_manage`
+		<include refid="dynamicWhere" />
+	</select>
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="eventManage">
+    <![CDATA[
+        INSERT INTO `event_manage` (
+        `event_type_id`,
+        `event_type_name`,
+        `event_id`,
+        `event_name`,
+        `create_time`,
+        `state`
+        )
+        VALUES (
+            #{eventTypeId},
+        	#{eventTypeName},
+        	#{eventId},
+        	#{eventName},
+        	#{createTime},
+        	0
+
+        )
+    ]]>
+	</insert>
+
+	<update id="update" parameterType="eventManage">
+    <![CDATA[
+        UPDATE `event_manage` SET
+	        `id` = #{id},
+	        `event_id` = #{eventId},
+	        `event_name` = #{eventName},
+	        `create_time` = #{createTime},
+	        `state` = #{state}
+        WHERE 
+	        ID = #{id}
+    ]]>
+	</update>
+
+	<delete id="delete" parameterType="map">
+    <![CDATA[
+        delete from `event_manage`
+    ]]>
+		<include refid="dynamicWhere"/>
+	</delete>
+
+	<select id="getById" resultMap="event_manageResult">
+		SELECT <include refid="commonColumns" />
+	    <![CDATA[
+		    FROM `event_manage`
+	        WHERE
+		        ID = #{id}
+	    ]]>
+	</select>
+
+    <select id="count" resultType="long">
+        SELECT count(*) FROM `event_manage` 
+		<include refid="dynamicWhere"/>    
+    </select>
+  <select id="pageSelect" resultMap="event_manageResult">
+    	SELECT 
+    		<include refid="commonColumns" />
+	    FROM `event_manage` 
+		<include refid="dynamicWhere"/>
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+  </select>
+
+
+
+
+</mapper>

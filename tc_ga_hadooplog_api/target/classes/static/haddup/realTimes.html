@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<title>页面导航</title>
+	<link rel="stylesheet" href="../layui/css/layui.css" />
+	<link rel="stylesheet" href="../css/Navigation.css" />
+	<link rel="stylesheet" href="../font-awesome-4.7.0/css/font-awesome.css" />
+	<link href="https://cdn.bootcss.com/element-ui/2.12.0/theme-chalk/index.css" rel="stylesheet">
+	<style type="text/css">
+		body{
+			margin: 0 auto;
+			background-color:#f3f3f4;
+		}
+		.left{
+			min-width: 170px ;
+			width: 10.5%;
+			height: 100%;
+			background:#121212 ;
+			position: fixed;
+			margin-top: 59px;
+		}
+		.btn-default:hover{
+			background:inherit !important
+		}
+		.btn-default.focus, .btn-default:focus{
+			background:inherit !important
+		}
+		.layui-nav-more{
+			display:none
+		}
+		.layui-nav-mored,.layui-nav-more layui-nav-mored{
+			display:none !important
+		}
+		.nav{
+			width: 100%;
+		}
+		.right{
+			width: 89.5%;
+			float:right;
+			background: #363636;
+		}
+		.el-submenu .el-menu-item{
+			min-width: auto !important;
+		}
+		.el-menu-item.is-active{
+			background-color: #242424 !important;
+			color: #ffffff !important;
+		}
+		.el-menu-item:hover{
+			background-color:  #242424 !important;
+		}
+		.el-submenu__title:hover{
+			background-color:  #242424 !important;
+		}
+		.el-submenu.is-active.is-opened{
+			background-color: #363636 !important;
+		}
+		.el-menu.el-menu--inline{
+			background-color: #363636 !important;
+		}
+		a{
+			text-decoration:none;
+			color:white !important;
+		}
+		a:hover{
+			text-decoration:none;
+		}
+		.el-menu-item-group__title{
+			display: none;
+		}
+		.topTag{
+			color: #fff;
+			height: 60px;
+			line-height: 60px;
+			font-size: 20px;
+			font-weight: 300;
+			background:#121212 ;
+			padding-left: 2%;
+		}
+		.cancelbtn{
+			line-height: 32px;
+			font-size: 14px;
+			height: 32px;
+			border-radius: 22px;
+			text-align: center;
+			width: 100px;
+			float:right;
+		}
+		.el-menu{
+			border:none !important;
+		}
+		.laydate-btns-clear,.laydate-btns-confirm{
+			color:white;
+		}
+		.layui-laydate-content td.laydate-selected{
+			background:#4a2cf8 !important;
+		}
+		/*.layui-laydate-main {*/
+		/*width: 240px !important;*/
+		/*}*/
+		/*.layui-laydate-range {*/
+		/*width: 485px !important;*/
+		/*}*/
+		.highcharts-root{
+			padding-left:20px !important;
+			padding-right:40px !important;
+		}
+		.layui-nav .layui-nav-item a{
+			padding: 0 !important;
+		}
+		.layui-nav{
+			background-color: #121212 !important;
+			width: 200px;
+			padding: 0 !important;
+		}
+		.layui-nav-item{
+			position: fixed;
+		}
+		.layui-nav .layui-icon layui-icon-down {
+			top:65% !important;
+		}
+		.layui-nav-bar{
+			background-color: #121212 !important;
+		}
+		.layui-nav-child{
+
+			min-width: 80% !important;
+			border-radius: 4px !important;
+		}
+		.triangle-up {
+			position: absolute;
+			left: 40%;
+			top: -20%;
+			width: 0;
+			height: 0;
+			border-left: 4px solid transparent;
+			border-right: 7px solid transparent;
+			border-bottom: 10px solid white;
+		}
+		.exitIn:hover .kkk{
+			color:#2953FF !important;
+		}
+		@media screen and (max-width: 1385px) {
+			.topTag{
+				font-size:18px;
+			}
+
+		}
+		.left{
+
+			height:100%;
+			overflow-y:auto;
+			padding-bottom:10%;
+		}
+		.left::-webkit-scrollbar{
+			display: none;
+		}
+		.el-submenu.is-active.is-opened>.el-submenu__title>.fa{
+			color:#ffffff;
+		}
+		.layui-nav .layui-nav-item a:hover{
+			background:inherit;
+		}
+		.layui-nav-child dd.layui-this{
+			background-color:inherit;
+		}
+		/*.411,.412,.413,.414,.415,.416,.417,.418,.419,.420,.302,.308,.309,.310,.311,.312,.313,.314,.315,.316,.317,.318,.319,.400,.401,.411,.460,.461,.462,.463,.464,.465,.466,.402,.403{
+			display:none
+		}*/
+		.layui-icon-down,.layui-icon-up{
+			margin-left: -28%;
+			font-size: 9px;
+			color:#42E24F
+		}
+	</style>
+</head>
+<body style="background: #363636">
+<div class="content">
+	<div style="width: 100%;position: fixed; height: 60px;line-height: 60px;z-index:10000;max-height:60px;background: #121212;">
+		<div class="topTag" style="width: 26%;float:left;min-width:170px;">
+			<img src="../img/faith.png" onclick="backtoIndex()" style="cursor: pointer" >
+		</div>
+
+		<div style="float: right;margin-right: 3.5%;height: 75px;width: 120px;" id="changett" onmouseover="fun()" onmouseout="functionout()">
+			<ul class="layui-nav" lay-filter="">
+				<li class="layui-nav-item">
+					<a href="javascript:void(0);" class="cancelbtn" style="margin-right: -47%;text-decoration:none;" id="quit" >
+						<img src="../img/联系人.png" style="margin-top: 3px;width: 13px;float:left">
+						<p id="usernames" style="font-size: 14px;color: white;margin-left: 10px;float:left;"></p>
+						<p class="peo"><i class="layui-icon layui-icon-down" id="tabtabs"></i></p>
+					</a>
+					<dl class="layui-nav-child" id="nextnext" style="background: rgb(54, 54, 54);display: none;margin-left: 45%;margin-top: -30%;border: 0px;height: 55px;padding-left: 15px;width: 80px !important;min-width: auto !important;border-radius: 0px !important;">
+						<!-- <div class="triangle-up"></div> -->
+						<dd class="ddAlert" style=" " >
+							<!-- <a href="javascript:void(0)" class="exitIn" onclick="toFaithLog()" style="text-decoration:none;" onmouseover="document.images['heroeye'].src='../img/yunwei.png'"
+                               onmouseout="document.images['heroeye'].src='../img/yunwei.png'">
+                                <img alt="heroeye" id="heroeye" src="../img/yunwei.png" style="vertical-align: sub;height: 14px;" />
+                                <span style="margin-left: 5px;font-size: 12px;color:black;opacity: .8;" class="kkk">运维平台</span>
+                            </a> -->
+							<a href="javascript:void(0)" class="exitIn" onclick="toFaithLog()" style="text-decoration:none;" >
+								<span style="color:#ffffff;font-size:12px">运维平台</span>
+							</a>
+						</dd>
+						<dd class="ddAlert" style="margin-top:6px">
+							<!-- <a href="javascript:void(0)" class="exitIn" onclick="playout()" style="text-decoration:none;" onmouseover="document.images['arrow'].src='../img/userH.png'"
+                               onmouseout="document.images['arrow'].src='../img/user.png'">
+                                <img alt="arrow" id="arrow" src="../img/user.png" style="vertical-align: baseline;height:14px" />
+                                <span style="margin-left: 5px;font-size: 12px;color:black;opacity: .8;" class="kkk">退出登录</span>
+                            </a> -->
+							<a href="javascript:void(0)" class="exitIn" onclick="playout()" >
+								<span style="color:#ffffff;font-size:12px">退出登录</span>
+							</a>
+						</dd>
+					</dl>
+				</li>
+			</ul>
+		</div>
+		<div style="float: right;height: 75px;width: 120px;" onmouseover="fun22()" onmouseout="functionout22()">
+			<ul class="layui-nav" lay-filter="" style="width:150px">
+				<li class="layui-nav-item">
+					<a href="javascript:void(0);" class="cancelbtn" style="margin-right: -47%;text-decoration:none;width:100px" id="quit" >
+						<i style="margin-top: -3px;width: 16px;float:left;color:#42E24F" class="layui-icon layui-icon-location"></i>
+						<p style="font-size: 12px;color: white;margin-left: 10px;float:left;">地区</p>
+						<p class="area"><i class="layui-icon layui-icon-down 22" id="tabtabsnext" style="margin-left:-28%"></i></p>
+					</a>
+					<dl class="layui-nav-child" id="toptop" style="background: rgb(54, 54, 54);display: none;margin-left: 45%;margin-top: -30%;border: 0px;height: 55px;padding-left: 27px;width: 80px !important;min-width: auto !important;border-radius: 0px !important;">
+						<!-- <div class="triangle-up"></div> -->
+						<dd class="ddAlert" style=" " >
+							<!-- <a href="javascript:void(0)" class="exitIn" onclick="toFaithLog()" style="text-decoration:none;" onmouseover="document.images['heroeye'].src='../img/yunwei.png'"
+                               onmouseout="document.images['heroeye'].src='../img/yunwei.png'">
+                                <img alt="heroeye" id="heroeye" src="../img/yunwei.png" style="vertical-align: sub;height: 14px;" />
+                                <span style="margin-left: 5px;font-size: 12px;color:black;opacity: .8;" class="kkk">运维平台</span>
+                            </a> -->
+							<a href="javascript:void(0)" class="exitIn" onclick="korea()" style="text-decoration:none;" >
+								<span style="color:#ffffff;font-size:12px">韩服</span>
+							</a>
+						</dd>
+
+						<dd class="ddAlert" style="margin-top:6px">
+							<a href="javascript:void(0)" class="exitIn" onclick="Thai()" >
+								<span style="color:#ffffff;font-size:12px">泰服</span>
+							</a>
+						</dd>
+					</dl>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div class="left" style="z-index:10000">
+		<el-row class="tac" >
+			<el-col class="nav">
+				<el-menu :default-active="defaultActive" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" background-color="#121212" text-color="#fff" active-text-color="#242424" unique-opened="true">
+					<el-submenu index="1">
+						<template slot="title">
+							<i class="fa fa-fw fa-pie-chart"></i>
+							<span>综合分析</span>
+						</template>
+						<el-menu-item-group>
+							<div  class='421' style="display: "><el-menu-item index="421" @click="haddupOverview()">总览趋势</el-menu-item></div>
+							<div  class='412' style="display: "><el-menu-item index="412" @click="haddupReal()">实时统计</el-menu-item></div>
+							<div  class='413' style="display: "><el-menu-item index="413" @click="haddupRetention()">留存分析</el-menu-item></div>
+							<div  class='414' style="display: "><el-menu-item index="414" @click="haddupIn()">付费分析</el-menu-item></div>
+							<div  class='415' style="display: "><el-menu-item index="415" @click="LTV()">LTV分析</el-menu-item></div>
+							<div  class='416' style="display: "><el-menu-item index="416" @click="haddupTime()">日报分析</el-menu-item></div>
+							<div  class='417' style="display: "><el-menu-item index="417" @click="haddupStart()">启动分析</el-menu-item></div>
+							<div  class='418' style="display: "><el-menu-item index="418" @click="haddupConfig()">配置型号</el-menu-item></div>
+							<div  class='419' style="display: "><el-menu-item index="419" @click="haddupCollapse()">崩溃分析</el-menu-item></div>
+							<div  class='420' style="display: "><el-menu-item index="420" @click="scapEvent()">事件分析</el-menu-item></div>
+						</el-menu-item-group>
+					</el-submenu>
+					<el-submenu index="2" >
+						<template slot="title">
+							<i class="fa fa-fw fa-file-text-o"></i>
+							<span>详细日志</span>
+						</template>
+						<el-menu-item-group>
+							<div  class='302' style="display: "><el-menu-item index="302" @click="overallTrend()">专属分析</el-menu-item></div>
+							<!-- <el-menu-item index="2-2" @click="realTimes()">实时统计</el-menu-item>
+                            <el-menu-item index="2-3" @click="Daily_analysis()">日报分析</el-menu-item>
+                            <el-menu-item index="2-4" @click="LTV_analysis()">LTV分析</el-menu-item>
+                            <el-menu-item index="2-5" @click="retention_analysis()">留存分析</el-menu-item>
+                            <el-menu-item index="2-6" @click="payment_analysis()">付费分析</el-menu-item>
+                            <el-menu-item index="2-7" @click="District_analysis()">区服分析</el-menu-item>
+                            <el-menu-item index="2-8" @click="real_analysis()">实时在线人数</el-menu-item>-->
+							<div  class='308' style="display:none"><el-menu-item index="308" @click="Logout()">登录登出日志</el-menu-item></div>
+							<div  class='309' style="display:none"><el-menu-item index="309" @click="creat_role()">创建角色日志</el-menu-item></div>
+							<div  class='310' style="display:none"><el-menu-item index="310" @click="Novice_Guidance()">新手引导日志</el-menu-item></div>
+							<div  class='311' style="display:none"><el-menu-item index="311" @click="task_log()">任务日志</el-menu-item></div>
+							<div  class='312' style="display:none"><el-menu-item index="312" @click="Currency()">货币变化日志</el-menu-item></div>
+							<div  class='313' style="display:none"><el-menu-item index="313" @click="Grade_change()">等级変化日志</el-menu-item></div>
+							<div  class='314' style="display:none"><el-menu-item index="314" @click="Recharging_step()">充值步骤日志</el-menu-item></div>
+							<div  class='315' style="display:none"><el-menu-item index="315" @click="recharging_query()">充值日志</el-menu-item></div>
+							<div  class='316' style="display:none"><el-menu-item index="316" @click="Treasure_search()">宝藏寻宝日志</el-menu-item></div>
+							<div  class='317' style="display:none"><el-menu-item index="317" @click="auction_House()">拍卖行日志</el-menu-item></div>
+							<div  class='318' style="display:none"><el-menu-item index="318" @click="chat_Log()">聊天日志</el-menu-item></div>
+							<div  class='319' style="display:none"><el-menu-item index="319" @click="shopping_mall()">商城购买日志</el-menu-item></div>
+							<div  class='400' style="display:none"><el-menu-item index="400" @click="Email_extraction()">邮件提取日志</el-menu-item></div>
+							<div  class='401' style="display:none"><el-menu-item index="401" @click="Articles_water()">物品流水日志</el-menu-item></div>
+							<div  class='411' style="display:none"><el-menu-item index="411" @click="growthCapital()">成长基金日志</el-menu-item></div>
+							<div  class='460' style="display:none"><el-menu-item index="460" @click="queryActivity()" >活动查询日志</el-menu-item></div>
+							<div  class='461' style="display:none"><el-menu-item index="461" @click="inOut()">进出副本日志</el-menu-item></div>
+							<div  class='462' style="display:none"><el-menu-item index="462" @click="trackMonster()">击杀怪物日志</el-menu-item></div>
+							<div  class='463' style="display:none"><el-menu-item index="463" @click="dropGoal()">物品掉落日志</el-menu-item></div>
+							<div  class='464' style="display:none"><el-menu-item index="464" @click="pk()">竞技场日志</el-menu-item></div>
+							<div  class='465' style="display:none"><el-menu-item index="465" @click="legion()">军团击杀日志</el-menu-item></div>
+							<div  class='466' style="display:none"><el-menu-item index="466" @click="harry()">跨服掠夺日志</el-menu-item></div>
+						</el-menu-item-group>
+					</el-submenu>
+					<el-submenu index="3" >
+						<template slot="title">
+							<i class="fa fa-fw fa-cogs"></i>
+							<span>系统管理</span>
+						</template>
+						<el-menu-item-group>
+							<div  class='402' style="display:none"><el-menu-item index="402" @click="user_management()">用户管理</el-menu-item></div>
+							<div  class='403' style="display:none"><el-menu-item index="403" @click="District_service()">区服管理</el-menu-item></div>
+						</el-menu-item-group>
+					</el-submenu>
+
+				</el-menu>
+			</el-col>
+		</el-row>
+	</div>
+</div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="https://cdn.bootcss.com/element-ui/2.12.0/index.js"></script>
+<script src="../js/jquery.cookie.js"></script>
+<script src="../js/translate/zh-CN.js"></script>
+<script src="../js/public.js"></script>
+<script>
+	var vmNavigation=new Vue({
+		el:'.content',
+		data:{
+			msg:'hello',
+			defaultActive:'',
+		},
+		methods: {
+			handleOpen(key, keyPath) {
+				// console.log(key, keyPath);
+			},
+			handleClose(key, keyPath) {
+
+			},
+
+		}
+	})
+	function toFaithLog(){
+		window.location.href = "http://150.109.235.95:8080/centralOperations/view/upServeOverview.html";
+	}
+	var index = $.cookie("firstIndex");
+	var navigationDate=localStorage.getItem('navigation')
+	if(navigationDate){
+		vmNavigation.defaultActive = navigationDate
+	}else{
+		vmNavigation.defaultActive = index
+		//vmNavigation.defaultActive = '421'
+	}
+	function haddupOverview() {
+		localStorage.setItem('navigation','421')
+		window.location.href = "./realAll.html";
+	}
+	function haddupTime() {
+		localStorage.setItem('navigation','416')
+		window.location.href = "./dailynew.html";
+	}
+	function  haddupStart(){
+		localStorage.setItem('navigation','417')
+		window.location.href = "./clientData.html";
+	}
+	function  haddupConfig(){
+		localStorage.setItem('navigation','418')
+		window.location.href = "./clientConfig.html";
+	}
+	function  haddupCollapse(){
+		localStorage.setItem('navigation','419')
+		window.location.href = "./clientCollapse.html";
+	}
+	function scapEvent(){
+		localStorage.setItem('navigation','420')
+		window.location.href = "./eventAnalysis.html";
+	}
+	function haddupRetention(){
+		localStorage.setItem('navigation','413')
+		window.location.href = "./retention.html";
+	}
+	function haddupReal() {
+		localStorage.setItem('navigation','412')
+		window.location.href = "./realTimeNew.html";
+	}
+	function haddupIn() {
+		localStorage.setItem('navigation','414')
+		window.location.href = "./income.html";
+	}
+	function LTV() {
+		localStorage.setItem('navigation','415')
+		window.location.href = "./LTV.html";
+	}
+	function user_management() {
+		localStorage.setItem('navigation','402')
+		window.location.href = "./user_management.html";
+	}
+	function District_service() {
+		localStorage.setItem('navigation','403')
+		window.location.href = "./District_service.html";
+	}
+
+	//导航栏二
+	function overallTrend() {
+		localStorage.setItem('navigation','302')
+		window.location.href = "./overallTrend.html";
+	}
+	function realTimes() {
+		localStorage.setItem('navigation','2-2')
+		window.location.href = "./realTimes.html";
+	}
+	function  Daily_analysis(){
+		localStorage.setItem('navigation','2-3')
+		window.location.href = "./Daily_analysis.html";
+	}
+	function  LTV_analysis(){
+		localStorage.setItem('navigation','2-4')
+		window.location.href = "./LTV_analysis.html";
+	}
+	function  retention_analysis(){
+		localStorage.setItem('navigation','2-5')
+		window.location.href = "./retention_analysis.html";
+	}
+	function payment_analysis(){
+		localStorage.setItem('navigation','2-6')
+		window.location.href = "./payment_analysis.html";
+	}
+	function District_analysis(){
+		localStorage.setItem('navigation','2-7')
+		window.location.href = "./District_analysis.html";
+	}
+	function real_analysis() {
+		localStorage.setItem('navigation','2-8')
+		window.location.href = "./real_analysis.html";
+	}
+	function Logout() {
+		localStorage.setItem('navigation','308')
+		window.location.href = "./Logout.html";
+	}
+	function creat_role() {
+		localStorage.setItem('navigation','309')
+		window.location.href = "./creat_role.html";
+	}
+	function Novice_Guidance() {
+		localStorage.setItem('navigation','310')
+		window.location.href = "./Novice_Guidance.html";
+	}
+	function task_log() {
+		localStorage.setItem('navigation','311')
+		window.location.href = "./task_log.html";
+	}
+	function Currency() {
+		localStorage.setItem('navigation','312')
+		window.location.href = "./Currency.html";
+	}
+	function Grade_change() {
+		localStorage.setItem('navigation','313')
+		window.location.href = "./Grade_change.html";
+	}
+	function  Recharging_step(){
+		localStorage.setItem('navigation','314')
+		window.location.href = "./Recharging_step.html";
+	}
+	function  recharging_query(){
+		localStorage.setItem('navigation','315')
+		window.location.href = "./recharging_query.html";
+	}
+	function  Treasure_search(){
+		localStorage.setItem('navigation','316')
+		window.location.href = "./Treasure_search.html";
+	}
+	function auction_House(){
+		localStorage.setItem('navigation','317')
+		window.location.href = "./auction_House.html";
+	}
+	function chat_Log(){
+		localStorage.setItem('navigation','318')
+		window.location.href = "./chat_Log.html";
+	}
+	function shopping_mall() {
+		localStorage.setItem('navigation','319')
+		window.location.href = "./shopping_mall.html";
+	}
+	function Email_extraction() {
+		localStorage.setItem('navigation','400')
+		window.location.href = "./Email_extraction.html";
+	}
+	function Articles_water() {
+		localStorage.setItem('navigation','401')
+		window.location.href = "./Articles_water.html";
+	}
+	function growthCapital() {
+		localStorage.setItem('navigation','411')
+		window.location.href = "./growthCapital.html";
+	}
+	function queryActivity() {
+		localStorage.setItem('navigation','460')
+		window.location.href = "./queryActivity.html";
+	}
+	function inOut() {
+		localStorage.setItem('navigation','461')
+		window.location.href = "./inOut.html";
+	}
+	function trackMonster() {
+		localStorage.setItem('navigation','462')
+		window.location.href = "./trackMonster.html";
+	}
+	function  dropGoal(){
+		localStorage.setItem('navigation','463')
+		window.location.href = "./dropGoal.html";
+	}
+	function  pk(){
+		localStorage.setItem('navigation','464')
+		window.location.href = "./pk.html";
+	}
+	function  legion(){
+		localStorage.setItem('navigation','465')
+		window.location.href = "./legion.html";
+	}
+	function harry(){
+		localStorage.setItem('navigation','466')
+		window.location.href = "./harry.html";
+	}
+	function functionout() {
+		var ppp=document.getElementById('tabtabs')
+		ppp.className='layui-icon layui-icon-down'
+		$('#nextnext').css('display','none')
+	}
+	function fun() {
+		var ppp=document.getElementById('tabtabs')
+		ppp.className='layui-icon layui-icon-up'
+		$('#nextnext').css('display','block')
+	}
+	function functionout22() {
+		var ppp=document.getElementById('tabtabsnext')
+		ppp.className='layui-icon layui-icon-down 22'
+		$('#toptop').css('display','none')
+	}
+	function fun22() {
+		var ppp=document.getElementById('tabtabsnext')
+		ppp.className='layui-icon layui-icon-up 22'
+		$('#toptop').css('display','block')
+	}
+	function backtoIndex(){
+		window.location.href = "http://center.umi-game.cn/view/consoleLogin.html";
+	}
+</script>
+</html>
+

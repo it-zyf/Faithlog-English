@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="AuctionLog">
+    <resultMap id="auction_logResult" type="AuctionLog">
+        <result column="game_id" property="gameId"/>
+        <result column="channel_id" property="channelId"/>
+        <result column="media_id" property="mediaId"/>
+        <result column="device_id" property="deviceId"/>
+        <result column="version_name" property="versionName"/>
+        <result column="version_code" property="versionCode"/>
+        <result column="user_id" property="accountId"/>
+        <result column="serve_rid" property="serverId"/>
+        <result column="log_time" property="logTime"/>
+        <result column="role_id" property="roleId"/>
+        <result column="role_name" property="roleName"/>
+        <result column="role_level" property="roleLevel"/>
+        <result column="role_gender" property="roleGender"/>
+        <result column="battle_points" property="rolePower"/>
+        <result column="role_type" property="roleType"/>
+        <result column="vip_level" property="vipLevel"/>
+        <result column="log_name" property="logName"/>
+
+        <result column="seller_account_id" property="sellerAccountId"/>
+        <result column="seller_roleg_uid" property="sellerRoleGuid"/>
+        <result column="seller_role_name" property="sellerRoleName"/>
+        <result column="seller_role_level" property="sellerRoleLevel"/>
+        <result column="item_guid" property="itemGuid"/>
+        <result column="item_id" property="itemId"/>
+        <result column="item_num" property="itemNum"/>
+        <result column="auction_type" property="auctionType"/>
+        <result column="buyer_account_id" property="buyerAccountId"/>
+        <result column="buyer_role_guid" property="buyerRoleGuid"/>
+        <result column="buyer_role_name" property="buyerRoleName"/>
+        <result column="buyer_role_level" property="buyerRoleLevel"/>
+        <result column="money_type" property="moneyType"/>
+        <result column="money_value" property="moneyValue"/>
+        <result column="auction_state" property="auctionState"/>
+
+    </resultMap>
+    <resultMap id="Auction" type="AuctionEntity">
+        <result column="serial_number" property="serialNumber"></result>
+        <result column="item_id" property="itemId"></result>
+        <result column="item_num" property="itemNum"></result>
+        <result column="money_type" property="moneyType"></result>
+        <result column="money_value" property="moneyValue"></result>
+    </resultMap>
+
+
+
+    <sql id="Base_Column_List">
+         game_id ,
+   channel_id ,
+   media_id ,
+   device_id ,
+   version_name ,
+   version_code ,
+   user_id ,
+   server_id ,
+   from_timestamp(date_time, 'yyyy-MM-dd HH:mm:ss') as log_time ,
+	role_id ,
+	role_name ,
+	role_level ,
+	role_gender ,
+	battle_points ,
+	role_type ,
+	vip_level ,
+	log_name ,
+	seller_account_id ,
+	seller_role_guid ,
+	seller_role_name ,
+	seller_role_level ,
+	item_guid ,
+	item_num ,
+	auction_type ,
+	buyer_account_id ,
+	buyer_role_guid ,
+	buyer_role_name ,
+	buyer_role_level ,
+	money_type ,
+	money_value ,
+	auction_state
+
+	
+  </sql>
+
+    <select id="getAuction" parameterType="com.umi.ga.entitys.Condition" resultMap="auction_logResult">
+        select
+        <include refid="Base_Column_List"/>
+        from faith_server.server_auction
+        <trim prefix="where" suffixOverrides="and">
+             
+     <if test="null != serverId and '' != serverId">
+      server_id in
+      <foreach collection="stringsArray" item="serverId" index="index" open="(" close=")" separator=",">
+        #{serverId}
+      </foreach>
+      and
+    </if>
+            <if test="sellerAccountId != null and sellerAccountId !='' ">
+                seller_Account_Id = #{sellerAccountId} and
+            </if>
+            <if test="sellerRoleGuid != null and sellerRoleGuid !='' ">
+                seller_Role_Guid = #{sellerRoleGuid} and
+            </if>
+            <if test="sellerRoleName != null and sellerRoleName !='' ">
+                seller_Role_Name = #{sellerRoleName} and
+            </if>
+            <if test="buyerAccountId != null and buyerAccountId !='' ">
+                buyer_Account_Id = #{buyerAccountId} and
+            </if>
+            <if test="buyerRoleGuid != null and buyerRoleGuid !='' ">
+                buyer_Role_Guid = #{buyerRoleGuid} and
+            </if>
+            <if test="buyerRoleName != null and buyerRoleName !='' ">
+                buyer_Role_Name = #{buyerRoleName} and
+            </if>
+            <if test="startTime != null and startTime != '' and  endTime != null and endTime != ''">
+                 from_timestamp(date_time, 'yyyy-MM-dd')  between #{startTime} and #{endTime} and
+            </if>
+           <if test="channelId != null and channelId !='' ">
+          channel_id in
+          <foreach collection="channelArray" item="channelId" index="index" open="(" close=")" separator=",">
+            #{channelId}
+          </foreach>
+        </if>
+
+        </trim>
+        ORDER BY log_time DESC limit  ${pageSize}  offset ${pageIndex}
+    </select>
+
+
+    <select id="getAuctionCount" parameterType="com.umi.ga.entitys.Condition" resultType="int">
+        select
+        count(*)
+        from faith_server.server_auction
+        <trim prefix="where" suffixOverrides="and">
+             
+     <if test="null != serverId and '' != serverId">
+      server_id in
+      <foreach collection="stringsArray" item="serverId" index="index" open="(" close=")" separator=",">
+        #{serverId}
+      </foreach>
+      and
+    </if>
+            <if test="sellerAccountId != null and sellerAccountId !='' ">
+                seller_Account_Id = #{sellerAccountId} and
+            </if>
+            <if test="sellerRoleGuid != null and sellerRoleGuid !='' ">
+                seller_Role_Guid = #{sellerRoleGuid} and
+            </if>
+            <if test="sellerRoleName != null and sellerRoleName !='' ">
+                seller_Role_Name = #{sellerRoleName} and
+            </if>
+            <if test="buyerAccountId != null and buyerAccountId !='' ">
+                buyer_Account_Id = #{buyerAccountId} and
+            </if>
+            <if test="buyerRoleGuid != null and buyerRoleGuid !='' ">
+                buyer_Role_Guid = #{buyerRoleGuid} and
+            </if>
+            <if test="buyerRoleName != null and buyerRoleName !='' ">
+                buyer_Role_Name = #{buyerRoleName} and
+            </if>
+            <if test="startTime != null and startTime != '' and  endTime != null and endTime != ''">
+                 from_timestamp(date_time, 'yyyy-MM-dd')  between #{startTime} and #{endTime} and
+            </if>
+            <if test="channelId != null and channelId !='' ">
+                channel_id in
+                <foreach collection="channelArray" item="channelId" index="index" open="(" close=")" separator=",">
+                    #{channelId}
+                </foreach>
+            </if>
+
+        </trim>
+    </select>
+
+
+    <select id="getAuctionCount_xl" parameterType="com.umi.ga.analysis.model.AuctionLog" resultType="int">
+       select  count(*) from
+        (SELECT item_id,item_num,money_type,sum(cast(money_value as DOUBLE)) as money_value from faith_server.server_auction
+        where
+        <if test="null == auctiontype">
+            auction_type =0
+        </if>
+        <if test="null != auctiontype and '' !=auctiontype">
+            auction_type !=0
+        </if>
+        <if test="null !=auctionstate and '' !=auctionstate or auctionstate==0 ">
+            AND auction_state = ${auctionstate}
+        </if>
+        <if test="null != serverId and '' != serverId">
+            and  server_id in
+            <foreach collection="stringsArray" item="serverId" index="index" open="(" close=")" separator=",">
+                #{serverId}
+            </foreach>
+        </if>
+        <if test="startTime != null and startTime != '' and  endTime != null and endTime != ''">
+            and  from_timestamp(date_time, 'yyyy-MM-dd')  between #{startTime} and #{endTime}
+        </if>
+        <if test="channelId != null and channelId !='' ">
+           and channel_id in
+            <foreach collection="channelArray" item="channelId" index="index" open="(" close=")" separator=",">
+                #{channelId}
+            </foreach>
+        </if>
+        GROUP BY item_id,item_num,money_type) a
+    </select>
+
+
+
+    <select id="getAuction_xl" parameterType="com.umi.ga.analysis.model.AuctionLog" resultMap="Auction">
+       SELECT item_id,item_num,money_type,sum(cast(money_value as DOUBLE)) as money_value from faith_server.server_auction
+        where
+        <if test="null == auctiontype">
+            auction_type = 0
+        </if>
+        <if test="null != auctiontype and '' !=auctiontype">
+            auction_type !=0
+        </if>
+        <if test="null !=auctionstate and '' !=auctionstate or auctionstate==0 ">
+        AND auction_state = ${auctionstate}
+        </if>
+        <if test="null != serverId and '' != serverId">
+            and  server_id in
+            <foreach collection="stringsArray" item="serverId" index="index" open="(" close=")" separator=",">
+                #{serverId}
+            </foreach>
+        </if>
+        <if test="startTime != null and startTime != '' and  endTime != null and endTime != ''">
+            and  from_timestamp(date_time, 'yyyy-MM-dd')  between #{startTime} and #{endTime}
+        </if>
+        <if test="channelId != null and channelId !='' ">
+           and channel_id in
+            <foreach collection="channelArray" item="channelId" index="index" open="(" close=")" separator=",">
+                #{channelId}
+            </foreach>
+        </if>
+        GROUP BY item_id,item_num,money_type
+    </select>
+
+</mapper>

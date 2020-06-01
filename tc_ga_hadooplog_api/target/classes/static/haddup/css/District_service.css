@@ -1,0 +1,132 @@
+*{
+	margin: 0;
+	padding: 0;
+}
+/*表格公共样式*/
+#datatable{
+	overflow-x: scroll;
+	width: 100%;
+	border: 0;
+}
+#datatable thead{
+	background: #1A1A1A;
+	border: 0;
+}
+#datatable thead tr{
+	border: 0;
+}
+#datatable thead tr th{
+	border: 0;
+	color: white;
+	height: 50px;
+	font-size: 14px;
+	line-height: 30px;
+}
+#datatable tbody{
+	border: 0;
+}
+#datatable tbody tr{
+	border: 0;
+}
+#datatable tbody tr td{
+	border: 0;
+	color: #C0C0C0;
+	height: 40px;
+	font-size: 14px;
+}
+#datatable tbody tr:hover{
+	background: transparent;
+	color: #C0C0C0;
+}
+#startLevel,#endLevel{
+	width: 33.1%;
+	height: 35px;
+	border: 1px solid #bcbcbc;
+	background: transparent;
+	color: #C0C0C0;
+	border-radius: 0;
+}
+@media screen and (max-width: 1290px) {
+	#startLevel,#endLevel{
+		width: 32%;
+	}
+}
+.sum_div{
+	background: #363636;
+	padding: 30px;
+}
+.tit{
+	font-size: 22px;
+	font-weight: bold;
+	color: white;
+	display: inline-block;
+	height: 50px;
+	line-height: 50px;
+}
+.adduser{
+	color: #C0C0C0;
+	display: inline-block;
+	width: 140px;
+	height: 40px;
+	border: 1px solid #C0C0C0;
+	line-height: 40px;
+	text-align: center;
+	margin-left: 50px;
+	margin-bottom: 20px;
+	cursor: pointer;
+}
+.modify{
+	margin-left: 6px;
+	cursor: pointer;
+}
+.delet{
+	margin-left: 40px;
+	cursor: pointer;
+}
+/*添加区服*/
+#add{
+	display: none;
+}
+#add form{
+	padding: 20px;
+}
+#add form label{
+	color: #C0C0C0;
+	font-size: 14px;
+	line-height: 35px;
+	margin-left: 15px;
+}
+#add form input{
+	width: 80%;
+	height: 35px;
+	background: transparent;
+	border: 1px solid #C0C0C0;
+	padding-left: 20px;
+	border-radius: 5px;
+	float: right;
+	color: #C0C0C0;
+}
+/*修改区服*/
+#modifys{
+	display: none;
+}
+#modifys form{
+	padding: 20px;
+}
+#modifys form label{
+	color: #C0C0C0;
+	font-size: 14px;
+	line-height: 35px;
+	margin-left: 15px;
+}
+#modifys form input{
+	width: 80%;
+	height: 35px;
+	background: transparent;
+	border: 1px solid #C0C0C0;
+	padding-left: 20px;
+	border-radius: 5px;
+	float: right;
+	color: #C0C0C0;
+}
+

@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <title class="Currency"></title>
+  <link rel="shortcut  icon" type="image/x-icon" href="bitbug_favicon (2).ico" media="screen" />
+  <link rel="stylesheet" href="../layui/css/layui.css" />
+  <link rel="stylesheet" href="./css/Currency.css" />
+  <link rel="stylesheet" href="../css/font-awesome.min.css" />
+  <link rel="stylesheet" href="../css/bootstrap.min.css" />
+  <link rel="stylesheet" type="text/css" href="../js/bootstrap-table/bootstrap-table.min.css" />
+  <link rel="stylesheet" href="../js/multiple/bootstrap-multiselect.css" />
+  <link rel="stylesheet" href="../js/loading/jquery.mloading.css" />
+  <link href="https://cdn.bootcss.com/element-ui/2.12.0/theme-chalk/index.css" rel="stylesheet">
+  <style type="text/css">
+    .fixed-table-loading {
+      background: #363636;
+      color: white;
+      top: 80px;
+      border: 0;
+    }
+
+    .pagination>li>a,
+    .pagination>li>span {
+      color: white;
+      background-color: transparent;
+      border: 0;
+    }
+
+    .bootstrap-table .fixed-table-pagination>.pagination-detail .page-list {
+      color: #C0C0C0;
+    }
+
+    .pagination>li>a,
+    .pagination>li>span:hover {
+      background: #464545;
+    }
+
+    .pagination>.disabled>a,
+    .pagination>.disabled>a:focus,
+    .pagination>.disabled>a:hover,
+    .pagination>.disabled>span,
+    .pagination>.disabled>span:focus,
+    .pagination>.disabled>span:hover {
+      color: #C0C0C0;
+      background-color: #464545;
+      border: 0;
+    }
+
+    .pagination>li>a:focus,
+    .pagination>li>a:hover,
+    .pagination>li>span:focus,
+    .pagination>li>span:hover {
+      color: #428BCA;
+      background: #464545;
+      border: 0;
+    }
+
+    .pagination-info {
+      color: #C0C0C0;
+    }
+
+    .checkbox {
+      color: #C0C0C0;
+      font-size: 14px;
+      line-height: 30px;
+    }
+
+    .dropdown-menu,
+    .btn-default {
+      background: #363636;
+      color: #C0C0C0;
+    }
+
+    .btn-default:hover {
+      background: #363636;
+      color: #C0C0C0;
+    }
+
+    .btn-default.active,
+    .btn-default:active,
+    .open>.dropdown-toggle.btn-default {
+      color: #C0C0C0;
+      background: #363636;
+    }
+
+    .btn-default.active.focus,
+    .btn-default.active:focus,
+    .btn-default.active:hover,
+    .btn-default:active.focus,
+    .btn-default:active:focus,
+    .btn-default:active:hover,
+    .open>.dropdown-toggle.btn-default.focus,
+    .open>.dropdown-toggle.btn-default:focus,
+    .open>.dropdown-toggle.btn-default:hover {
+      color: #C0C0C0;
+      background: #363636;
+    }
+
+    .dropdown-menu>.active>a,
+    .dropdown-menu>.active>a:focus,
+    .dropdown-menu>.active>a:hover {
+      background: #363636;
+    }
+
+    .btn-default.focus,
+    .btn-default:focus {
+      background: #363636;
+      color: #C0C0C0;
+    }
+
+    .bootstrap-table {
+      clear: both;
+    }
+
+    .pagination>.active>a,
+    .pagination>.active>a:focus,
+    .pagination>.active>a:hover,
+    .pagination>.active>span,
+    .pagination>.active>span:focus,
+    .pagination>.active>span:hover {
+      background: #555555;
+      border-color: #555555;
+    }
+
+    .pagination>li>a:hover,
+    .pagination>li>span:hover {
+      color: white;
+    }
+
+    .layui-table-view .layui-table td,
+    .layui-table th {
+      height: 50px;
+    }
+
+    .layui-laypage a,
+    .layui-laypage span {
+      color: #fff !important;
+    }
+
+    .layui-table-view select[lay-ignore] {
+      background: transparent;
+    }
+
+    .layui-table-cell {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .layui-table-page .layui-laypage input,
+    .layui-table-page .layui-laypage button {
+      color: #000;
+    }
+
+    .layui-table-header th {
+      background: rgb(26, 26, 26) !important;
+    }
+
+    .layui-laypage {
+      float: right;
+    }
+
+    .layui-laypage .layui-laypage-curr .layui-laypage-em {
+      background-color: rgb(85, 85, 85) !important;
+    }
+
+    .layui-laypage-skip {
+      display: none !important;
+    }
+
+    .layui-laypage-limits {
+      float: left;
+    }
+
+    .layui-laypage-count {
+      float: left;
+    }
+
+    .layui-laypage-limits option {
+      background: rgb(54, 54, 54);
+    }
+
+    .bootstrap-table .fixed-table-container .fixed-table-header .table thead th {
+      line-height: 34px;
+      background-color: #1a1a1a;
+      color: #fff;
+    }
+  </style>
+</head>
+
+<body style="background: #202020;" onload="lo()">
+  <div id="navs"></div>
+  <div class="layui-layout layui-layout-admin">
+    <div class="layui-body" style="padding: 20px;">
+      <div class="sum_div">
+        <div class="Recharge">
+          <form role="form" class="form-inline" style="height: 179px;">
+            <div class="form-group" style="width: 22%;float: left;">
+              <label for="" class="cur_district"></label>
+              <select id="district_service" multiple="multiple"></select>
+            </div>
+            <div class="form-group" style="width: 22%;float: left;">
+              <label for="" class="cur_account"></label>
+              <input type="text" class="form-control" id="accountID" placeholder="" />
+            </div>
+            <div class="form-group layui-inline" style="width: 23%;float: left;">
+              <label for="" class="cur_time"></label>
+              <input type="text" class="form-control" id="datatimes" />
+            </div>
+            <div class="form-group" style="width: 23%;float: left;">
+              <label for="" class="cur_moneytype"></label>
+              <select name="currency" id="currency">
+                <option value="" class="cur_all"></option>
+                <option value="0" class="cur_expe"></option>
+                <option value="1" class="cur_game"></option>
+                <option value="2" class="cur_bindgame"></option>
+                <option value="3" class="cur_diam"></option>
+                <option value="4" class="cur_binddiam"></option>
+                <option value="5" class="cur_faith"></option>
+                <option value="6" class="cur_magic"></option>
+                <option value="7" class="cur_points"></option>
+                <option value="8" class="cur_score"></option>
+                <option value="9" class="cur_ling"></option>
+                <option value="10" class="cur_powder"></option>
+                <option value="11" class="cur_guard"></option>
+                <option value="12" class="cur_achie"></option>
+                <option value="13" class="cur_prest"></option>
+                <option value="14" class="cur_prayer"></option>
+                <option value="15" class="cur_military"></option>
+                <option value="16" class="cur_glory"></option>
+                <option value="17" class="cur_talent"></option>
+                <option value="18" class="cur_battle"></option>
+                <option value="19" class="cur_trea_search"></option>
+                <option value="20" class="cur_rune"></option>
+                <option value="21" class="cur_legion"></option>
+                <option value="22" class="cur_attribute"></option>
+                <option value="23" class="cur_essence"></option>
+                <option value="24" class="cur_coin"></option>
+                <option value="25" class="cur_reddiam"></option>
+                <option value="26" class="cur_piece"></option>
+                <option value="27" class="cur_honor"></option>
+                <option value="28" class="cur_point"></option>
+              </select>
+            </div>
+            <button type="button" class="layui-btn layui-btn-normal cur_query" id="query" onclick="onread()"></button>
+            <br /><br /><br /><br />
+            <div class="form-group" style="width: 22%;float: left;">
+              <label for="" class="cur_roleID"></label>
+              <input type="text" class="form-control" id="roleID" placeholder="" />
+            </div>
+            <div class="form-group" style="width: 22%;float: left;">
+              <label for="" class="cur_rolename" ></label>
+              <input type="text" class="form-control" id="roleName" placeholder="" />
+            </div>
+            <!-- <div class="form-group" style="width: 23%;float: left;">
+              <label for="" class="cur_channel"></label>
+              <select id="channel"></select>
+            </div> -->
+            <div class="form-group" style="width: 23%;float: left;">
+              <label for="" class="cur_regchannel"></label>
+              <select id="reg_channel" multiple="multiple" ></select>
+            </div>
+            <div class="form-group" style="width: 23%;float: left;margin-bottom: 1%;">
+              <label for="" class="cur_device" style="width: 78px"></label>
+              <input type="text" class="form-control" id="Equipment" placeholder="" />
+            </div>
+            <!-- <button type="button" class="layui-btn layui-btn-normal cur_report" id="export" onclick="exp()"></button> -->
+            <br /><br /><br /><br />
+
+          </form>
+          <table id="datatable" lay-filter="test"></table>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+<script src="../layui/layui.all.js"></script>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/jquery.cookie.js"></script>
+<script src="../js/loading/jquery.mloading.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script src="../js/multiple/bootstrap-multiselect.js"></script>
+<script src="../js/bootstrap-table/bootstrap-table.min.js"></script>
+<script src="./js/urlGet.js"></script>
+<script src="./js/Currency.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="https://cdn.bootcss.com/element-ui/2.12.0/index.js"></script>
+<script>
+  localStorage.setItem('navigation', '2-5')
+  $("#navs").load("navHaddup.html")
+
+  function lo() {
+    $(".312").addClass("layui-this").siblings().removeClass("layui-this")
+    $(".312").parent().parent().addClass("layui-nav-itemed").siblings().removeClass("layui-nav-itemed")
+  }
+  ////layui配置
+  layui.use(['element', 'form'], function () {
+    var element = layui.element;
+    var form = layui.form;
+    element.init();
+  });
+   function exp(){
+  	$("body").mLoading("show");
+  	var district_service = $("#district_service").val();//区服
+  	var account = $("#accountID").val();//账号ID
+  	var roleid = $("#roleID").val();//角色ID
+  	var rolename = $("#roleName").val();//角色名
+  	var currency = $("#currency").val();//货币类型
+  	var equipment = $("#Equipment").val();//设备号
+  	var channel = $("#channel").val();//登录方式
+  	var reg_channel = $("#reg_channel").val();//充值渠道
+  	if(district_service!=null){
+  		district_service = district_service.join(',')
+    };
+    if (reg_channel != null) {
+    reg_channel = reg_channel.join(',')
+  };
+  	$.ajax({
+  		type: "get",
+  		url: "../money_change_Export.action",
+  		async: true,
+  		data: {
+  			serverId:district_service,
+  			accountId:account,
+  			seDate:times,
+  			moneyType:currency,
+  			deviceId:equipment,
+  			roleId:roleid,
+  			roleName:rolename,
+  			loginType:channel,
+  			channelId:reg_channel,
+  			pageIndex: 1,
+  			pageSize: 100000000
+  		},
+  		success: function(e) {
+  			if(e.state == false) {
+  				alert(e.message)
+  				$("body").mLoading("hide");
+  			} else {
+  				window.open('/upload/log.xlsx');
+  				$("body").mLoading("hide");
+  			}
+  		}
+  	});
+  } 
+</script>
+
+</html>

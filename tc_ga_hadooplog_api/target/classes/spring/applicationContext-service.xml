@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd"    default-autowire="byName" default-lazy-init="false">
+
+	<!-- component-scan自动搜索@Component , @Controller , @Service , @Repository等标注的类 -->
+	<!-- 默认值如果适合，该项可以不用修改 -->
+	<!-- 自定义注解扫描注入 -->
+	<context:component-scan base-package="com.comb.framework.proxy.processor"/>
+
+	<!-- 定时任务扫描 -->
+	<context:component-scan base-package="com.comb.framework.task.client"/>
+
+	<!-- Rest接口扫描 -->
+	<context:component-scan base-package="com.umi.ga.hadoop_api.**"/>
+	<context:component-scan base-package="com.comb.framework.auth.spring.util"/>
+
+
+
+</beans>

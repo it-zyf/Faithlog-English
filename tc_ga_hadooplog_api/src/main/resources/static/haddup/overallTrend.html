@@ -1,0 +1,924 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+  <meta http-equiv="content-type" content="text/html" charset="utf-8">
+  <title>专属分析</title>
+  <!-- Bootstrap Styles-->
+  <link href="../css/bootstrap.min.css" rel="stylesheet" />
+  <script src="../js/jquery.min.js"></script>
+  <script src="../js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="../layui/css/layui.css" />
+  <script src="../layui/layui.all.js"></script>
+  <link href="https://cdn.bootcss.com/element-ui/2.12.0/theme-chalk/index.css" rel="stylesheet">
+  <!--bs multiselect  -->
+  <script src="../js/multiple/bootstrap-multiselect.js"></script>
+  <link rel="stylesheet" href="../js/multiple/bootstrap-multiselect.css" />
+  <!-- FontAwesome Styles-->
+  <link rel="stylesheet" href="../css/font-awesome.min.css" />
+  <link rel="stylesheet" href="../css/overallTrend.css" />
+  <link rel="stylesheet" href="../js/bootstrap-table/bootstrap-table.css" />
+  <script src="../js/bootstrap-table/bootstrap-table.min.js"></script>
+  <link rel="stylesheet" href="../css/laydate.css" />
+  <style type="text/css">
+    .help {
+      width: 15px;
+      height: 15px;
+      float: right;
+      margin-right: 1%;
+    }
+
+    .helpDescription {
+      display: none;
+      position: absolute;
+      margin-left: 80%;
+      margin-top: 1%;
+      z-index: 100;
+    }
+
+    .father:hover .helpDescription {
+      display: block
+    }
+  </style>
+</head>
+
+<body style="background: #242424;overflow:hidden" class="bodyContent" class="layui-layout-body">
+  <!-- main结构-->
+  <div id="navigation"></div>
+  <div class="layui-layout layui-layout-admin" style="overflow-x: hidden;">
+    <div class="layui-body" style="min-height: 1020px;color: white;padding:1% 1.5% 2% 1%">
+      <div style="height:80px;line-height: 80px;border: 1px solid #707070;">
+        <ul class="tabnavs">
+          <li class='tabchange'><span class="getTitleBlank" style="background:#141414">专属日报分析</span><span
+              class="tabline"></span></li>
+          <li class='tabchange'><span class="getTitleBlank" style="padding:12px 18px">专属LTV分析</span><span
+              class="tabline"></span></li>
+          <li class='tabchange'><span class="getTitleBlank">专属留存分析</span><span class="tabline"></span></li>
+          <li class='tabchange'><span class="getTitleBlank" style="padding:12px 16px">专属付费分析</span><span
+              class="tabline"></span></li>
+          <li class='tabchange'><span class="getTitleBlank" style="padding:12px 16px">专属区服分析</span><span
+              class="tabline"></span></li>
+          <li class='tabchange'><span class="getTitleBlank" style="padding:12px 2px">专属实时在线分析</span></li>
+        </ul>
+      </div>
+      <div class="innerAll">
+        <div class="innerContent">
+          <div class="form-group col-xs-12" id="dangerLine">
+            <div class="col-xs-3 col-sm-3 col-xs-3" style="margin-top: -.2%;" id="serverCos">
+              <div class="myown">
+                <label style="font-weight:400;font-size: 14px;float:left;margin-right:2%;"
+                  class="lableServer">区服&nbsp;</label>
+                <select name="district_service" size="5" id="district_service"
+                  style=" border-radius: 0; width: 251px;height: 30px;display: none" class="form-control">
+                </select>
+              </div>
+            </div>
+            <div class="form-group col-xs-3 col-xs-pull-0" id="data_5" style="width: 16.8%">
+              <label for="">日期</label>
+              <input type="text" id="datatimes" />
+            </div>
+            <div class="form-group" style="width: 17%;float: left;">
+              <label for="" class="daily_channel" style="font-weight: 400;font-size: 14px;margin-right: 1%;"></label>
+              <select id="top_channel"></select>
+            </div>
+            <button type="button" id="cha" class="btn" onclick="onread(this)">查询</button>
+          </div>
+          <div
+            style="float: left;text-align:center;width: 100%;margin-bottom: 2%;padding: 1%;border:1px solid #707070;">
+            <div class="real-table-All">
+              <div>
+                <div>
+                  <i style="background: url('../img/exp2.png')" class="real-btnAll"></i>
+                  <div class="father">
+                    <div class="helpDescription" style="margin-left:80%">
+                      <table style="border-radius: 4px;">
+                        <tr style="height: 30px;line-height: 30px">
+                          <td colspan="8" style="background: #121212;padding-left: 3px;text-align: left">日报说明</td>
+                        </tr>
+                        <tr style="height: 30px;line-height: 30px;background: #1B1B1B">
+                          <td colspan="1" style="padding-left: 3px">日报数据</td>
+                          <td colspan="7" style="padding-left: 15px;color: #A4A3AE;">每天00:05生成日报数据</td>
+                        </tr>
+                      </table>
+                    </div>
+                    <i style="background: url('../img/help2.png')" class="help"></i>
+                  </div>
+                </div>
+                <div class="titleLoadAdd"
+                  style="font-size: 12px;float: left;padding-top: 1%;margin-bottom:8%;margin-top:8%;margin-left:50%;text-align: center;color:#ffffff;"
+                  id="loadAdd"><i class="el-icon-loading" style="font-size: 28px;vertical-align: middle;"></i>
+                  <div style="margin-top: 5px">加载中...</div>
+                </div>
+                <table id="real-datatableAll" style="text-align: center;table-layout: fixed;">
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- LTV数据 -->
+        <div class="innerContent" style="display:none">
+          <div class="form-group col-xs-12" id="dangerLineLTV">
+            <div class="col-xs-3 col-sm-3 col-xs-3" style="margin-top: -.2%;" id="serverCosLTV">
+              <div class="myown">
+                <label style="font-weight:400;font-size: 14px;float:left;margin-right:2%;"
+                  class="lableServer">区服&nbsp;</label>
+                <select name="district_serviceLTV" size="5" id="district_serviceLTV"
+                  style=" border-radius: 0; width: 251px;height: 30px;" class="form-control">
+                </select>
+              </div>
+            </div>
+            <div class="form-group col-xs-3 col-xs-pull-0" id="data_5LTV" style="width: 16.8%">
+              <label for="">日期</label>
+              <input type="text" id="datatimesltv" />
+            </div>
+            <div class="form-group" style="width: 18%;float: left;">
+              <label for="" class="ltv_channel" style="font-weight: 400;font-size: 14px;margin-right: 1%;"></label>
+              <select id="ltvType">
+                <option value="0" class="ltv_active"></option>
+                <option value="100" class="ltv_resige"></option>
+              </select>
+            </div>
+            <button type="button" id="chaLTV" class="btn" onclick="onreadLTV(this)">查询</button>
+          </div>
+          <div style="float: left;text-align:center;width: 100%;margin-bottom: 2%;padding: 1%;border:1px solid #707070;"
+            class="ltvLoad">
+            <div class="titleLoadAdd"
+              style="font-size: 12px;float: left;padding-top: 1%;margin-bottom:8%;margin-top:8%;margin-left:50%;text-align: center;color:#ffffff;"
+              id="loadAddLTV"><i class="el-icon-loading" style="font-size: 28px;vertical-align: middle;"></i>
+              <div style="margin-top: 5px">加载中...</div>
+            </div>
+          </div>
+          <div style="float: left;text-align:center;width: 100%;margin-bottom: 2%;padding: 1%;border:1px solid #707070;"
+            class="LTVContent">
+            <div class="real-table-AllLTV">
+              <div>
+                <div>
+                  <i style="background: url('../img/exp2.png')" class="real-btnAllLTV"></i>
+                  <div class="father">
+                    <div class="helpDescription">
+                      <table style="border-radius: 4px;">
+                        <tr style="height: 30px;line-height: 30px">
+                          <td colspan="8" style="background: #121212;padding-left: 3px;text-align: left">LTV说明</td>
+                        </tr>
+                        <tr style="height: 30px;line-height: 30px;background: #1B1B1B">
+                          <td colspan="1" style="padding-left: 3px">LTV数据</td>
+                          <td colspan="7" style="padding-left: 15px;color: #A4A3AE;">每天00:05生成LTV数据</td>
+                        </tr>
+                      </table>
+                    </div>
+                    <i style="background: url('../img/help2.png')" class="help"></i>
+                  </div>
+                </div>
+                <table id="real-datatableAllLTV" style="text-align: center;table-layout: fixed;">
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- 留存数据 -->
+        <div class="innerContent" style="display:none">
+          <div class="form-group col-xs-12" id="dangerLineRe">
+            <div class="col-xs-3 col-sm-3 col-xs-3" style="margin-top: -.2%;" id="serverCosRe">
+              <div class="myown">
+                <label style="font-weight:400;font-size: 14px;float:left;margin-right:2%;"
+                  class="lableServer">区服&nbsp;</label>
+                <select name="district_serviceRe" size="5" id="district_serviceRe"
+                  style=" border-radius: 0; width: 251px;height: 30px;" class="form-control">
+                </select>
+              </div>
+            </div>
+            <div class="form-group col-xs-3 col-xs-pull-0" id="data_5Re" style="width: 16.8%">
+              <label for="">日期</label>
+              <input type="text" id="datatimesreten" />
+            </div>
+            <button type="button" id="chaRe" class="btn" onclick="onreadRe(this)">查询</button>
+          </div>
+          <div style="float: left;text-align:center;width: 100%;margin-bottom: 2%;padding: 1%;border:1px solid #707070;"
+            class="reLoad">
+            <div class="titleLoadAdd"
+              style="font-size: 12px;float: left;padding-top: 1%;margin-bottom:8%;margin-top:8%;margin-left:50%;text-align: center;color:#ffffff;"
+              id="loadAddRe"><i class="el-icon-loading" style="font-size: 28px;vertical-align: middle;"></i>
+              <div style="margin-top: 5px">加载中...</div>
+            </div>
+          </div>
+          <div style="float: left;text-align:center;width: 100%;margin-bottom: 2%;padding: 1%;border:1px solid #707070;"
+            class="ReContent">
+            <div class="real-table-AllRe">
+              <div>
+                <div>
+                  <i style="background: url('../img/exp2.png')" class="real-btnAllRe"></i>
+                  <div class="father">
+                    <div class="helpDescription">
+                      <table style="border-radius: 4px;">
+                        <tr style="height: 30px;line-height: 30px">
+                          <td colspan="8" style="background: #121212;padding-left: 3px;text-align: left">留存说明</td>
+                        </tr>
+                        <tr style="height: 30px;line-height: 30px;background: #1B1B1B">
+                          <td colspan="1" style="padding-left: 3px">留存数据</td>
+                          <td colspan="7" style="padding-left: 15px;color: #A4A3AE;">每天00:05生成留存数据</td>
+                        </tr>
+                      </table>
+                    </div>
+                    <i style="background: url('../img/help2.png')" class="help"></i>
+                  </div>
+                </div>
+                <table id="real-datatableAllRe" style="text-align: center;table-layout: fixed;">
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- 付费分析 -->
+        <div class="innerContent" style="display:none">
+          <div class="payTabAll">
+            <div class="form-group col-xs-12" id="dangerLinePay" class="payTab">
+              <div class="col-xs-3 col-sm-3 col-xs-3" style="margin-top: -.2%;">
+                <div class="myown">
+                  <label style="font-weight:400;font-size: 14px;float:left;margin-right:2%;"
+                    class="lableServer">区服&nbsp;</label>
+                  <select name="district_servicePay1" multiple="multiple" size="5" id="district_servicePay1"
+                    style=" border-radius: 0; width: 251px;height: 30px;" class="form-control">
+                  </select>
+                </div>
+              </div>
+              <div class="form-group" style="width: 18%;float: left;margin-left:1.5%">
+                <label for="" class="pay_channel" style="font-weight: 400;font-size: 14px;margin-right: 1%;"></label>
+                <select id="vip_channel"></select>
+              </div>
+              <div class="form-group" style="width: 18%;float: left;">
+                <label for="" class="daily_channel" style="font-weight: 400;font-size: 14px;margin-right: 1%;"></label>
+                <select id="vipreg_channel"></select>
+              </div>
+              <button type="button" class="btn" onclick="onreadPay1(this)">查询</button>
+            </div>
+            <div class="form-group col-xs-12" id="dangerLinePay2" class="payTab" style="display:none">
+              <div class="col-xs-3 col-sm-3 col-xs-3" style="margin-top: -.2%;">
+                <div class="myown">
+                  <label style="font-weight:400;font-size: 14px;float:left;margin-right:2%;"
+                    class="lableServer">区服&nbsp;</label>
+                  <select name="district_servicePay2" multiple="multiple" size="5" id="district_servicePay2"
+                    style=" border-radius: 0; width: 251px;height: 30px;" class="form-control">
+                  </select>
+                </div>
+              </div>
+              <div class="form-group" style="width: 18%;float: left;margin-left:1.5%">
+                <label for="" class="pay_channel" style="font-weight: 400;font-size: 14px;margin-right: 1%;"></label>
+                <select id="grade_channel"></select>
+              </div>
+              <div class="form-group" style="width: 18%;float: left;">
+                <label for="" class="daily_channel" style="font-weight: 400;font-size: 14px;margin-right: 1%;"></label>
+                <select id="gradereg_channel"></select>
+              </div>
+              <button type="button" class="btn" onclick="onreadPay2(this)">查询</button>
+            </div>
+            <div class="form-group col-xs-12" id="dangerLinePay3" class="payTab" style="display:none">
+              <div class="col-xs-3 col-sm-3 col-xs-3" style="margin-top: -.2%;">
+                <div class="myown">
+                  <label style="font-weight:400;font-size: 14px;float:left;margin-right:2%;"
+                    class="lableServer">区服&nbsp;</label>
+                  <select name="district_servicePay3" multiple="multiple" size="5" id="district_servicePay3"
+                    style=" border-radius: 0; width: 251px;height: 30px;" class="form-control">
+                  </select>
+                </div>
+              </div>
+              <div class="form-group col-xs-3 col-xs-pull-0" id="data_5pay3" style="width: 16.8%">
+                <label for="">日期</label>
+                <input type="text" id="datatimespay3" />
+              </div>
+              <div class="form-group" style="width: 18%;float: left;">
+                <label for="" class="pay_moneytype" style="font-weight: 400;font-size: 14px;margin-right: 1%;"></label>
+                <select id="Diamond_type">
+                  <option value="3" class="pay_dias"></option>
+                  <option value="4" class="pay_bindingdias"></option>
+                </select>
+              </div>
+              <div class="form-group" style="width: 17.4%;float: left;">
+                <label for="" class="daily_channel" style="font-weight: 400;font-size: 14px;margin-right: 1%;"></label>
+                <select id="Diamondreg_channel"></select>
+              </div>
+              <div class="form-group" style="width: 18%;float: left;">
+                <label for="" class="pay_channel" style="font-weight: 400;font-size: 14px;margin-right: 1%;"></label>
+                <select id="Diamond_channel"></select>
+              </div>
+              <button type="button" class="btn" onclick="onreadPay3(this)">查询</button>
+            </div>
+          </div>
+          <div
+            style="float: left;text-align:center;width: 100%;margin-bottom: 2%;padding: 1%;border:1px solid #707070;display:none"
+            class="payLoad">
+            <div class="titleLoadAdd"
+              style="font-size: 12px;float: left;padding-top: 1%;margin-bottom:8%;margin-top:8%;margin-left:50%;text-align: center;color:#ffffff;"
+              id="loadAddRe"><i class="el-icon-loading" style="font-size: 28px;vertical-align: middle;"></i>
+              <div style="margin-top: 5px">加载中...</div>
+            </div>
+          </div>
+          <div style="float: left;text-align:center;width: 100%;margin-bottom: 2%;padding: 0;border:1px solid #707070;"
+            class="PayContent">
+            <div style="display:flex" class="btnall">
+              <div class="btnchange" style="width:80px;background:#363636;color:#D6731B">VIP分布</div>
+              <div class="btnchange" style="width:80px">等级分布</div>
+              <div class="btnchange" style="width:130px">钻石/紫钻消耗分类</div>
+            </div>
+            <div class="paytable">
+              <div class="real-table-AllPay">
+                <div>
+                  <div>
+                    <i style="background: url('../img/exp2.png')" class="real-btnAllPay"></i>
+                    <div class="father">
+                      <div class="helpDescription">
+                        <table style="border-radius: 4px;">
+                          <tr style="height: 30px;line-height: 30px">
+                            <td colspan="8" style="background: #121212;padding-left: 3px;text-align: left">付费说明</td>
+                          </tr>
+                          <tr style="height: 30px;line-height: 30px;background: #1B1B1B">
+                            <td colspan="1" style="padding-left: 3px">付费数据</td>
+                            <td colspan="7" style="padding-left: 15px;color: #A4A3AE;">每天00:05生成付费数据</td>
+                          </tr>
+                        </table>
+                      </div>
+                      <i style="background: url('../img/help2.png')" class="help"></i>
+                    </div>
+                  </div>
+                  <div class="paytableall">
+                    <table id="real-datatableAllPay" style="text-align: center;table-layout: fixed;" class="paytable">
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <div class="real-table-AllPay" style="display:none">
+                <div>
+                  <div>
+                    <i style="background: url('../img/exp2.png')" class="real-btnAllPay2"></i>
+                    <div class="father">
+                      <div class="helpDescription">
+                        <table style="border-radius: 4px;">
+                          <tr style="height: 30px;line-height: 30px">
+                            <td colspan="8" style="background: #121212;padding-left: 3px;text-align: left">付费说明</td>
+                          </tr>
+                          <tr style="height: 30px;line-height: 30px;background: #1B1B1B">
+                            <td colspan="1" style="padding-left: 3px">付费数据</td>
+                            <td colspan="7" style="padding-left: 15px;color: #A4A3AE;">每天00:05生成付费数据</td>
+                          </tr>
+                        </table>
+                      </div>
+                      <i style="background: url('../img/help2.png')" class="help"></i>
+                    </div>
+                  </div>
+                  <div class="paytableall">
+                    <table id="real-datatableAllPay2" style="text-align: center;table-layout: fixed;" class="paytable">
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <div class="real-table-AllPay" style="display:none">
+                <div>
+                  <div>
+                    <i style="background: url('../img/exp2.png')" class="real-btnAllPay3"></i>
+                    <div class="father">
+                      <div class="helpDescription">
+                        <table style="border-radius: 4px;">
+                          <tr style="height: 30px;line-height: 30px">
+                            <td colspan="8" style="background: #121212;padding-left: 3px;text-align: left">付费说明</td>
+                          </tr>
+                          <tr style="height: 30px;line-height: 30px;background: #1B1B1B">
+                            <td colspan="1" style="padding-left: 3px">付费数据</td>
+                            <td colspan="7" style="padding-left: 15px;color: #A4A3AE;">每天00:05生成付费数据</td>
+                          </tr>
+                        </table>
+                      </div>
+                      <i style="background: url('../img/help2.png')" class="help"></i>
+                    </div>
+                  </div>
+                  <div class="paytableall">
+                    <table id="real-datatableAllPay3" style="text-align: center;table-layout: fixed;" class="paytable">
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- 区服分析 -->
+        <div class="innerContent" style="display:none">
+          <div class="payTabAllServer">
+            <div class="form-group col-xs-12" id="dangerLineServer" class="payTabServer">
+              <div class="form-group" style="width: 17%;float: left;margin-left:1%">
+                <label for="" style="font-weight: 400;font-size: 14px;margin-right: 1%;">充值渠道</label>
+                <select id="consumption_channel"></select>
+              </div>
+              <div class="form-group col-xs-3 col-xs-pull-0" id="data_5Server" style="width: 16.8%">
+                <label for="">日期</label>
+                <input type="text" id="datatimesserver1" />
+              </div>
+              <button type="button" class="btn" onclick="onreadServer(this)">查询</button>
+            </div>
+            <div class="form-group col-xs-12" id="dangerLineServer2" class="payTab" style="display:none">
+              <div class="form-group" style="width: 17%;float: left;margin-left:1%">
+                <label for="" style="font-weight: 400;font-size: 14px;margin-right: 1%;">充值渠道</label>
+                <select id="server_channel"></select>
+              </div>
+              <div class="form-group col-xs-3 col-xs-pull-0" id="data_5server2" style="width: 16.8%">
+                <label for="">日期</label>
+                <input type="text" id="datatimesserver2" />
+              </div>
+              <button type="button" class="btn" onclick="onreadServer2(this)">查询</button>
+            </div>
+          </div>
+          <div
+            style="float: left;text-align:center;width: 100%;margin-bottom: 2%;padding: 1%;border:1px solid #707070;display:none"
+            class="payLoad">
+            <div class="titleLoadAdd"
+              style="font-size: 12px;float: left;padding-top: 1%;margin-bottom:8%;margin-top:8%;margin-left:50%;text-align: center;color:#ffffff;"
+              id="loadAddRe"><i class="el-icon-loading" style="font-size: 28px;vertical-align: middle;"></i>
+              <div style="margin-top: 5px">加载中...</div>
+            </div>
+          </div>
+          <div style="float: left;text-align:center;width: 100%;margin-bottom: 2%;padding: 0;border:1px solid #707070;"
+            class="ServerContent">
+            <div style="display:flex" class="btnallserver">
+              <div class="btnserver" style="width:120px;background:#363636;color:#D6731B">各服每日数据</div>
+              <div class="btnserver" style="width:120px">各服累计数据</div>
+            </div>
+            <div class="paytableserver">
+              <div class="real-table-AllServer">
+                <div>
+                  <div>
+                    <i style="background: url('../img/exp2.png')" class="real-btnAllServer"></i>
+                    <div class="father">
+                      <div class="helpDescription">
+                        <table style="border-radius: 4px;">
+                          <tr style="height: 30px;line-height: 30px">
+                            <td colspan="8" style="background: #121212;padding-left: 3px;text-align: left">区服说明</td>
+                          </tr>
+                          <tr style="height: 30px;line-height: 30px;background: #1B1B1B">
+                            <td colspan="1" style="padding-left: 3px">区服数据</td>
+                            <td colspan="7" style="padding-left: 15px;color: #A4A3AE;">每天00:05生成区服数据</td>
+                          </tr>
+                        </table>
+                      </div>
+                      <i style="background: url('../img/help2.png')" class="help"></i>
+                    </div>
+                  </div>
+                  <table id="real-datatableAllServer" style="text-align: center;table-layout: fixed;">
+                  </table>
+                </div>
+              </div>
+              <div class="real-table-AllServer" style="display:none">
+                <div>
+                  <div>
+                    <i style="background: url('../img/exp2.png')" class="real-btnAllServer2"></i>
+                    <div class="father">
+                      <div class="helpDescription">
+                        <table style="border-radius: 4px;">
+                          <tr style="height: 30px;line-height: 30px">
+                            <td colspan="8" style="background: #121212;padding-left: 3px;text-align: left">区服说明</td>
+                          </tr>
+                          <tr style="height: 30px;line-height: 30px;background: #1B1B1B">
+                            <td colspan="1" style="padding-left: 3px">区服数据</td>
+                            <td colspan="7" style="padding-left: 15px;color: #A4A3AE;">每天00:05生成区服数据</td>
+                          </tr>
+                        </table>
+                      </div>
+                      <i style="background: url('../img/help2.png')" class="help"></i>
+                    </div>
+                  </div>
+                  <table id="real-datatableAllServer2" style="text-align: center;table-layout: fixed;">
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- 在线分析 -->
+        <div class="innerContent" style="display:none">
+          <div class="form-group col-xs-12" id="dangerLineOnline" class="payTab">
+            <div class="col-xs-3 col-sm-3 col-xs-3" style="margin-top: -.2%;">
+              <div class="myown">
+                <label style="font-weight:400;font-size: 14px;float:left;margin-right:2%;"
+                  class="lableServer">区服&nbsp;</label>
+                <select name="district_serviceOnline" multiple="multiple" size="5" id="district_serviceOnline"
+                  style=" border-radius: 0; width: 251px;height: 30px;" class="form-control">
+                </select>
+              </div>
+            </div>
+            <div class="form-group col-xs-3 col-xs-pull-0" id="data_5server2" style="width: 16.8%">
+              <label for="">日期</label>
+              <input type="text" id="datatimesonline" />
+            </div>
+            <button type="button" class="btn" onclick="onreadOnline(this)">查询</button>
+          </div>
+          <div
+            style="float: left;text-align:center;width: 100%;margin-bottom: 2%;padding: 1%;border:1px solid #707070;display:none"
+            class="payLoad">
+            <div class="titleLoadAdd"
+              style="font-size: 12px;float: left;padding-top: 1%;margin-bottom:8%;margin-top:8%;margin-left:50%;text-align: center;color:#ffffff;"
+              id="loadAddRe"><i class="el-icon-loading" style="font-size: 28px;vertical-align: middle;"></i>
+              <div style="margin-top: 5px">加载中...</div>
+            </div>
+          </div>
+          <div class="chart">
+            <p style="height:30px;line-height:30px;padding-left:3px;background:#242424">
+              <a href="javascript:void(0)" onclick="one()" id="a-one" style="float:left;"><img
+                  src="../img/chl2.png" /></a>
+              <a href="javascript:void(0)" onclick="two()" id="a-two" style="margin-left: .4%;float:left;"><img
+                  src="../img/chr.png" /></a>
+            </p>
+            <div>
+              <i style="background: url('../img/exp2.png')" class="real-btnAllchart"></i>
+              <div class="father">
+                <div class="helpDescription">
+                  <table style="border-radius: 4px;">
+                    <tr style="height: 30px;line-height: 30px">
+                      <td colspan="8" style="background: #121212;padding-left: 3px;text-align: left">在线说明</td>
+                    </tr>
+                    <tr style="height: 30px;line-height: 30px;background: #1B1B1B">
+                      <td colspan="1" style="padding-left: 3px">在线数据</td>
+                      <td colspan="7" style="padding-left: 15px;color: #A4A3AE;">每天00:05生成在线数据</td>
+                    </tr>
+                  </table>
+                </div>
+                <i style="background: url('../img/help2.png')" class="help"></i>
+              </div>
+            </div>
+            <div id="container" style="width: 100%;height: 225px;margin: 0 0;"></div>
+            <div class="table-box hide" style="margin-top:30px;">
+              <table id="hourtable" style="width: 99%;margin: 0 auto;">
+                <thead>
+                  <tr>
+                    <th style="height:50px;background-color:#202020;color:#fff;text-align:center;">时间</th>
+                    <th style="height:50px;background-color:#202020;color:#fff;text-align:center;">玩家数</th>
+                  </tr>
+                </thead>
+              </table>
+            </div>
+          </div>
+          <div
+            style="float: left;text-align:center;width: 100%;padding: 5px 0;border:1px solid #707070;margin-top:1%;height:350px"
+            class="PayContent">
+            <div class="real-table-AllOnline">
+              <div>
+                <div>
+                  <i style="background: url('../img/exp2.png')" class="real-btnAllOnline"></i>
+                  <div class="father">
+                    <div class="helpDescription">
+                      <table style="border-radius: 4px;">
+                        <tr style="height: 30px;line-height: 30px">
+                          <td colspan="8" style="background: #121212;padding-left: 3px;text-align: left">在线说明</td>
+                        </tr>
+                        <tr style="height: 30px;line-height: 30px;background: #1B1B1B">
+                          <td colspan="1" style="padding-left: 3px">在线数据</td>
+                          <td colspan="7" style="padding-left: 15px;color: #A4A3AE;">每天00:05生成在线数据</td>
+                        </tr>
+                      </table>
+                    </div>
+                    <i style="background: url('../img/help2.png')" class="help"></i>
+                  </div>
+                </div>
+                <table id="real-datatableAllOnline" style="text-align: center;table-layout: fixed;">
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="https://cdn.bootcss.com/element-ui/2.12.0/index.js"></script>
+<script src="../js/bootstrap-table/bootstrap-table.min.js"></script>
+<script src="http://cdn.hcharts.cn/highcharts/6.1.1/highcharts.js"></script>
+<script src="../js/highcharts/exporting.js"></script>
+<script src="../js/jquery.table2excel.js"></script>
+<script src="../js/laydate.js"></script>
+<script src="./js/urlGet.js"></script>
+<script src="../js/overallTrend.js"></script>
+<script type="text/javascript">
+  localStorage.setItem('navigation', '2-0')
+  $('#navigation').load('navHaddup.html')
+  var vmTime = new Vue({
+    el: '.timeTime',
+    data: {
+      msg: 'hello',
+      pickerOptions: {
+        disabledDate(time) {
+          return time.getTime() > (Date.now() - 8.64e7); //如果没有后面的-8.64e7就是不可以选择今天的
+        },
+        shortcuts: [
+          //     {
+          //     text: '今日',
+          //     onClick(picker) {
+          //         var end = new Date();
+          //         var start = new Date();
+          //         start.setTime(start.getTime());
+          //         picker.$emit('pick', [start, end]);
+          //     }
+          // },
+          {
+            text: '昨日',
+            onClick(picker) {
+              var end = new Date();
+              var start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24);
+              end.setTime(end.getTime() - 3600 * 1000 * 24);
+              picker.$emit('pick', [start, end]);
+            }
+          }, {
+            text: '近7日',
+            onClick(picker) {
+              var end = new Date();
+              var start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+              end.setTime(end.getTime() - 3600 * 1000 * 24);
+              picker.$emit('pick', [start, end]);
+            }
+          }, {
+            text: '近30日',
+            onClick(picker) {
+              var end = new Date();
+              var start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+              end.setTime(end.getTime() - 3600 * 1000 * 24);
+              picker.$emit('pick', [start, end]);
+            }
+          }, {
+            text: '全部',
+            onClick(picker) {
+              var end = new Date();
+              end.setTime(end.getTime() - 3600 * 1000 * 24);
+              var start = new Date('2019-10-9 00:00:00');
+              picker.$emit('pick', [start, end]);
+            }
+          }
+        ]
+      },
+
+      ruleForm: {
+        dateValue: ""
+      },
+    },
+    computed: {
+      timeDefault() {
+        var date = new Date();
+        var oneweekdate = new Date(date - 24 * 3600 * 1000);
+        var y = oneweekdate.getFullYear();
+        var m = oneweekdate.getMonth() + 1;
+        var d = oneweekdate.getDate();
+        var formatwdate = y + '-' + m + '-' + d;
+        return formatwdate;
+      },
+      timeDefaultLast() {
+        var date = new Date();
+        var oneweekdate = new Date(date - 30 * 24 * 3600 * 1000);
+        var y = oneweekdate.getFullYear();
+        var m = oneweekdate.getMonth() + 1;
+        var d = oneweekdate.getDate();
+        var formatwdate = y + '-' + m + '-' + d;
+        return formatwdate;
+      }
+    },
+    mounted() {
+      // 初始化查询，默认为前一周
+      this.ruleForm.dateValue = [this.timeDefaultLast, this.timeDefault];
+    },
+    methods: {
+      handleOpen(key, keyPath) {
+        console.log(key, keyPath);
+      },
+      handleClose(key, keyPath) {
+        console.log(key, keyPath);
+      },
+    }
+  })
+
+  window.setInterval(function () {
+    var monthtt = document.getElementsByClassName('el-icon-arrow-right')
+    var yeartt = document.getElementsByClassName('el-icon-d-arrow-right')
+    monthtt[0].disabled = false
+    monthtt[0].classList.remove("is-disabled");
+    yeartt[0].disabled = false
+    yeartt[0].classList.remove("is-disabled");
+  }, 400)
+  //付费金额
+  $(".real-btnAll").click(function () {
+    $("#real-datatableAll").table2excel({
+      exclude: ".noExl",
+      name: "Excel Document Name",
+      filename: "日报数据",
+      exclude_img: true,
+      exclude_links: true,
+      exclude_inputs: true,
+    });
+  });
+  //LTV
+  $(".real-btnAllLTV").click(function () {
+    $("#real-datatableAllLTV").table2excel({
+      exclude: ".noExl",
+      name: "Excel Document Name",
+      filename: "LTV数据",
+      exclude_img: true,
+      exclude_links: true,
+      exclude_inputs: true,
+    });
+  });
+  //留存
+  $(".real-btnAllRe").click(function () {
+    $("#real-datatableAllRe").table2excel({
+      exclude: ".noExl",
+      name: "Excel Document Name",
+      filename: "留存数据",
+      exclude_img: true,
+      exclude_links: true,
+      exclude_inputs: true,
+    });
+  });
+  //付费1
+  $(".real-btnAllPay").click(function () {
+    $("#real-datatableAllPay").table2excel({
+      exclude: ".noExl",
+      name: "Excel Document Name",
+      filename: "付费数据",
+      exclude_img: true,
+      exclude_links: true,
+      exclude_inputs: true,
+    });
+  });
+  //付费2
+  $(".real-btnAllPay2").click(function () {
+    $("#real-datatableAllPay2").table2excel({
+      exclude: ".noExl",
+      name: "Excel Document Name",
+      filename: "付费数据",
+      exclude_img: true,
+      exclude_links: true,
+      exclude_inputs: true,
+    });
+  });
+  //付费3
+  $(".real-btnAllPay3").click(function () {
+    $("#real-datatableAllPay3").table2excel({
+      exclude: ".noExl",
+      name: "Excel Document Name",
+      filename: "付费数据",
+      exclude_img: true,
+      exclude_links: true,
+      exclude_inputs: true,
+    });
+  });
+  //区服
+  $(".real-btnAllServer").click(function () {
+    $("#real-datatableAllServer").table2excel({
+      exclude: ".noExl",
+      name: "Excel Document Name",
+      filename: "区服数据",
+      exclude_img: true,
+      exclude_links: true,
+      exclude_inputs: true,
+    });
+  });
+  //在线
+  $(".real-btnAllOnline").click(function () {
+    $("#real-datatableAllOnline").table2excel({
+      exclude: ".noExl",
+      name: "Excel Document Name",
+      filename: "在线数据",
+      exclude_img: true,
+      exclude_links: true,
+      exclude_inputs: true,
+    });
+  });
+  //
+  $(".real-btnAllchart").click(function () {
+    $("#hourtable").table2excel({
+      exclude: ".noExl",
+      name: "Excel Document Name",
+      filename: "在线数据",
+      exclude_img: true,
+      exclude_links: true,
+      exclude_inputs: true,
+    });
+  });
+  var winWidth = 0,
+    winHeight = 0;
+
+  function changebleWidthHeight() {
+    if (window.innerWidth)
+      winWidth = window.innerWidth;
+    else if ((document.body) && (document.body.clientWidth))
+      winWidth = document.body.clientWidth;
+    //获取窗口高度
+    if (window.innerHeight)
+      winHeight = window.innerHeight;
+    else if ((document.body) && (document.body.clientHeight))
+      winHeight = document.body.clientHeight;
+    //通过深入Document内部对body进行检测，获取窗口大小
+    if (document.documentElement && document.documentElement.clientHeight && document.documentElement.clientWidth) {
+      winHeight = document.documentElement.clientHeight;
+      winWidth = document.documentElement.clientWidth;
+    }
+
+    document.getElementById("serverCos").style.width = winWidth - 50
+    document.getElementById("data_5").style.width = winWidth - 40
+
+  }
+  window.onresize = changebleWidthHeight();
+  $(".tabnavs li").click(function () {
+    var index = $(this).index();
+    var len = document.getElementsByClassName("getTitleBlank")
+    for (var i = 0; i < len.length; i++) {
+      if (index === i) {
+        document.getElementsByClassName("getTitleBlank")[i].style.backgroundColor = "#141414"
+        console.log(document.getElementsByClassName("getTitleBlank")[i])
+      } else {
+        document.getElementsByClassName("getTitleBlank")[i].style.backgroundColor = "inherit"
+      }
+    }
+    if (index == 0) {
+      $(".innerAll .innerContent").eq(0).css("display", "block").siblings('.innerContent').css("display", "none")
+    } else if (index == 1) {
+      $(".innerAll .innerContent").eq(1).css("display", "block").siblings('.innerContent').css("display", "none")
+    } else if (index == 2) {
+      $(".innerAll .innerContent").eq(2).css("display", "block").siblings('.innerContent').css("display", "none")
+    } else if (index == 3) {
+      $(".innerAll .innerContent").eq(3).css("display", "block").siblings('.innerContent').css("display", "none")
+    } else if (index == 4) {
+      $(".innerAll .innerContent").eq(4).css("display", "block").siblings('.innerContent').css("display", "none")
+    } else if (index == 5) {
+      $(".innerAll .innerContent").eq(5).css("display", "block").siblings('.innerContent').css("display", "none")
+    }
+  })
+  $(".btnall .btnchange").click(function () {
+    var index = $(this).index();
+    var len = document.getElementsByClassName("btnchange")
+    for (var i = 0; i < len.length; i++) {
+      if (index === i) {
+        document.getElementsByClassName("btnchange")[i].style.backgroundColor = "#363636"
+        document.getElementsByClassName("btnchange")[i].style.color = "#D6731B"
+      } else {
+        document.getElementsByClassName("btnchange")[i].style.backgroundColor = "inherit"
+        document.getElementsByClassName("btnchange")[i].style.color = "#ffffff"
+      }
+    }
+    if (index == 0) {
+      $("#dangerLinePay2").css("display", "none")
+      $("#dangerLinePay3").css("display", "none")
+      $("#dangerLinePay").css("display", "block")
+      $(".paytable .real-table-AllPay").eq(0).css("display", "block").siblings('.real-table-AllPay').css("display",
+        "none")
+    } else if (index == 1) {
+      $("#dangerLinePay").css("display", "none")
+      $("#dangerLinePay3").css("display", "none")
+      $("#dangerLinePay2").css("display", "block")
+      $(".paytable .real-table-AllPay").eq(1).css("display", "block").siblings('.real-table-AllPay').css("display",
+        "none")
+    } else if (index == 2) {
+      $("#dangerLinePay").css("display", "none")
+      $("#dangerLinePay2").css("display", "none")
+      $("#dangerLinePay3").css("display", "block")
+      $(".paytable .real-table-AllPay").eq(2).css("display", "block").siblings('.real-table-AllPay').css("display",
+        "none")
+    }
+
+  })
+  $(".btnallserver .btnserver").click(function () {
+    var index = $(this).index();
+    var len = document.getElementsByClassName("btnserver")
+    for (var i = 0; i < len.length; i++) {
+      if (index === i) {
+        document.getElementsByClassName("btnserver")[i].style.backgroundColor = "#363636"
+        document.getElementsByClassName("btnserver")[i].style.color = "#D6731B"
+      } else {
+        document.getElementsByClassName("btnserver")[i].style.backgroundColor = "inherit"
+        document.getElementsByClassName("btnserver")[i].style.color = "#ffffff"
+      }
+    }
+    if (index == 0) {
+      $("#dangerLineServer2").css("display", "none")
+      $("#dangerLineServer").css("display", "block")
+      $(".paytableserver .real-table-AllServer").eq(0).css("display", "block").siblings('.real-table-AllServer')
+        .css("display", "none")
+    } else if (index == 1) {
+      $("#dangerLineServer").css("display", "none")
+      $("#dangerLineServer2").css("display", "block")
+      $(".paytableserver .real-table-AllServer").eq(1).css("display", "block").siblings('.real-table-AllServer')
+        .css("display", "none")
+    }
+  })
+
+  function one() {
+    $("#a-one img").attr('src', '../img/chl2.png')
+    $("#a-two img").attr('src', '../img/chr.png')
+    $(".table-box").addClass("hide")
+    $("#container").removeClass("hide")
+  }
+
+  function two() {
+    $("#a-one img").attr('src', '../img/chl.png')
+    $("#a-two img").attr('src', '../img/chr2.png')
+    $("#container").addClass("hide")
+    $(".table-box").removeClass("hide")
+  }
+</script>
+</body>
+
+</html>

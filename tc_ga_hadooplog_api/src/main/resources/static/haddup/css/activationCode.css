@@ -1,0 +1,267 @@
+*{
+	margin: 0;
+	padding: 0;
+}
+form label{
+	color: white;
+	font-weight: bold;
+	font-size: 1vw;
+	margin-right: 2%;
+}
+.query_criteria{
+	/* height: 80px; */
+	height:100%;
+	/* padding: 20px; */
+	background: #363636;
+}
+.displays{
+	height: 80px;
+	padding: 20px;
+	background: #363636;
+	display: none;
+}
+#channel,#datatimes,#Exclude,#ltvType,#activiCode,#queryId{
+	width: 68%;
+	height: 35px;
+	border: 1px solid #bcbcbc;
+	background: transparent;
+	color: #C0C0C0;
+}
+#channel:focus,#Exclude:focus,#ltvType:focus{
+	border: 1px solid #FFFFFF;
+	color: white;
+}
+#channel option,#Exclude option,#ltvType option{
+	background: #363636;
+	color: #C0C0C0;
+}
+#query,#Generate{
+	height: 35px;
+	line-height: 35px;
+	float: right;
+	margin-left: 1%;
+}
+/*{
+	height: 140px;
+	background: #363636;
+	margin-top: 20px;
+}*/
+.Cumulative .accum{
+	width: 20%;
+	border-right: 1px solid #7b7b7b;
+	box-sizing: border-box;
+	height: 140px;
+	float: left;
+}
+.Cumulative .accum:last-child{
+	border: 0;
+}
+.Cumulative .accum .types{
+	color: white;
+	font-size: 18px;
+	margin-left: 10%;
+    margin-top: 30px;
+    display: inline-block;
+    opacity: 0.6;
+}
+.Cumulative .accum .rise{
+	color: #00F233;
+    font-size: 16px;
+    float: right;
+    margin-top: 36px;
+    margin-right: 20px;
+}
+.Cumulative .accum .numbers{
+	color: white;
+	font-size: 28px;
+	margin-left: 10%;
+	display: inline-block;
+	margin-top: 30px;
+}
+.chart{
+	background: #363636;
+	margin-top: 20px;
+	padding: 20px;
+}
+.chart p{
+	text-align: center;
+}
+.chart p .time{
+	color: #C0C0C0;
+	background: #363636;
+	width: 100px;
+    height: 30px;
+    display: inline-block;
+    line-height: 30px;
+    text-align: center;
+}
+.chart p .time:hover{
+	background: #4a4a4a;
+	text-decoration: none;
+}
+.chart p .time:first-child{
+	background: #4a4a4a;
+}
+.chart .radios .help{
+	font-size: 16px;
+    color: #C0C0C0;
+    display: inline-block;
+    float: right;
+    height: 35px;
+    line-height: 35px;
+    margin-right: 1%;
+}
+.chart .radios .export{
+	color: #fff;
+    font-size: 14px;
+    background: #1E9FFF;
+    display: inline-block;
+    width: 70px;
+    height: 35px;
+    line-height: 35px;
+    float: right;
+}
+.help_block{
+	width: 500px;
+	/*height: 260px;*/
+	background: #191919;
+	padding: 20px;
+	position: absolute;
+    top: 18%;
+    right: 175px;
+    z-index: 99;
+    display: none;
+}
+.help_block p{
+	color: #C0C0C0;
+	text-align: left;
+	margin-bottom: 20px;
+}
+.help_block p:last-child{
+	margin-bottom: 0;
+}
+.help_block>p>span{
+	color: #F0B51F;
+}
+input[type="checkbox"]{
+	width: 20px;
+    height: 20px;
+    background-color: transparent;
+    -webkit-appearance:none;
+    border: 1px solid #c9c9c9;
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+    float: left;
+}
+input[type="checkbox"]:checked{
+	border: 1px solid #0078f2;
+	background: url("../../img/duihao.png") no-repeat;
+	background-position: center;
+}
+#district_service a{
+	width: 25px;
+	height: 25px;
+	text-align: center;
+	display: inline-block;
+	line-height: 35px;
+	float: left;
+	margin-top: 6px;
+}
+ul li{
+	color: white;
+	cursor: pointer;
+}
+.clear,.group{
+	display: none;
+}
+#district_service{
+    background: #363636;
+}
+#district_service>li{
+	height: 35px;
+	line-height: 35px;
+	border: 1px solid #bcbcbc;
+	color: #C0C0C0;
+}
+#district_service ul{
+	background: #1A1A1A;
+}
+#district_service>li>span{
+	display: list-item;
+	margin-left: 10px;
+}
+.clear{
+	margin-top: 10px;
+	width: 500px;
+	max-height: 500px;
+	overflow-y: auto;
+}
+.clear>li{
+	line-height: 37px;
+	padding-top: 10px;
+	padding-left: 10px;
+	border-top: 1px solid #232323;
+	color: #C0C0C0;
+	clear: both;
+}
+.clear>li>span{
+	margin-top: -5px;
+}
+.clear>li:hover{
+	background: #232323;
+}
+.group li{
+	width: 20%;
+	float: left;
+	height: 44px;
+}
+#datatable,#datatable1,#datatable2 {
+	overflow-x: scroll;
+	width: 97%;
+	border: 0;
+}
+#datatable thead,#datatable1 thead,#datatable2 thead {
+	background: #1A1A1A;
+	border: 0;
+}
+#datatable thead tr,#datatable1 thead tr,#datatable2 thead tr{
+	border: 0;
+}
+#datatable thead tr th,#datatable1 thead tr th,#datatable2 thead tr th{
+	    border: 0;
+    color: white;
+    height: 50px;
+    font-size: 14px;
+    line-height: 53px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+#datatable tbody,#datatable1 tbody,#datatable2 tbody{
+	border: 0;
+}
+#datatable tbody tr,#datatable1 tbody tr,#datatable2 tbody tr{
+	border: 0;
+}
+#datatable tbody tr td,#datatable1 tbody tr td,#datatable2 tbody tr td{
+	border: 0;
+	color: #C0C0C0;
+	height: 40px;
+	font-size: 14px;
+}
+#datatable tbody tr:hover,#datatable1 tbody tr:hover,#datatable2 tbody tr:hover{
+	background: transparent;
+	color: #C0C0C0;
+}
+.radios a label{
+	color: #C0C0C0;
+	font-size: 14px;
+	font-weight: 100;
+}
+.radios a label:hover{
+	color: white;
+	text-decoration: none;
+}
+.Registered,.loss{
+	display: none;
+}

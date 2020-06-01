@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd"    default-autowire="byName" default-lazy-init="false">
+
+
+    <!--<bean id="securityConfigContent" class="com.comb.security.config.SecurityConfigContent">-->
+        <!--<property name="loginUrl" value="/login"/>-->
+        <!--<property name="logoutUrl" value="/logout"/>-->
+        <!--<property name="premitAllUrl" >-->
+                <!--<list>-->
+                    <!--<value>/login</value>-->
+                    <!--<value>/</value>-->
+                <!--</list>-->
+        <!--</property>-->
+        <!--<property name="userPermitUrl" >-->
+            <!--<list>-->
+                <!--<value>/*</value>-->
+            <!--</list>-->
+        <!--</property>-->
+        <!--<property name="adminPermitUrl" >-->
+            <!--<list>-->
+            <!--</list>-->
+        <!--</property>-->
+    <!--</bean>-->
+
+    <!--<bean id="securityUserManager" class="com.umi.ga.account_api.service.AccountSecurityUserManager" />-->
+    <!--<bean id="userServicImpl" class="com.umi.ga.account_api.service.UserServiceImpl" />-->
+
+    <!--<context:component-scan base-package="com.comb.security.config"/>-->
+
+
+
+</beans>

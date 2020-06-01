@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="OccupationPkLog">
+	<resultMap id="occupation_pk_logResult" type="OccupationPkLog">
+		<result column="game_id" property="gameId" />
+		<result column="channel_id" property="channelId" />
+		<result column="media_id" property="mediaId" />
+		<result column="device_id" property="deviceId" />
+		<result column="version_name" property="versionName" />
+		<result column="version_code" property="versionCode" />
+		<result column="user_id" property="accountId" />
+		<result column="server_id"  property="serverId" />
+		<result column="log_time"  property="logTime" />
+		<result column="role_id" property="roleId" />
+		<result column="role_name"  property="roleName" />
+		<result column="role_level" property="roleLevel" />
+		<result column="role_gender"  property="roleGender" />
+		<result column="battle_points"  property="rolePower" />
+		<result column="role_type" property="roleType" />
+		<result column="vip_level" property="roleVip" />
+		<result column="log_name" property="logName" />
+		<result property="classType" column="class_type"/>
+		<result property="stateValue" column="state_value"/>
+		<result property="oppoGuid" column="oppo_guid"/>
+		<result property="pkResult" column="pk_result"/>
+		<result property="itemId1" column="item_id1"/>
+		<result property="itemNum1" column="item_num1"/>
+		<result property="itemId2" column="item_id2"/>
+		<result property="itemNum2" column="item_num2"/>
+		<result property="itemId3" column="item_id3"/>
+		<result property="itemNum3" column="item_num3"/>
+		<result property="itemId4" column="item_id4"/>
+		<result property="itemNum4" column="item_num4"/>
+		<result property="itemId5" column="item_id5"/>
+		<result property="itemNum5" column="item_num5"/>
+		<result property="itemId6" column="item_id6"/>
+		<result property="itemNum6" column="item_num6"/>
+		<result property="itemId7" column="item_id7"/>
+		<result property="itemNum7" column="item_num7"/>
+		<result property="itemId8" column="item_id8"/>
+		<result property="itemNum8" column="item_num8"/>
+		<result property="itemId9" column="item_id9"/>
+		<result property="itemNum9" column="item_num9"/>
+		<result property="itemId10" column="item_id10"/>
+		<result property="itemNum10" column="item_num10"/>
+
+</resultMap>
+	<sql id="Base_Column_List">
+   game_id ,
+   channel_id ,
+   media_id ,
+   device_id ,
+   version_name ,
+   version_code ,
+   user_id ,
+   server_id ,
+   from_timestamp(date_time, 'yyyy-MM-dd HH:mm:ss') as log_time,
+role_id ,
+role_name ,
+role_level ,
+role_gender ,
+battle_points ,
+role_type ,
+vip_level ,
+log_name ,
+		class_type,
+		state_value,
+		oppo_guid,
+		pk_result,
+		item_id1,
+		item_num1,
+		item_id2,
+		item_num2,
+		item_id3,
+		item_num3,
+		item_id4,
+		item_num4,
+		item_id5,
+		item_num5,
+		item_id6,
+		item_num6,
+		item_id7,
+		item_num7,
+		item_id8,
+		item_num8,
+		item_id9,
+		item_num9,
+		item_id10,
+		item_num10
+
+
+  </sql>
+
+	<select id="findAllPKList" parameterType="com.umi.ga.entitys.Condition" resultMap="occupation_pk_logResult">
+		select
+		 <include refid="Base_Column_List"></include>
+		 from faith_server.server_occupation_pk
+		<trim prefix="where" suffixOverrides="and">
+			<if test="null != serverId and '' != serverId">
+				server_Id in
+				<foreach collection="stringsArray" item="serverId" index="index" open="(" close=")" separator=",">
+					#{serverId}
+				</foreach>
+				and
+			</if>
+			<if test="accountId != null and accountId !='' ">
+				user_id = #{accountId} and
+			</if>
+			<if test="roleId != null and roleId !='' ">
+				role_Id = #{roleId} and
+			</if>
+			<if test="roleName != null and roleName !='' ">
+				role_Name = #{roleName} and
+			</if>
+			<if test="stateValue != null and stateValue !='' or stateValue==0 ">
+				state_Value = #{stateValue} and
+			</if>
+			<if test="startTime != null and startTime != '' and  endTime != null and endTime != ''">
+				 from_timestamp(date_time, 'yyyy-MM-dd')  between #{startTime} and #{endTime} and
+			</if>
+		</trim>
+		ORDER BY log_time DESC limit  ${pageSize}  offset ${pageIndex}
+	</select>
+
+
+
+	<select id="findAllPKListCount" parameterType="com.umi.ga.entitys.Condition" resultType="int">
+		select
+		count(*)
+		from faith_server.server_occupation_pk
+		<trim prefix="where" suffixOverrides="and">
+			<if test="null != serverId and '' != serverId">
+				server_Id in
+				<foreach collection="stringsArray" item="serverId" index="index" open="(" close=")" separator=",">
+					#{serverId}
+				</foreach>
+				and
+			</if>
+			<if test="accountId != null and accountId !='' ">
+				user_id = #{accountId} and
+			</if>
+			<if test="roleId != null and roleId !='' ">
+				role_Id = #{roleId} and
+			</if>
+			<if test="roleName != null and roleName !='' ">
+				role_Name = #{roleName} and
+			</if>
+			<if test="stateValue != null and stateValue !='' or stateValue==0 ">
+				state_Value = #{stateValue} and
+			</if>
+			<if test="startTime != null and startTime != '' and  endTime != null and endTime != ''">
+				 from_timestamp(date_time, 'yyyy-MM-dd')  between #{startTime} and #{endTime} and
+			</if>
+		</trim>
+	</select>
+
+
+
+</mapper>

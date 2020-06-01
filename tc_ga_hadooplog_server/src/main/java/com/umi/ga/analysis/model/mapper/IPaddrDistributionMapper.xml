@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="IPaddrDistribution">
+    <resultMap id="IPaddrDistributionResult" type="IPaddrDistribution">
+        <result property="id" column="id"/>
+        <result property="ipaddr" column="ipAddr"/>
+        <result property="count" column="count"/>
+        <result property="timedate" column="timeDate"/>
+    </resultMap>
+
+    <sql id="commonColumns">
+	    <![CDATA[
+
+
+                        `id`,
+                        `ipAddr`,
+                        `count`,
+                        `timeDate`
+
+
+        ]]>
+	</sql>
+
+    <sql id="dynamicWhere">
+        <where>
+            <if test="@Ognl@isNotEmpty(id)">
+                AND `id` = #{id}
+            </if>
+            <if test="@Ognl@isNotEmpty(ipaddr)">
+                AND `ipAddr` = #{ipaddr}
+            </if>
+            <if test="@Ognl@isNotEmpty(count)">
+                AND `count` = #{count}
+            </if>
+            <if test="@Ognl@isNotEmpty(timedate)">
+                AND `timeDate` = #{timedate}
+            </if>
+        </where>
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="IPaddrDistribution">
+    <![CDATA[
+
+
+            INSERT INTO `ipAddr_distribution` (
+                `id`,
+                `ipAddr`,
+                `count`,
+                `timeDate`
+            )
+            VALUES (
+                #{id},
+                #{ipaddr},
+                #{count},
+                #{timedate}
+
+            )
+
+
+        ]]>
+	</insert>
+
+    <update id="update" parameterType="IPaddrDistribution">
+    <![CDATA[
+
+
+                        UPDATE `ipAddr_distribution` SET
+                            `id` = #{id},
+                            `ipAddr` = #{ipaddr},
+                            `count` = #{count},
+                            `timeDate` = #{timedate}
+                        WHERE
+                            ID = #{id}
+
+
+        ]]>
+	</update>
+
+    <delete id="delete" parameterType="map">
+        <![CDATA[
+        delete from `ipAddr_distribution`
+    ]]>
+        <include refid="dynamicWhere"/>
+    </delete>
+
+    <select id="getById" resultMap="IPaddrDistributionResult">
+        SELECT
+        <include refid="commonColumns"/>
+        <![CDATA[
+		    FROM `ipAddr_distribution`
+	        WHERE
+		        ID = #{id}
+	    ]]>
+    </select>
+
+    <select id="count" resultType="long">
+        SELECT count(*) FROM `ipAddr_distribution`
+        <include refid="dynamicWhere"/>
+    </select>
+    <select id="pageSelect" resultMap="IPaddrDistributionResult">
+        SELECT
+        <include refid="commonColumns"/>
+        FROM `ipAddr_distribution`
+        <include refid="dynamicWhere"/>
+        <if test="@Ognl@isNotEmpty(sortColumns)">
+            ORDER BY ${sortColumns}
+        </if>
+    </select>
+
+    <!--
+        ###
+        ###
+    -->
+
+    <select id="selectMaxTimeIPaddr" resultMap="IPaddrDistributionResult">
+		select
+			MAX(timeDate) as timeDate
+		from
+			ipAddr_distribution
+    </select>
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into ipAddr_distribution
+        (
+            `ipAddr`,
+            `count`,
+            `timeDate`
+        )
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                #{item.ipaddr},#{item.count},#{item.timedate}
+            </trim>
+        </foreach>
+    </insert>
+
+    <select id="selectListByTimeDate" parameterType="java.util.List" resultMap="IPaddrDistributionResult">
+        select
+            ipAddr,
+            ifnull(sum(count),0) as count
+        from
+            ipAddr_distribution
+        where
+            timeDate in
+            (
+            <foreach collection="list" item="item" index="index" separator=",">
+                <trim prefix="" suffix="" suffixOverrides=",">
+                    #{item.times}
+                </trim>
+            </foreach>
+            )
+        group by
+            ipAddr
+        order by 2 desc
+    </select>
+</mapper>

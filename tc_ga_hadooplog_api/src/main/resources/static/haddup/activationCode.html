@@ -1,0 +1,237 @@
+
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+		<link rel="shortcut  icon" type="image/x-icon" href="bitbug_favicon (2).ico" media="screen" />
+		<title class="activationCode">查询礼包码</title>
+		<link rel="stylesheet" href="../layui/css/layui.css" />
+		<link rel="stylesheet" href="../css/activationCode.css" />
+		<link rel="stylesheet" href="../font-awesome-4.7.0/css/font-awesome.min.css" />
+		<link rel="stylesheet" href="../css/bootstrap.min.css" />
+		<link rel="stylesheet" type="text/css" href="../js/bootstrap-table/bootstrap-table.min.css"/>
+		<link rel="stylesheet" href="../js/multiple/bootstrap-multiselect.css" />
+		<link rel="stylesheet" href="../js/loading/jquery.mloading.css" />
+		<link rel="stylesheet" href="../js/freezeheader-master/css/defaultTheme.css" />
+		<style type="text/css">
+			.fixed-table-loading{
+				background: #363636;
+				color: white;
+				top: 80px;
+				border: 0;
+			}
+			.pagination>li>a, .pagination>li>span{
+				color: white;
+				background-color: transparent;
+				border: 0;
+			}
+			.bootstrap-table .fixed-table-pagination>.pagination-detail .page-list{
+				color: #C0C0C0;
+			}
+			.pagination>li>a, .pagination>li>span:hover{
+				background: #464545;
+			}
+			.pagination>.disabled>a, .pagination>.disabled>a:focus, .pagination>.disabled>a:hover, .pagination>.disabled>span, .pagination>.disabled>span:focus, .pagination>.disabled>span:hover{
+				color: #C0C0C0;
+				background-color: #464545;
+				border: 0;
+			}
+			.pagination>li>a:focus, .pagination>li>a:hover, .pagination>li>span:focus, .pagination>li>span:hover{
+				color: #428BCA;
+				background: #464545;
+				border: 0;
+			}
+			.pagination-info{
+				color: #C0C0C0;
+			}
+			.checkbox{
+				color: #C0C0C0;
+				font-size: 14px;
+				line-height: 30px;
+			}
+			.radio{
+				color: #C0C0C0;
+				font-size: 14px;
+				line-height: 30px;
+			}
+			.dropdown-menu,.btn-default{
+				background: #363636;
+				color: #C0C0C0;
+			}
+			.btn-default:hover{
+				background: #363636;
+				color: #C0C0C0;
+			}
+			.btn-default.active, .btn-default:active, .open>.dropdown-toggle.btn-default{
+				color: #C0C0C0;
+				background: #363636;
+			}
+			.btn-default.active.focus, .btn-default.active:focus, .btn-default.active:hover, .btn-default:active.focus, .btn-default:active:focus, .btn-default:active:hover, .open>.dropdown-toggle.btn-default.focus, .open>.dropdown-toggle.btn-default:focus, .open>.dropdown-toggle.btn-default:hover{
+				color: #C0C0C0;
+				background: #363636;
+			}
+			.dropdown-menu>.active>a, .dropdown-menu>.active>a:focus, .dropdown-menu>.active>a:hover{
+				background: #363636;
+			}
+			.btn-default.focus, .btn-default:focus{
+				background: #363636;
+				color: #C0C0C0;
+			}
+			.pagination>.active>a, .pagination>.active>a:focus, .pagination>.active>a:hover, .pagination>.active>span, .pagination>.active>span:focus, .pagination>.active>span:hover{
+				background: #555555;
+				border-color: #555555;
+			}
+			.pagination>li>a:hover, .pagination>li>span:hover{
+				color: white;
+			}
+			#datatable tr {
+				height:45px;
+			}
+			#datatable tr th {
+				font-size:14px;
+				font-weight:700px;
+				text-align:center;
+				color:#fff;
+			}
+			#datatable tr td {
+				font-size:14px;
+				font-weight:700px;
+				text-align:center;
+				color:#fff;
+			}
+			.layui-laydate-list>li {
+    			color:#333;	
+			}
+			.sum_div {
+				height:100%;
+    			width: 100%;
+    			background: #363636;
+    			clear: both;
+    			padding: 30px;
+			}
+        	.bootstrap-table {
+            	height: 80%;
+            	max-height: 640px;
+        	}
+        	.fixed-table-container {
+            	height: 100%;
+        	}
+        	#replace_table thead tr th {
+            	border: 0;
+            	color: white;
+            	height: 50px;
+            	font-size: 14px;
+            	line-height: 30px;
+        	}
+        	.fht-cell {
+        		    width: 0px !important;
+        	}
+        	#datatable tbody {
+    			/* overflow: auto;
+    			display: block; */
+    			max-height: 682px !important;
+        	}
+        	 /*自定义行强制显示*/
+    #hide_tr{display: table-row!important;height:1px !important;}
+    /*自定义占位,但不显示大小及内容*/
+    #hide_tr *{margin-top: 0;margin-bottom: 0;padding-top: 0;padding-bottom: 0;border-top: 0;border-bottom: 0;height: 0;}
+		</style>
+	</head>
+	<body class="layui-layout-body" style="background: #202020;" onload="lo()">
+		<div id="navs"></div>
+		<div class="layui-layout layui-layout-admin">
+			<div class="layui-body" style="padding: 20px;">
+			<div class="sum_div">
+				<div class="query_criteria">
+					<form role="form" class="form-inline" style="height:65px;">
+						<div class="form-group layui-inline" style="width: 25%;float: left;">
+							<label for="">查询礼包码</label>
+							<input type="text" class="district_service" placeholder="请输入礼包码" id="activiCode"/>
+						</div>
+						<div class="form-group layui-inline" style="width: 25%;float: left;margin-left:2%;">
+							<label for="" class="queryIdN">查询ID</label>
+							<input type="text" class="" placeholder="请输入账号ID" id="queryId"/>
+						</div>
+						<div class="form-group layui-inline" style="width: 25%;float: left;">
+							<label for="" class="queryTimeN">查询日期</label>
+							<input type="text" class="form-control" id="datatimes" />
+						</div>
+						<!-- <button type="button" class="layui-btn layui-btn-normal" id="Generate" onclick="onread(this)">生成数据</button> -->
+						<button type="button" class="layui-btn layui-btn-normal ltv_query" id="query" onclick="onread(this)"></button>
+					</form>
+					<table id="datatable"></table>
+				</div>
+			</div>
+				
+			</div>
+		</div>
+	</body>
+	<script src="../layui/layui.js"></script>
+	<script src="../js/jquery.min.js"></script>
+	<script src="../js/loading/jquery.mloading.js"></script>
+	<script src="../js/jquery.table2excel.js"></script>
+	<script src="../js/jquery.cookie.js"></script>
+	<script src="../js/bootstrap.min.js"></script>
+	<script src="../js/multiple/bootstrap-multiselect.js"></script>
+	<script src="../js/bootstrap-table/bootstrap-table.min.js"></script>
+	<script src="../js/highcharts.js"></script>
+	<script src="../js/data.js"></script>
+	<script src="../js/freezeheader-master/jquery.fixedheadertable.js"></script>
+	<script src="../js/activationCode.js"></script>
+	<script>
+		$("#navs").load("Navigation.html")
+		//导航选中
+		function lo(){
+			$(".409").addClass("layui-this").siblings().removeClass("layui-this")
+			$(".409").parent().parent().addClass("layui-nav-itemed").siblings().removeClass("layui-nav-itemed")
+		}
+		////layui配置
+		layui.use(['element', 'form'], function() {
+			var element = layui.element;
+			var form = layui.form;
+			element.init();
+		});
+		//导出下载
+		/* $(".export").click(function() {
+			$("#datatable").table2excel({
+			            exclude: ".noExl",
+			            name: "Excel Document Name",
+			            filename: "myFileName",
+			            exclude_img: true,
+			            exclude_links: true,
+			            exclude_inputs: true,
+		       		});
+		}); */
+		function exp(){
+			$("body").mLoading("show");
+			var activiCode = $("#activiCode").val(); //激活码
+			var time = $("#datatimes").val(); //日期
+			var queryId = $("#queryId").val(); //查询id
+			/* if(pay_district_num!=""){
+				pay_district_num=pay_district_num.join(","); 
+			}  */
+			$.ajax({
+				type:"get",
+				url:"../ltv_Export.action",///////////改导出
+				async:true,
+				data:{
+					serverId: activiCode,//////改
+					seDate: time,//////////改
+					channelId: queryId,//////////改
+					pageIndex:1,
+					pageSize:100000000
+				},
+				success:function(e){
+					if(e.state==false){
+						alert(e.message)
+						$("body").mLoading("hide");
+					}else{
+						window.open('/upload/log.xlsx');
+						$("body").mLoading("hide");
+					}
+				}
+			});
+		}
+		
+	</script>
+</html>

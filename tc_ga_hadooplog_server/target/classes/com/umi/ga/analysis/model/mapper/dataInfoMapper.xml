@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="dataInfo">
+    <resultMap id="datainfoResult" type="dataInfo">
+        <result property="did" column="did"/>
+        <result property="plantForm" column="plant_form"/>
+        <result property="deviceBrand" column="device_brand"/>
+        <result property="systemModel" column="system_model"/>
+        <result property="systemLanguage" column="system_language"/>
+        <result property="systemVersion" column="system_version"/>
+        <result property="systemId" column="system_id"/>
+        <result property="macAddr" column="mac_addr"/>
+        <result property="screenWidth1" column="screen_width1"/>
+        <result property="screenHeight1" column="screen_height1"/>
+        <result property="batteryLevel" column="battery_level"/>
+        <result property="networkStates" column="network_states"/>
+        <result property="isGpsEnabled" column="is_GPS_enabled"/>
+        <result property="ipAddress" column="iP_address"/>
+        <result property="coldStarttime1" column="cold_startTime1"/>
+        <result property="memoryTotalinfo" column="memory_totalInfo"/>
+        <result property="memoryAvailableinfo" column="memory_availableInfo"/>
+        <result property="cpuMax" column="cpu_max"/>
+        <result property="cpuMin" column="cpu_min"/>
+        <result property="cpuCur" column="cpu_cur"/>
+        <result property="cpuName" column="cpu_name"/>
+        <result property="gpuRenderer" column="gpu_renderer"/>
+        <result property="gpuVersion" column="gpu_version"/>
+        <result property="time" column="time"/>
+        <result property="region" column="region"/>
+        <result property="storageMemory" column="storage_memory"/>
+    </resultMap>
+
+    <resultMap id="timeResultMap" type="com.umi.ga.entitys.StartRetarder">
+        <result column="times" jdbcType="VARCHAR" property="times"/>
+        <result column="timeCount" jdbcType="VARCHAR" property="timeCount"/>
+        <result column="timeNum" jdbcType="VARCHAR" property="timeNum"/>
+    </resultMap>
+
+    <resultMap id="timeQuantumResultMap" type="com.umi.ga.entitys.TimeQuantum">
+        <result column="coldStartTime" jdbcType="VARCHAR" property="coldStartTime"/>
+        <result column="region" jdbcType="VARCHAR" property="region"/>
+        <result column="networkStates" jdbcType="VARCHAR" property="networkStates"/>
+        <result column="macAddr" jdbcType="VARCHAR" property="macAddr"/>
+    </resultMap>
+
+    <resultMap id="HiveDataInfoResult" type="dataInfo">
+        <result property="deviceBrand" column="deviceBrand"/>
+    </resultMap>
+
+    <sql id="commonColumns">
+	    <![CDATA[
+
+
+
+
+
+
+
+
+
+                                                                                `did`,
+                                                                                `plant_form`,
+                                                                                `device_brand`,
+                                                                                `system_model`,
+                                                                                `system_language`,
+                                                                                `system_version`,
+                                                                                `system_id`,
+                                                                                `mac_addr`,
+                                                                                `screen_width1`,
+                                                                                `screen_height1`,
+                                                                                `battery_level`,
+                                                                                `network_states`,
+                                                                                `is_GPS_enabled`,
+                                                                                `iP_address`,
+                                                                                `cold_startTime1`,
+                                                                                `memory_totalInfo`,
+                                                                                `memory_availableInfo`,
+                                                                                `cpu_max`,
+                                                                                `cpu_min`,
+                                                                                `cpu_cur`,
+                                                                                `cpu_name`,
+                                                                                `gpu_renderer`,
+                                                                                `gpu_version`,
+                                                                                `time`,
+                                                                                `region`,
+                                                                                `storage_memory`
+
+
+
+
+
+
+
+
+
+        ]]>
+	</sql>
+
+    <sql id="dynamicWhere">
+        <where>
+            <if test="@Ognl@isNotEmpty(did)">
+                AND `did` = #{did}
+            </if>
+            <if test="@Ognl@isNotEmpty(plantForm)">
+                AND `plant_form` = #{plantForm}
+            </if>
+            <if test="@Ognl@isNotEmpty(deviceBrand)">
+                AND `device_brand` = #{deviceBrand}
+            </if>
+            <if test="@Ognl@isNotEmpty(systemModel)">
+                AND `system_model` = #{systemModel}
+            </if>
+            <if test="@Ognl@isNotEmpty(systemLanguage)">
+                AND `system_language` = #{systemLanguage}
+            </if>
+            <if test="@Ognl@isNotEmpty(systemVersion)">
+                AND `system_version` = #{systemVersion}
+            </if>
+            <if test="@Ognl@isNotEmpty(systemId)">
+                AND `system_id` = #{systemId}
+            </if>
+            <if test="@Ognl@isNotEmpty(macAddr)">
+                AND `mac_addr` = #{macAddr}
+            </if>
+            <if test="@Ognl@isNotEmpty(screenWidth1)">
+                AND `screen_width1` = #{screenWidth1}
+            </if>
+            <if test="@Ognl@isNotEmpty(screenHeight1)">
+                AND `screen_height1` = #{screenHeight1}
+            </if>
+            <if test="@Ognl@isNotEmpty(batteryLevel)">
+                AND `battery_level` = #{batteryLevel}
+            </if>
+            <if test="@Ognl@isNotEmpty(networkStates)">
+                AND `network_states` = #{networkStates}
+            </if>
+            <if test="@Ognl@isNotEmpty(isGpsEnabled)">
+                AND `is_GPS_enabled` = #{isGpsEnabled}
+            </if>
+            <if test="@Ognl@isNotEmpty(ipAddress)">
+                AND `iP_address` = #{ipAddress}
+            </if>
+            <if test="@Ognl@isNotEmpty(coldStarttime1)">
+                AND `cold_startTime1` = #{coldStarttime1}
+            </if>
+            <if test="@Ognl@isNotEmpty(memoryTotalinfo)">
+                AND `memory_totalInfo` = #{memoryTotalinfo}
+            </if>
+            <if test="@Ognl@isNotEmpty(memoryAvailableinfo)">
+                AND `memory_availableInfo` = #{memoryAvailableinfo}
+            </if>
+            <if test="@Ognl@isNotEmpty(cpuMax)">
+                AND `cpu_max` = #{cpuMax}
+            </if>
+            <if test="@Ognl@isNotEmpty(cpuMin)">
+                AND `cpu_min` = #{cpuMin}
+            </if>
+            <if test="@Ognl@isNotEmpty(cpuCur)">
+                AND `cpu_cur` = #{cpuCur}
+            </if>
+            <if test="@Ognl@isNotEmpty(cpuName)">
+                AND `cpu_name` = #{cpuName}
+            </if>
+            <if test="@Ognl@isNotEmpty(gpuRenderer)">
+                AND `gpu_renderer` = #{gpuRenderer}
+            </if>
+            <if test="@Ognl@isNotEmpty(gpuVersion)">
+                AND `gpu_version` = #{gpuVersion}
+            </if>
+            <if test="@Ognl@isNotEmpty(time)">
+                AND `time` = #{time}
+            </if>
+            <if test="@Ognl@isNotEmpty(region)">
+                AND `region` = #{region}
+            </if>
+            <if test="@Ognl@isNotEmpty(storageMemory)">
+                AND `storage_memory` = #{storageMemory}
+            </if>
+        </where>
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="dataInfo">
+    <![CDATA[
+
+
+
+
+
+
+
+
+
+                                                                                INSERT INTO `dataInfo` (
+                                                                                    `did`,
+                                                                                    `plant_form`,
+                                                                                    `device_brand`,
+                                                                                    `system_model`,
+                                                                                    `system_language`,
+                                                                                    `system_version`,
+                                                                                    `system_id`,
+                                                                                    `mac_addr`,
+                                                                                    `screen_width1`,
+                                                                                    `screen_height1`,
+                                                                                    `battery_level`,
+                                                                                    `network_states`,
+                                                                                    `is_GPS_enabled`,
+                                                                                    `iP_address`,
+                                                                                    `cold_startTime1`,
+                                                                                    `memory_totalInfo`,
+                                                                                    `memory_availableInfo`,
+                                                                                    `cpu_max`,
+                                                                                    `cpu_min`,
+                                                                                    `cpu_cur`,
+                                                                                    `cpu_name`,
+                                                                                    `gpu_renderer`,
+                                                                                    `gpu_version`,
+                                                                                    `time`,
+                                                                                    `region`,
+                                                                                    `storage_memory`
+                                                                                )
+                                                                                VALUES (
+                                                                                    #{did},
+                                                                                    #{plantForm},
+                                                                                    #{deviceBrand},
+                                                                                    #{systemModel},
+                                                                                    #{systemLanguage},
+                                                                                    #{systemVersion},
+                                                                                    #{systemId},
+                                                                                    #{macAddr},
+                                                                                    #{screenWidth1},
+                                                                                    #{screenHeight1},
+                                                                                    #{batteryLevel},
+                                                                                    #{networkStates},
+                                                                                    #{isGpsEnabled},
+                                                                                    #{ipAddress},
+                                                                                    #{coldStarttime1},
+                                                                                    #{memoryTotalinfo},
+                                                                                    #{memoryAvailableinfo},
+                                                                                    #{cpuMax},
+                                                                                    #{cpuMin},
+                                                                                    #{cpuCur},
+                                                                                    #{cpuName},
+                                                                                    #{gpuRenderer},
+                                                                                    #{gpuVersion},
+                                                                                    #{time},
+                                                                                    #{region},
+                                                                                    #{storageMemory}
+
+                                                                                )
+
+
+
+
+
+
+
+
+
+        ]]>
+	</insert>
+
+    <update id="update" parameterType="dataInfo">
+    <![CDATA[
+
+
+
+
+
+
+
+
+
+                                                                                UPDATE `dataInfo` SET
+                                                                                    `did` = #{did},
+                                                                                    `plant_form` = #{plantForm},
+                                                                                    `device_brand` = #{deviceBrand},
+                                                                                    `system_model` = #{systemModel},
+                                                                                    `system_language` = #{systemLanguage},
+                                                                                    `system_version` = #{systemVersion},
+                                                                                    `system_id` = #{systemId},
+                                                                                    `mac_addr` = #{macAddr},
+                                                                                    `screen_width1` = #{screenWidth1},
+                                                                                    `screen_height1` = #{screenHeight1},
+                                                                                    `battery_level` = #{batteryLevel},
+                                                                                    `network_states` = #{networkStates},
+                                                                                    `is_GPS_enabled` = #{isGpsEnabled},
+                                                                                    `iP_address` = #{ipAddress},
+                                                                                    `cold_startTime1` = #{coldStarttime1},
+                                                                                    `memory_totalInfo` = #{memoryTotalinfo},
+                                                                                    `memory_availableInfo` = #{memoryAvailableinfo},
+                                                                                    `cpu_max` = #{cpuMax},
+                                                                                    `cpu_min` = #{cpuMin},
+                                                                                    `cpu_cur` = #{cpuCur},
+                                                                                    `cpu_name` = #{cpuName},
+                                                                                    `gpu_renderer` = #{gpuRenderer},
+                                                                                    `gpu_version` = #{gpuVersion},
+                                                                                    `time` = #{time},
+                                                                                    `region` = #{region},
+                                                                                    `storage_memory` = #{storageMemory}
+                                                                                WHERE
+                                                                                    ID = #{id}
+
+
+
+
+
+
+
+
+
+        ]]>
+	</update>
+
+    <delete id="delete" parameterType="map">
+        <![CDATA[
+        delete from `dataInfo`
+    ]]>
+        <include refid="dynamicWhere"/>
+    </delete>
+
+    <select id="getById" resultMap="datainfoResult">
+        SELECT
+        <include refid="commonColumns"/>
+        <![CDATA[
+		    FROM `dataInfo`
+	        WHERE
+		        ID = #{id}
+	    ]]>
+    </select>
+    <select id="test" resultMap="HiveDataInfoResult">
+		select
+				dataInfo['deviceBrand'] as deviceBrand
+			from
+				dataInfo
+			where
+				day = '20191202' and dataInfo['deviceBrand'] is not null limit 1
+	</select>
+    <select id="test1" resultMap="HiveDataInfoResult">
+		select
+				device_brand as deviceBrand
+			from
+				dataInfo
+			limit 1
+	</select>
+    <select id="count" resultType="long">
+        SELECT count(*) FROM `dataInfo`
+        <include refid="dynamicWhere"/>
+    </select>
+    <select id="pageSelect" resultMap="datainfoResult">
+        SELECT
+        <include refid="commonColumns"/>
+        FROM `dataInfo`
+        <include refid="dynamicWhere"/>
+        <if test="@Ognl@isNotEmpty(sortColumns)">
+            ORDER BY ${sortColumns}
+        </if>
+    </select>
+
+    <!--
+        ###
+        ###
+    -->
+
+    <select id="hiveSelectStartTime" parameterType="com.umi.ga.entitys.Times" resultMap="timeResultMap">
+        select
+           dataInfo['time'] as times
+        from
+           dataInfo
+        <where>
+            day in (regexp_replace( substr(#{startTime},1,10),"-",""),regexp_replace( substr(#{endTime},1,10),"-",""))
+            and dataInfo['time'] is not null
+            <if test="startTime != null and '' != startTime and endTime != null and '' != endTime">
+                and dataInfo['time'] between #{startTime} and #{endTime}
+            </if>
+        </where>
+    </select>
+
+    <select id="hiveSelectTimeQuantum" parameterType="com.umi.ga.entitys.Times" resultMap="timeQuantumResultMap">
+        select
+        dataInfo['coldStartTime1'] as coldStartTime,
+        dataInfo['region'] as region,
+        dataInfo['networkStates'] as networkStates
+        from
+        dataInfo
+        <where>
+            <if test="startTimeSecond != null and '' != startTimeSecond and endTimeSecond != null and '' != endTimeSecond">
+                dataInfo['time'] BETWEEN #{startTimeSecond} AND #{endTimeSecond}
+            </if>
+        </where>
+    </select>
+
+    <select id="hiveSelectCount" parameterType="com.umi.ga.entitys.Times" resultMap="timeResultMap">
+        select
+            count(dataInfo['times']) as  timeCount
+        from
+            dataInfo
+        where
+            dataInfo['times'] <![CDATA[ > ]]> #{startTime} and dataInfo['times'] <![CDATA[ <= ]]> #{endTime}
+            and day in(${times})
+    </select>
+
+    <select id="hiveSelectTimeQuantumByDay" parameterType="com.umi.ga.entitys.Times" resultMap="timeQuantumResultMap">
+        select
+            dataInfo['coldStartTime1'] as coldStartTime,
+            dataInfo['region'] as region,
+            dataInfo['networkStates'] as networkStates,
+            dataInfo['macAddr'] as macAddr
+        from
+            dataInfo
+        where
+            day = #{times}
+    </select>
+
+</mapper>

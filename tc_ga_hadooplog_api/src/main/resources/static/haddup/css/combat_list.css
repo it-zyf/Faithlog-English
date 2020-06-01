@@ -1,0 +1,408 @@
+*{
+	margin: 0;
+	padding: 0;
+}
+.header_ul{
+	width: 100%;
+}
+.header_ul li{
+	width: 15%;
+	height: 80px;
+	background: #363636;
+	float: left;
+	list-style: none;
+	cursor: pointer;
+	color: #C0C0C0;
+	font-size: 1.2vw;
+	line-height: 80px;
+    text-align: center;
+    margin-right: 1%;
+}
+.header_ul li:hover{
+	color: white;
+	font-weight: bold;
+}
+.header_ul li:first-child{
+	color: white;
+	font-weight: bold;
+	background: #4d4d4d;
+}
+.sum_div{
+	width: 100%;
+	background: #363636;
+	clear: both;
+	margin-top: 20px;
+	padding: 30px;
+}
+.Wing,.equipment,.spirit,.all{
+	display: none;
+}
+form label{
+	color: white;
+	font-weight: bold;
+	font-size: 1vw;
+	margin-right: 2%;
+}
+input[type="checkbox"]{
+	width: 20px;
+    height: 20px;
+    background-color: transparent;
+    -webkit-appearance:none;
+    border: 1px solid #c9c9c9;
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+    float: left;
+}
+input[type="checkbox"]:checked{
+	border: 1px solid #0078f2;
+	background: url("../../img/duihao.png") no-repeat;
+	background-position: center;
+}
+/*坐骑*/
+#district_service{
+    position: absolute;
+    background: #363636;
+    z-index: 99;
+    top: 150px;
+    left: 7%;
+    width: 15.3%;
+}
+@media screen and (max-width: 1680px) {
+	#district_service{
+		left: 8%;
+	}
+}
+@media screen and (max-width: 1400px) {
+	#district_service{
+		left: 9%;
+	}
+}
+#district_service a{
+	width: 25px;
+	height: 25px;
+	text-align: center;
+	display: inline-block;
+	line-height: 35px;
+	float: left;
+	margin-top: 6px;
+}
+#district_service>li{
+	height: 35px;
+	line-height: 35px;
+	border: 1px solid #bcbcbc;
+	color: #C0C0C0;
+}
+#district_service ul{
+	background: #1A1A1A;
+}
+#district_service>li>span{
+	display: inline-block;
+	margin-left: 10px;
+}
+#category,#datatimes,#reg_channel{
+	width: 70%;
+	height: 35px;
+	border: 1px solid #bcbcbc;
+	background: transparent;
+	color: #C0C0C0;
+}
+#category:focus,#reg_channel:focus{
+	border: 1px solid #FFFFFF;
+	color: white;
+}
+#category option,#reg_channel option{
+	background: #363636;
+	color: #C0C0C0;
+}
+#query,#export{
+	height: 35px;
+	line-height: 35px;
+	float: right;
+	margin-left: 15px;
+}
+/*公共存放数据区间*/
+#datatable,#Wing_table,#equipment_table,#spirit_table,#all_table{
+	overflow-x: scroll;
+	width: 100%;
+	border: 0;
+}
+#datatable thead,#Wing_table thead,#equipment_table thead,#spirit_table thead,#all_table thead{
+	background: #1A1A1A;
+	border: 0;
+}
+#datatable thead tr,#Wing_table thead tr,#equipment_table thead tr,#spirit_table thead tr,#all_table thead tr{
+	border: 0;
+}
+#datatable thead tr th,#Wing_table thead tr th,#equipment_table thead tr th,#spirit_table thead tr th,#all_table thead tr th{
+	border: 0;
+	color: white;
+	height: 50px;
+	font-size: 14px;
+	line-height: 30px;
+}
+#datatable tbody,#Wing_table tbody,#equipment_table tbody,#spirit_table tbody,#all_table tbody{
+	border: 0;
+}
+#datatable tbody tr,#Wing_table tbody tr,#equipment_table tbody tr,#spirit_table tbody tr,#all_table tbody tr{
+	border: 0;
+}
+#datatable tbody tr td,#Wing_table tbody tr td,#equipment_table tbody tr td,#spirit_table tbody tr td,#all_table tbody tr td{
+	border: 0;
+	color: #C0C0C0;
+	height: 40px;
+	font-size: 14px;
+}
+#datatable tbody tr:hover,#Wing_table tbody tr:hover,#equipment_table tbody tr:hover,#spirit_table tbody tr:hover,#all_table tbody tr:hover{
+	background: transparent;
+	color: #C0C0C0;
+}
+
+/*翅膀�*/
+#Wing_district{
+    position: absolute;
+    background: #363636;
+    z-index: 99;
+    top: 150px;
+    left: 7%;
+    width: 15.3%;
+}
+@media screen and (max-width: 1680px) {
+	#Wing_district{
+		left: 8%;
+	}
+}
+@media screen and (max-width: 1400px) {
+	#Wing_district{
+		left: 9%;
+	}
+}
+#Wing_district a{
+	width: 25px;
+	height: 25px;
+	text-align: center;
+	display: inline-block;
+	line-height: 35px;
+	float: left;
+	margin-top: 6px;
+}
+#Wing_district>li{
+	height: 35px;
+	line-height: 35px;
+	border: 1px solid #bcbcbc;
+	color: #C0C0C0;
+}
+#Wing_district ul{
+	background: #1A1A1A;
+}
+#Wing_district>li>span{
+	display: inline-block;
+	margin-left: 10px;
+}
+#Wing_category,#Wing_times,#Wingreg_channel{
+	width: 70%;
+	height: 35px;
+	border: 1px solid #bcbcbc;
+	background: transparent;
+	color: #C0C0C0;
+}
+#Wing_category:focus,#Wingreg_channel:focus{
+	border: 1px solid #FFFFFF;
+	color: white;
+}
+#Wing_category option,#Wingreg_channel option{
+	background: #363636;
+	color: #C0C0C0;
+}
+#wingquery,#wingexport{
+	height: 35px;
+	line-height: 35px;
+	float: right;
+	margin-left: 15px;
+}
+/*装备*/
+#equipment_district{
+    position: absolute;
+    background: #363636;
+    z-index: 99;
+    top: 150px;
+    left: 7%;
+    width: 15.3%;
+}
+@media screen and (max-width: 1680px) {
+	#equipment_district{
+		left: 8%;
+	}
+}
+@media screen and (max-width: 1400px) {
+	#equipment_district{
+		left: 9%;
+	}
+}
+#equipment_district a{
+	width: 25px;
+	height: 25px;
+	text-align: center;
+	display: inline-block;
+	line-height: 35px;
+	float: left;
+	margin-top: 6px;
+}
+#equipment_district>li{
+	height: 35px;
+	line-height: 35px;
+	border: 1px solid #bcbcbc;
+	color: #C0C0C0;
+}
+#equipment_district ul{
+	background: #1A1A1A;
+}
+#equipment_district>li>span{
+	display: inline-block;
+	margin-left: 10px;
+}
+#equipment_category,#equipment_times,#equipreg_channel{
+	width: 70%;
+	height: 35px;
+	border: 1px solid #bcbcbc;
+	background: transparent;
+	color: #C0C0C0;
+}
+#equipment_category:focus,#equipreg_channel:focus{
+	border: 1px solid #FFFFFF;
+	color: white;
+}
+#equipment_category option,#equipreg_channel option{
+	background: #363636;
+	color: #C0C0C0;
+}
+#eququery,#equexport{
+	height: 35px;
+	line-height: 35px;
+	float: right;
+	margin-left: 15px;
+}
+/*精灵*/
+#spirit_district{
+    position: absolute;
+    background: #363636;
+    z-index: 99;
+    top: 150px;
+    left: 7%;
+    width: 15.3%;
+}
+@media screen and (max-width: 1680px) {
+	#spirit_district{
+		left: 8%;
+	}
+}
+@media screen and (max-width: 1400px) {
+	#spirit_district{
+		left: 9%;
+	}
+}
+#spirit_district a{
+	width: 25px;
+	height: 25px;
+	text-align: center;
+	display: inline-block;
+	line-height: 35px;
+	float: left;
+	margin-top: 6px;
+}
+#spirit_district>li{
+	height: 35px;
+	line-height: 35px;
+	border: 1px solid #bcbcbc;
+	color: #C0C0C0;
+}
+#spirit_district ul{
+	background: #1A1A1A;
+}
+#spirit_district>li>span{
+	display: inline-block;
+	margin-left: 10px;
+}
+#spirit_category,#spirit_times,#spiritreg_channel{
+	width: 70%;
+	height: 35px;
+	border: 1px solid #bcbcbc;
+	background: transparent;
+	color: #C0C0C0;
+}
+#spirit_category:focus,#spiritreg_channel:focus{
+	border: 1px solid #FFFFFF;
+	color: white;
+}
+#spirit_category option,#spiritreg_channel option{
+	background: #363636;
+	color: #C0C0C0;
+}
+#spiquery,#spiexport{
+	height: 35px;
+	line-height: 35px;
+	float: right;
+	margin-left: 15px;
+}
+/* all */
+#all_district{
+    position: absolute;
+    background: #363636;
+    z-index: 99;
+    top: 150px;
+    left: 7%;
+    width: 15.3%;
+}
+@media screen and (max-width: 1680px) {
+	#all_district{
+		left: 8%;
+	}
+}
+@media screen and (max-width: 1400px) {
+	#all_district{
+		left: 9%;
+	}
+}
+#all_district a{
+	width: 25px;
+	height: 25px;
+	text-align: center;
+	display: inline-block;
+	line-height: 35px;
+	float: left;
+	margin-top: 6px;
+}
+#all_district>li{
+	height: 35px;
+	line-height: 35px;
+	border: 1px solid #bcbcbc;
+	color: #C0C0C0;
+}
+#all_district ul{
+	background: #1A1A1A;
+}
+#all_district>li>span{
+	display: inline-block;
+	margin-left: 10px;
+}
+#all_category,#all_times,#allreg_channel{
+	width: 70%;
+	height: 35px;
+	border: 1px solid #bcbcbc;
+	background: transparent;
+	color: #C0C0C0;
+}
+#all_category:focus,#allreg_channel:focus{
+	border: 1px solid #FFFFFF;
+	color: white;
+}
+#all_category option,#allreg_channel option{
+	background: #363636;
+	color: #C0C0C0;
+}
+#allquery,#allexport{
+	height: 35px;
+	line-height: 35px;
+	float: right;
+	margin-left: 15px;
+}

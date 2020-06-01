@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="BossKillDropLog">
+	<resultMap id="boss_kill_drop_logResult" type="BossKillDropLog">
+		<result column="game_id" property="gameId" />
+		<result column="channel_id" property="channelId" />
+		<result column="media_id" property="mediaId" />
+		<result column="device_id" property="deviceId" />
+		<result column="version_name" property="versionName" />
+		<result column="version_code" property="versionCode" />
+		<result column="user_id" property="accountId" />
+		<result column="server_id"  property="serverId" />
+		<result column="log_time"  property="logTime" />
+		<result column="role_id" property="roleId" />
+		<result column="role_name"  property="roleName" />
+		<result column="role_level" property="roleLevel" />
+		<result column="role_gender"  property="roleGender" />
+		<result column="battle_points"  property="rolePower" />
+		<result column="role_type" property="roleType" />
+		<result column="vip_level" property="roleVip" />
+		<result column="log_name" property="logName" />
+		<result property="bossId" column="boss_id"/>
+		<result property="dropItemId1" column="drop_item_id1"/>
+		<result property="dropItemNum1" column="drop_item_num1"/>
+		<result property="dropItemId2" column="drop_item_id2"/>
+		<result property="dropItemNum2" column="drop_item_num2"/>
+		<result property="dropItemId3" column="drop_item_id3"/>
+		<result property="dropItemNum3" column="drop_item_num3"/>
+		<result property="dropItemId4" column="drop_item_id4"/>
+		<result property="dropItemNum4" column="drop_item_num4"/>
+		<result property="dropItemId5" column="drop_item_id5"/>
+		<result property="dropItemNum5" column="drop_item_num5"/>
+		<result property="dropItemId6" column="drop_item_id6"/>
+		<result property="dropItemNum6" column="drop_item_num6"/>
+		<result property="dropItemId7" column="drop_item_id7"/>
+		<result property="dropItemNum7" column="drop_item_num7"/>
+		<result property="dropItemId8" column="drop_item_id8"/>
+		<result property="dropItemNum8" column="drop_item_num8"/>
+		<result property="dropItemId9" column="drop_item_id9"/>
+		<result property="dropItemNum9" column="drop_item_num9"/>
+		<result property="dropItemId10" column="drop_item_id10"/>
+		<result property="dropItemNum10" column="drop_item_num10"/>
+		<result property="dropItemId11" column="drop_item_id11"/>
+		<result property="dropItemNum11" column="drop_item_num11"/>
+		<result property="dropItemId12" column="drop_item_id12"/>
+		<result property="dropItemNum12" column="drop_item_num12"/>
+		<result property="dropItemId13" column="drop_item_id13"/>
+		<result property="dropItemNum13" column="drop_item_num13"/>
+		<result property="dropItemId14" column="drop_item_id14"/>
+		<result property="dropItemNum14" column="drop_item_num14"/>
+		<result property="dropItemId15" column="drop_item_id15"/>
+		<result property="dropItemNum15" column="drop_item_num15"/>
+		<result property="dropItemId16" column="drop_item_id16"/>
+		<result property="dropItemNum16" column="drop_item_num16"/>
+		<result property="dropItemId17" column="drop_item_id17"/>
+		<result property="dropItemNum17" column="drop_item_num17"/>
+		<result property="dropItemId18" column="drop_item_id18"/>
+		<result property="dropItemNum18" column="drop_item_num18"/>
+		<result property="dropItemId19" column="drop_item_id19"/>
+		<result property="dropItemNum19" column="drop_item_num19"/>
+		<result property="dropItemId20" column="drop_item_id20"/>
+		<result property="dropItemNum20" column="drop_item_num20"/>
+		
+</resultMap>
+	<sql id="Base_Column_List">
+	game_id ,
+   channel_id ,
+   media_id ,
+   device_id ,
+   version_name ,
+   version_code ,
+   user_id ,
+   server_id ,
+   from_timestamp(date_time, 'yyyy-MM-dd HH:mm:ss') as log_time ,
+	role_id ,
+	role_name ,
+	role_level ,
+	role_gender ,
+	battle_points ,
+	role_type ,
+	vip_level ,
+	log_name ,
+	boss_id ,
+		drop_item_id1,
+        drop_item_num1,
+        drop_item_id2,
+        drop_item_num2,
+        drop_item_id3,
+        drop_item_num3,
+        drop_item_id4,
+        drop_item_num4,
+        drop_item_id5,
+        drop_item_num5,
+        drop_item_id6,
+        drop_item_num6,
+        drop_item_id7,
+        drop_item_num7,
+        drop_item_id8,
+        drop_item_num8,
+        drop_item_id9,
+        drop_item_num9,
+        drop_item_id10,
+        drop_item_num10,
+        drop_item_id11,
+        drop_item_num11,
+        drop_item_id12,
+        drop_item_num12,
+        drop_item_id13,
+        drop_item_num13,
+        drop_item_id14,
+        drop_item_num14,
+        drop_item_id15,
+        drop_item_num15,
+        drop_item_id16,
+        drop_item_num16,
+        drop_item_id17,
+        drop_item_num17,
+        drop_item_id18,
+        drop_item_num18,
+        drop_item_id19,
+        drop_item_num19,
+        drop_item_id20,
+        drop_item_num20
+  </sql>
+
+
+	<select id="findAllKillBoss" parameterType="com.umi.ga.entitys.Condition" resultMap="boss_kill_drop_logResult">
+		select
+		<include refid="Base_Column_List"></include>
+		from faith_server.server_boss_kill_drop
+		<trim prefix="where" suffixOverrides="and">
+     <if test="null != serverId and '' != serverId">
+      server_id in
+      <foreach collection="stringsArray" item="serverId" index="index" open="(" close=")" separator=",">
+        #{serverId}
+      </foreach>
+      and
+    </if>
+			<if test="accountId != null and accountId !='' ">
+				user_Id = #{accountId} and
+			</if>
+			<if test="roleId != null and roleId !='' ">
+				role_Id = #{roleId} and
+			</if>
+			<if test="roleName != null and roleName !='' ">
+				role_Name =  #{roleName} and
+			</if>
+
+			<if test="startTime != null and startTime != '' and  endTime != null and endTime != ''">
+
+				 from_timestamp(date_time, 'yyyy-MM-dd')  between #{startTime} and #{endTime} and
+			</if>
+		</trim>
+		ORDER BY log_time DESC limit  ${pageSize}  offset ${pageIndex}
+	</select>
+
+
+	<select id="findAllKillBosscount" parameterType="com.umi.ga.entitys.Condition" resultType="int">
+		select
+		count(*)
+		from faith_server.server_boss_kill_drop
+		<trim prefix="where" suffixOverrides="and">
+			<if test="null != serverId and '' != serverId">
+				server_id in
+				<foreach collection="stringsArray" item="serverId" index="index" open="(" close=")" separator=",">
+					#{serverId}
+				</foreach>
+				and
+			</if>
+			<if test="accountId != null and accountId !='' ">
+				user_Id = #{accountId} and
+			</if>
+			<if test="roleId != null and roleId !='' ">
+				role_Id = #{roleId} and
+			</if>
+			<if test="roleName != null and roleName !='' ">
+				role_Name =  #{roleName} and
+			</if>
+
+			<if test="startTime != null and startTime != '' and  endTime != null and endTime != ''">
+				 from_timestamp(date_time, 'yyyy-MM-dd')  between #{startTime} and #{endTime} and
+			</if>
+		</trim>
+	</select>
+
+
+
+</mapper>

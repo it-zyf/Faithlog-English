@@ -1,0 +1,490 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+  <meta http-equiv="content-type" content="text/html" charset="utf-8">
+  <title>配置型号</title>
+  <!-- Bootstrap Styles-->
+  <link href="../css/bootstrap.min.css" rel="stylesheet" />
+  <script src="../js/jquery.min.js"></script>
+  <script src="../js/bootstrap.min.js"></script>
+  <link href="https://cdn.bootcss.com/element-ui/2.12.0/theme-chalk/index.css" rel="stylesheet">
+  <!-- Google Fonts-->
+  <link rel="stylesheet" href="../js/bootstrap-table/bootstrap-table.css" />
+  <link rel="stylesheet" href="../css/clientConfig.css" />
+  <link rel="stylesheet" href="../js/loading/jquery.mloading.css" />
+  <script src="../js/loading/jquery.mloading.js"></script>
+</head>
+
+<body style="background: #202020;min-width:1900px;" class="bodyContent">
+  <div id="wrapper" style="background: #202020">
+    <!-- main结构-->
+    <div id="navigation"></div>
+    <div id="page-wrapper" style="overflow-x: hidden;">
+      <div id="page-inner" class="classpageinner" style="min-height: 1020px;color: white;overflow: hidden;">
+        <div class="form-group col-xs-12"
+          style="float: left;margin-bottom: 10px;width:100%;margin-top:3.6%;height: 60px" id="dangerLineDevice">
+          <div class="form-group col-xs-3 col-xs-pull-0" id="data_5device" style="margin-top:1.1%;width: 20%">
+            <div style="font-size:14px" class="timeTime">
+              日期&nbsp;&nbsp; <el-date-picker class="timePick" value-format="yyyy-MM-dd" v-model="ruleFormA.dateValue"
+                type="daterange" align="bottom" unlink-panels range-separator="~" start-placeholder="开始日期"
+                end-placeholder="结束日期" :picker-options="pickerOptionsA">
+              </el-date-picker>
+            </div>
+          </div>
+          <button type="button" id="chadevice" class="btn" onclick="onbludevice()">查询</button>
+        </div>
+        <div id="partDevice" style="margin-top:1%;">
+          <!--<div class="countDownTime">&nbsp;(&nbsp;<span class="countdown" style="color: #ffffff"></span>&nbsp;)&nbsp;后更新</div>-->
+          <span style="margin-left: 50%;color: #999999;font-size: 14px">设备总数</span>
+          <i style="background: url('../image/exp2.png')" id="btnDevice"></i>
+          <!--<button id="real-btnM" style="margin-top:.8%;color:#fff;"><span style="font-size: 14px">导出</span></button>-->
+          <div class="father">
+            <div class="helpDescription">
+              <table style="border-radius: 4px;">
+                <tr style="height: 30px;line-height: 30px">
+                  <td colspan="8" style="background: #121212;padding-left: 3px">设备总数说明</td>
+                </tr>
+                <tr style="height: 30px;line-height: 30px;background: #1B1B1B">
+                  <td colspan="1" style="padding-left: 3px">设备总数</td>
+                  <td colspan="7" style="padding-left: 15px;color: #A4A3AE;">默认为近30日设备总数&nbsp;&nbsp;&nbsp;</td>
+                </tr>
+              </table>
+            </div>
+            <i style="background: url('../image/help2.png')" class="help"></i>
+          </div>
+          <div class="titleLoadAdd"
+            style="font-size: 12px;float: left;padding-top: 1%;margin-left:50%;margin-top:5%;text-align: center;color:#ffffff;"
+            id="loaddevice"><i class="el-icon-loading" style="font-size:28px;vertical-align: middle;"></i>
+            <div style="margin-top: 5px">加载中...</div>
+          </div>
+          <div class="chart_top" style="width: 100%;float: left">
+            <!--<div class="partTwo" style="font-weight: 200;text-align: center;width: 100%">-->
+            <div id="chartDvice" style="text-align: center;table-layout: fixed;font-weight: 200;height: 270px;">
+            </div>
+            <!--</div>-->
+          </div>
+        </div>
+        <div class="real-tableStart" style="display: none">
+          <table id="real-datatableStart">
+            <thead>
+              <tr>
+                <th>时间</th>
+                <th>人数</th>
+              </tr>
+            </thead>
+            <tbody id="real-tbodyStart"></tbody>
+          </table>
+        </div>
+        <div class="form-group col-xs-12" style="float: left;margin-bottom: 10px;width:100%;margin-top:1%;height: 60px"
+          id="dangerLine">
+          <div class="form-group col-xs-3 col-xs-pull-0" id="data_5" style="margin-top:1.1%;width: 20%">
+            <div style="font-size:14px" class="timeTime">
+              日期&nbsp;&nbsp; <el-date-picker class="timePick" value-format="yyyy-MM-dd" v-model="ruleForm.dateValue"
+                type="daterange" align="bottom" unlink-panels range-separator="~" start-placeholder="开始日期"
+                end-placeholder="结束日期" :picker-options="pickerOptions">
+              </el-date-picker>
+            </div>
+          </div>
+          <button type="button" id="cha" class="btn" onclick="onblu()">查询</button>
+        </div>
+        <div class="countDownTime">&nbsp;(&nbsp;<span class="countdown" style="color:#ffffff;"></span>&nbsp;)&nbsp;后更新
+        </div>
+        <div id="partTwo" style="width: 100%;height: 325px;float: left;">
+          <div style="width: 49.5%;height: 100%;">
+            <div class="titleLoadAdd"
+              style="width: 820px;height: 325px;font-size: 12px;float: left;text-align: center;color:#ffffff;"
+              id="loadfen"><i class="el-icon-loading" style="font-size: 28px;vertical-align: middle;"></i>
+              <div style="margin-top: 5px">加载中...</div>
+            </div>
+            <div id="partFiveLeft" style="width: 820px;height: 325px;"></div>
+          </div>
+          <div style="float: right;width: 49.5%;margin-left: 2%;height: 100%;margin-top: -19.5%;">
+            <div class="titleLoadAdd"
+              style="font-size: 12px;width: 820px;height: 325px;float: right;margin-left:50%;text-align: center;color:#ffffff;"
+              id="loadphone"><i class="el-icon-loading" style="font-size: 28px;vertical-align: middle;"></i>
+              <div style="margin-top: 5px">加载中...</div>
+            </div>
+            <div id="partThreeRight" style="width: 820px;height: 325px;float: right;"></div>
+          </div>
+        </div>
+
+        <div id="partFour" style="width: 100%;height: 325px;float: left;margin-top: 1.1%;">
+          <div style="width: 49.5%;height: 100%;">
+            <div class="titleLoadAdd"
+              style="width: 820px;height: 325px;font-size: 12px;float: left;text-align: center;color:#ffffff;"
+              id="loadver"><i class="el-icon-loading" style="font-size: 28px;vertical-align: middle;"></i>
+              <div style="margin-top: 5px">加载中...</div>
+            </div>
+            <div id="partFourRight" style="width: 820px;height: 325px;"></div>
+          </div>
+          <div style="float: right;width: 49.5%;margin-left: 2%;height: 100%;margin-top:-19.5%;">
+            <div class="titleLoadAdd"
+              style="font-size: 12px;width: 820px;height: 325px;float: right;margin-left:50%;text-align: center;color:#ffffff;"
+              id="loadsave"><i class="el-icon-loading" style="font-size: 28px;vertical-align: middle;"></i>
+              <div style="margin-top: 5px">加载中...</div>
+            </div>
+            <div id="partFourLeft" style="width: 820px;height: 325px;float: right;"></div>
+          </div>
+        </div>
+        <div id="partCpu">
+          <div class="titleLoadAdd"
+            style=";width: 820px;height: 325px;font-size: 12px;float: left;padding-top: 1%;margin-left:27%;margin-top:8%;text-align: center;color:#ffffff;"
+            id="loadcpu"><i class="el-icon-loading" style="font-size: 28px;vertical-align: middle;"></i>
+            <div style="margin-top: 5px">加载中...</div>
+          </div>
+          <div class="cpu">
+            <i style="background: url('../image/exp2.png')" id="real-btnC"></i>
+            <span style="margin-left: 50%;color: #999999;font-size: 14px">CPU</span>
+            <div style="display: flex;justify-content: space-between;flex-wrap: wrap;align-items: center;">
+              <div style="width: 81%">
+                <div id="chartCpu"
+                  style="text-align: center;table-layout: fixed;font-weight: 200;width: 1337px;height: 300px;padding-top: 1%">
+                </div>
+              </div>
+              <div>
+                <div v-for="(item,index) in cpulist" :key="index">
+                  <div class="cpuTag" :class="colorCpu[index]">
+                    <span class="cpuName">{{item.name}}</span>
+                    <span class="split-line">:</span>
+                    <span class="cpuPercent">{{item.percent}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="display: none">
+          <table id="real-datatableCPU">
+            <thead>
+              <tr>
+                <th>CPU类型</th>
+                <th>百分比(%)</th>
+              </tr>
+            </thead>
+            <tbody id="real-tbodyCPU"></tbody>
+          </table>
+        </div>
+        <div id="partGPU">
+          <div class="titleLoadAdd"
+            style=";width: 820px;height: 325px;font-size: 12px;float: left;padding-top: 1%;margin-left:27%;margin-top:8%;text-align: center;color:#ffffff;"
+            id="loadgpu"><i class="el-icon-loading" style="font-size: 28px;vertical-align: middle;"></i>
+            <div style="margin-top: 5px">加载中...</div>
+          </div>
+          <div class="gpu">
+            <i style="background: url('../image/exp2.png')" id="real-btnG"></i>
+            <span style="margin-left: 50%;color: #999999;font-size: 14px">GPU</span>
+            <div style="display: flex;justify-content: space-between;flex-wrap: wrap;align-items: center;">
+              <div style="width: 81%">
+                <div id="chartGPU"
+                  style="text-align: center;table-layout: fixed;font-weight: 200;height: 300px;width: 99.5%;padding-top: 1%">
+                </div>
+              </div>
+              <div>
+                <div v-for="(item,index) in gpulist" :key="index">
+                  <div class="gpuTag" :class="colorGpu[index]">
+                    <span class="gpuName">{{item.name}}</span>
+                    <span class="split-line">:</span>
+                    <span class="gpuPercent">{{item.percent}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="display: none">
+          <table id="real-datatableGPU">
+            <thead>
+              <tr>
+                <th>GPU类型</th>
+                <th>百分比(%)</th>
+              </tr>
+            </thead>
+            <tbody id="real-tbodyGPU"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+<script src="../haddup/js/urlGet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="https://cdn.bootcss.com/element-ui/2.12.0/index.js"></script>
+<script src="http://cdn.hcharts.cn/highcharts/6.1.1/highcharts.js"></script>
+<script src="https://cdn.bootcss.com/echarts/4.3.0-rc.2/echarts.min.js"></script>
+<script src="../js/bootstrap-table/bootstrap-table.min.js"></script>
+<script src="../js/jquery.table2excel.js"></script>
+<!--<script src="../js/dist/echarts.js/echarts.min.js"></script>-->
+<script src="../haddup/js/haddupConfig.js"></script>
+
+<script type="text/javascript">
+  localStorage.setItem('navigation', '6-6-4')
+  $('#navigation').load('navHaddup.html')
+  homedata()
+  var vm_clientConfig = new Vue({
+    el: '#page-inner',
+    data: {
+      msg: 'hello',
+      cpulist: [],
+      gpulist: [],
+      colorCpu: [
+        "cpuO", "cpuT", "cpuTH", "cpuF", "cpuFI", "cpuS", "cpuSE", "cpuE", "cpuN", "cpuTE",
+      ],
+      colorGpu: [
+        "gpuO", "gpuT", "gpuTH", "gpuF", "gpuFI", "gpuS", "gpuSE", "gpuE", "gpuN", "gpuTE",
+      ],
+      pickerOptions: {
+        disabledDate(time) {
+          return time.getTime() > Date.now(); //如果没有后面的-8.64e7就是不可以选择今天的
+        },
+        shortcuts: [{
+            text: '今日',
+            onClick(picker) {
+              var end = new Date();
+              var start = new Date();
+              start.setTime(start.getTime());
+              picker.$emit('pick', [start, end]);
+            }
+          },
+          {
+            text: '昨日',
+            onClick(picker) {
+              var end = new Date();
+              var start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24);
+              end.setTime(end.getTime() - 3600 * 1000 * 24);
+              picker.$emit('pick', [start, end]);
+            }
+          }, {
+            text: '近7日',
+            onClick(picker) {
+              var end = new Date();
+              var start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+              end.setTime(end.getTime() - 3600 * 1000 * 24);
+              picker.$emit('pick', [start, end]);
+            }
+          }, {
+            text: '近30日',
+            onClick(picker) {
+              var end = new Date();
+              var start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+              end.setTime(end.getTime() - 3600 * 1000 * 24);
+              picker.$emit('pick', [start, end]);
+            }
+          }, {
+            text: '全部',
+            onClick(picker) {
+              var end = new Date();
+              end.setTime(end.getTime() - 3600 * 1000 * 24);
+              var start = new Date('2019-11-30 00:00:00');
+              end.setTime(end.getTime());
+              picker.$emit('pick', [start, end]);
+            }
+          }
+        ]
+      },
+      pickerOptionsA: {
+        disabledDate(time) {
+          return time.getTime() > (Date.now() - 8.64e7); //如果没有后面的-8.64e7就是不可以选择今天的
+        },
+        shortcuts: [
+          // {
+          //     text: '今日',
+          //     onClick(picker) {
+          //         var end = new Date();
+          //         var start = new Date();
+          //         start.setTime(start.getTime());
+          //         picker.$emit('pick', [start, end]);
+          //     }
+          // },
+          {
+            text: '昨日',
+            onClick(picker) {
+              var end = new Date();
+              var start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24);
+              end.setTime(end.getTime() - 3600 * 1000 * 24);
+              picker.$emit('pick', [start, end]);
+            }
+          }, {
+            text: '近7日',
+            onClick(picker) {
+              var end = new Date();
+              var start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+              end.setTime(end.getTime() - 3600 * 1000 * 24);
+              picker.$emit('pick', [start, end]);
+            }
+          }, {
+            text: '近30日',
+            onClick(picker) {
+              var end = new Date();
+              var start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+              end.setTime(end.getTime() - 3600 * 1000 * 24);
+              picker.$emit('pick', [start, end]);
+            }
+          }, {
+            text: '全部',
+            onClick(picker) {
+              var end = new Date();
+              end.setTime(end.getTime() - 3600 * 1000 * 24);
+              var start = new Date('2019-11-30 00:00:00');
+              end.setTime(end.getTime());
+              picker.$emit('pick', [start, end]);
+            }
+          }
+        ]
+      },
+      ruleForm: {
+        dateValue: ""
+      },
+      ruleFormA: {
+        dateValue: ""
+      },
+    },
+    computed: {
+      timeDefault() {
+        var date = new Date();
+        // var date=new Date(datebb-24*3600*1000);
+        var y = date.getFullYear();
+        var m = date.getMonth() + 1;
+        var d = date.getDate();
+        var formatwdate = y + '-' + m + '-' + d;
+        return formatwdate;
+      },
+      timeDefaultYes() {
+        var date = new Date();
+        var date = new Date(date - 24 * 3600 * 1000);
+        var y = date.getFullYear();
+        var m = date.getMonth() + 1;
+        var d = date.getDate();
+        var formatwdate = y + '-' + m + '-' + d;
+        return formatwdate;
+      },
+      timeDefaultLast() {
+        var date = new Date();
+        var oneweekdate = new Date(date - 30 * 24 * 3600 * 1000);
+        var y = oneweekdate.getFullYear();
+        var m = oneweekdate.getMonth() + 1;
+        var d = oneweekdate.getDate();
+        var formatwdate = y + '-' + m + '-' + d;
+        return formatwdate;
+      }
+    },
+    mounted() {
+      // 初始化查询，默认为前一周
+      this.ruleForm.dateValue = [this.timeDefaultLast, this.timeDefault];
+      this.ruleFormA.dateValue = [this.timeDefaultLast, this.timeDefaultYes];
+    },
+    created() {
+      this.$nextTick(function () {
+
+      })
+    },
+    methods: {
+
+    }
+  })
+  window.setInterval(function () {
+    var monthtt = document.getElementsByClassName('el-icon-arrow-right')
+    var yeartt = document.getElementsByClassName('el-icon-d-arrow-right')
+    monthtt[0].disabled = false
+    monthtt[0].classList.remove("is-disabled");
+    monthtt[1].disabled = false
+    monthtt[1].classList.remove("is-disabled");
+    yeartt[0].disabled = false
+    yeartt[0].classList.remove("is-disabled");
+    yeartt[1].disabled = false
+    yeartt[1].classList.remove("is-disabled");
+  }, 400)
+  //操作系统转换
+  $('#osall').click(function () {
+    $(".change").css('background', 'none')
+    $(this).css('background', '#6B6B6B')
+    ostype = 0
+    var eltime = document.getElementsByClassName('el-range-input')
+    var startTime = eltime[0].value + ' 00:00:00'
+    var endTime = eltime[1].value + ' 23:59:59'
+    osVersion(startTime, endTime, ostype)
+  })
+  $('#osandroid').click(function () {
+    ostype = 1
+    $(".change").css('background', 'none')
+    $(this).css('background', '#6B6B6B')
+    var eltime = document.getElementsByClassName('el-range-input')
+    var startTime = eltime[0].value + ' 00:00:00'
+    var endTime = eltime[1].value + ' 23:59:59'
+    osVersion(startTime, endTime, ostype)
+  })
+  $('#osIOS').click(function () {
+    ostype = 2
+    $(".change").css('background', 'none')
+    $(this).css('background', '#6B6B6B')
+    var eltime = document.getElementsByClassName('el-range-input')
+    var startTime = eltime[0].value + ' 00:00:00'
+    var endTime = eltime[1].value + ' 23:59:59'
+    osVersion(startTime, endTime, ostype)
+  })
+  //CPU
+  $("#real-btnC").click(function () {
+    $("#real-datatableCPU").table2excel({
+      exclude: ".noExl",
+      name: "Excel Document Name",
+      filename: "CPU",
+      exclude_img: true,
+      exclude_links: true,
+      exclude_inputs: true,
+    });
+  });
+  //GPU
+  $("#real-btnG").click(function () {
+    $("#real-datatableGPU").table2excel({
+      exclude: ".noExl",
+      name: "Excel Document Name",
+      filename: "GPU",
+      exclude_img: true,
+      exclude_links: true,
+      exclude_inputs: true,
+    });
+  });
+  //设备总数
+  $("#btnDevice").click(function () {
+    $("#real-datatableStart").table2excel({
+      exclude: ".noExl",
+      name: "Excel Document Name",
+      filename: "设备总数",
+      exclude_img: true,
+      exclude_links: true,
+      exclude_inputs: true,
+    });
+  });
+  var winWidth = 0,
+    winHeight = 0;
+
+  function changebleWidthHeight() {
+    if (window.innerWidth)
+      winWidth = window.innerWidth;
+    else if ((document.body) && (document.body.clientWidth))
+      winWidth = document.body.clientWidth;
+    //获取窗口高度
+    if (window.innerHeight)
+      winHeight = window.innerHeight;
+    else if ((document.body) && (document.body.clientHeight))
+      winHeight = document.body.clientHeight;
+    //通过深入Document内部对body进行检测，获取窗口大小
+    if (document.documentElement && document.documentElement.clientHeight && document.documentElement.clientWidth) {
+      winHeight = document.documentElement.clientHeight;
+      winWidth = document.documentElement.clientWidth;
+    }
+    // document.getElementById("serverCos").style.width = winWidth - 50
+    // document.getElementById("data_5").style.width = winWidth - 40
+  }
+
+  window.onresize = changebleWidthHeight();
+</script>
+</body>
+
+</html>

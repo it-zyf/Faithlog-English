@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <title>用户管理</title>
+  <link rel="stylesheet" href="../layui/css/layui.css" />
+  <link rel="stylesheet" href="./css/user_management.css" />
+  <link rel="stylesheet" href="../css/bootstrap.min.css" />
+  <link rel="stylesheet" type="text/css" href="../js/bootstrap-table/bootstrap-table.min.css" />
+  <link href="https://cdn.bootcss.com/element-ui/2.12.0/theme-chalk/index.css" rel="stylesheet">
+  <style type="text/css">
+    .fixed-table-loading {
+      background: #363636;
+      color: white;
+      top: 80px;
+      border: 0;
+    }
+
+    .pagination>li>a,
+    .pagination>li>span {
+      color: white;
+      background-color: transparent;
+      border: 0;
+    }
+
+    .bootstrap-table .fixed-table-pagination>.pagination-detail .page-list {
+      color: #C0C0C0;
+    }
+
+    .pagination>li>a,
+    .pagination>li>span:hover {
+      background: #464545;
+    }
+
+    .pagination>.disabled>a,
+    .pagination>.disabled>a:focus,
+    .pagination>.disabled>a:hover,
+    .pagination>.disabled>span,
+    .pagination>.disabled>span:focus,
+    .pagination>.disabled>span:hover {
+      color: #C0C0C0;
+      background-color: #464545;
+      border: 0;
+    }
+
+    .pagination>li>a:focus,
+    .pagination>li>a:hover,
+    .pagination>li>span:focus,
+    .pagination>li>span:hover {
+      color: #428BCA;
+      background: #464545;
+      border: 0;
+    }
+
+    .pagination-info {
+      color: #C0C0C0;
+    }
+
+    .layui-layer-btn {
+      border-top: 1px solid #272727;
+    }
+
+    .layui-layer-content {
+      color: white;
+    }
+  </style>
+</head>
+
+<body style="background: #202020;" onload="lo()">
+  <div id="navs"></div>
+  <div class="layui-layout layui-layout-admin">
+    <div class="layui-body" style="padding: 20px;">
+      <div class="sum_div">
+        <div class="Recharge">
+          <span class="tit">系统用户管理</span><span class="adduser">+新增用户</span>
+          <table id="datatable"></table>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+<div id="add">
+  <form role="form">
+    <div class="form-group">
+      <label>登录账号</label>
+      <input type="text" class="form-control" placeholder="请输入登录账号" id="add_account" />
+    </div>
+    <div class="form-group">
+      <label>初始密码</label>
+      <input type="text" class="form-control" placeholder="请输入初始密码" id="add_Initial_pwd" />
+    </div>
+    <div class="form-group">
+      <label>用户姓名</label>
+      <input type="text" class="form-control" placeholder="请输入用户姓名" id="add_username" />
+    </div>
+  </form>
+</div>
+<div id="modifys">
+  <form role="form">
+    <div class="form-group">
+      <label>登录账号</label>
+      <input type="text" class="form-control" placeholder="请输入登录账号" id="modify_account" />
+    </div>
+    <div class="form-group">
+      <label>初始密码</label>
+      <input type="text" class="form-control" placeholder="请输入初始密码" id="modify_Initial_pwd" />
+    </div>
+    <div class="form-group">
+      <label>用户姓名</label>
+      <input type="text" class="form-control" placeholder="请输入用户姓名" id="modify_username" />
+    </div>
+  </form>
+</div>
+<div id="juris">
+  <form class="form-inline" role="form">
+    <div class="form-group" style="padding-left: 4%;width: 100%;">
+      <p>综合分析</p>
+      <p>详细日志</p>
+      <!-- <p>前端分析</p>  -->
+      <p>系统管理</p>
+      <div style="float: left;width: 27%;">
+        <ul class="main">
+
+          <li>
+            <a class="ins" href="javascript:void(0)">
+              <input type="checkbox" id="421" />
+            </a>
+            <span>总览趋势</span>
+          </li>
+          <li>
+            <a class="ins" href="javascript:void(0)">
+              <input type="checkbox" id="412" />
+            </a>
+            <span>实时统计</span>
+          </li>
+          <li>
+            <a class="ins" href="javascript:void(0)">
+              <input type="checkbox" id="413" />
+            </a>
+            <span>留存分析</span>
+          </li>
+          <li>
+            <a class="ins" href="javascript:void(0)">
+              <input type="checkbox" id="414" />
+            </a>
+            <span>付费分析</span>
+          </li>
+          <li>
+            <a class="ins" href="javascript:void(0)">
+              <input type="checkbox" id="415" />
+            </a>
+            <span>LTV分析</span>
+          </li>
+          <li>
+            <a class="ins" href="javascript:void(0)">
+              <input type="checkbox" id="416" />
+            </a>
+            <span>日报分析</span>
+          </li>
+          <li>
+            <a class="ins" href="javascript:void(0)">
+              <input type="checkbox" id="417" />
+            </a>
+            <span>启动分析</span>
+          </li>
+          <li>
+            <a class="ins" href="javascript:void(0)">
+              <input type="checkbox" id="418" />
+            </a>
+            <span>配置分析</span>
+          </li>
+          <li>
+            <a class="ins" href="javascript:void(0)">
+              <input type="checkbox" id="419" />
+            </a>
+            <span>崩溃分析</span>
+          </li>
+          <li>
+            <a class="ins" href="javascript:void(0)">
+              <input type="checkbox" id="420" />
+            </a>
+            <span>事件分析</span>
+          </li>
+        </ul>
+      </div>
+      <div style="float: left;width: 34%;">
+        <ul class="main">
+          <li>
+            <a class="ins" href="javascript:void(0)">
+              <input type="checkbox" id="302" />
+            </a>
+            <span>专属分析</span>
+          </li>
+          <!--<li>
+                			<a class="ins" href="javascript:void(0)">
+                				<input type="checkbox" id="303"/>
+                			</a>
+                			<span>实时统计</span>
+                		</li>
+                		<li>
+                			<a class="ins" href="javascript:void(0)">
+                				<input type="checkbox" id="304"/>
+                			</a>
+                			<span>日报分析</span>
+                		</li>
+                		<li>
+                			<a class="ins" href="javascript:void(0)">
+                				<input type="checkbox" id="305"/>
+                			</a>
+                			<span>LTV分析</span>
+                		</li>
+                		<li>
+                			<a class="ins" href="javascript:void(0)">
+                				<input type="checkbox" id="500"/>
+                			</a>
+                			<span>留存分析</span>
+                		</li>
+                		<li>
+                			<a class="ins" href="javascript:void(0)">
+                				<input type="checkbox" id="306"/>
+                			</a>
+                			<span>付费分析</span>
+                		</li>
+                		<li>
+                			<a class="ins" href="javascript:void(0)">
+                				<input type="checkbox" id="307"/>
+                			</a>
+                			<span>区服分析</span>
+                		</li>
+                		 <li>
+                			<a class="ins" href="javascript:void(0)">
+                				<input type="checkbox" id="405"/>
+                			</a>
+                			<span>战力排行榜</span>
+                		</li>
+                		<li>
+                			<a class="ins" href="javascript:void(0)">
+                				<input type="checkbox" id="406"/>
+                			</a>
+                			<span>实时在线人数</span>
+                		</li>-->
+          <li>
+            <a class="ins" href="javascript:void(0)">
+              <input type="checkbox" id="308" />
+            </a>
+            <span>登录登出日志</span>
+          </li>
+          <li>
+            <a class="ins" href="javascript:void(0)">
+              <input type="checkbox" id="309" />
+            </a>
+            <span>创建角色日志</span>
+          </li>
+          <li>
+            <a class="ins" href="javascript:void(0)">
+              <input type="checkbox" id="310" />
+            </a>
+            <span>新手引导日志</span>
+          </li>
+          <li>
+            <a class="ins" href="javascript:void(0)">
+              <input type="checkbox" id="311" />
+            </a>
+            <span>任务日志</span>
+          </li>
+          <li>
+            <a class="ins" href="javascript:void(0)">
+              <input type="checkbox" id="312" />
+            </a>
+            <span>货币变化日志</span>
+          </li>
+          <li>
+            <a class="ins" href="javascript:void(0)">
+              <input type="checkbox" id="313" />
+            </a>
+            <span>等级变化日志</span>
+          </li>
+          <li>
+            <a class="ins" href="javascript:void(0)">
+              <input type="checkbox" id="314" />
+            </a>
+            <span>充值步骤日志</span>
+          </li>
+          <li>
+            <a class="ins" href="javascript:void(0)">
+              <input type="checkbox" id="315" />
+            </a>
+            <span>充值日志</span>
+          </li>
+          <li>
+            <a class="ins" href="javascript:void(0)">
+              <input type="checkbox" id="316" />
+            </a>
+            <span>宝藏寻宝日志</span>
+          </li>
+          <li>
+            <a class="ins" href="javascript:void(0)">
+              <input type="checkbox" id="317" />
+            </a>
+            <span>拍卖行日志</span>
+          </li>
+          <li>
+            <a class="ins" href="javascript:void(0)">
+              <input type="checkbox" id="318" />
+            </a>
+            <span>聊天日志</span>
+          </li>
+          <!--<li>
+                			<a class="ins" href="javascript:void(0)">
+                				<input type="checkbox" id="319"/>
+                			</a>
+                			<span>公会查询日志</span>
+                		</li>-->
+          <li>
+            <a class="ins" href="javascript:void(0)">
+              <input type="checkbox" id="319" />
+            </a>
+            <span>商城购买日志</span>
+          </li>
+          <li>
+            <a class="ins" href="javascript:void(0)">
+              <input type="checkbox" id="400" />
+            </a>
+            <span>邮件提取日志</span>
+          </li>
+          <li>
+            <a class="ins" href="javascript:void(0)">
+              <input type="checkbox" id="401" />
+            </a>
+            <span>物品流水日志</span>
+          </li>
+          <li>
+            <a class="ins" href="javascript:void(0)">
+              <input type="checkbox" id="411" />
+            </a>
+            <span>成长基金日志</span>
+          </li>
+          <li>
+            <a class="ins" href="javascript:void(0)">
+              <input type="checkbox" id="404" />
+            </a>
+            <span>心跳日志</span>
+          </li>
+          <!--<li>
+                			<a class="ins" href="javascript:void(0)">
+                				<input type="checkbox" id="215"/>
+                			</a>
+                			<span>角色信息查询日志</span>
+                		</li>-->
+          <li>
+            <a class="ins" href="javascript:void(0)">
+              <input type="checkbox" id="460" />
+            </a>
+            <span>活动查询日志</span>
+          </li>
+          <li>
+            <a class="ins" href="javascript:void(0)">
+              <input type="checkbox" id="461" />
+            </a>
+            <span>进出副本日志</span>
+          </li>
+          <li>
+            <a class="ins" href="javascript:void(0)">
+              <input type="checkbox" id="462" />
+            </a>
+            <span>击杀怪物日志</span>
+          </li>
+          <li>
+            <a class="ins" href="javascript:void(0)">
+              <input type="checkbox" id="463" />
+            </a>
+            <span>物品掉落日志</span>
+          </li>
+          <li>
+            <a class="ins" href="javascript:void(0)">
+              <input type="checkbox" id="464" />
+            </a>
+            <span>竞技场日志</span>
+          </li>
+          <li>
+            <a class="ins" href="javascript:void(0)">
+              <input type="checkbox" id="465" />
+            </a>
+            <span>军团击杀日志</span>
+          </li>
+          <li>
+            <a class="ins" href="javascript:void(0)">
+              <input type="checkbox" id="466" />
+            </a>
+            <span>跨服掠夺日志</span>
+          </li>
+          <li>
+            <a class="ins" href="javascript:void(0)">
+              <input type="checkbox" id="469" />
+            </a>
+            <span>榜单日志</span>
+          </li>
+          <li>
+            <a class="ins" href="javascript:void(0)">
+              <input type="checkbox" id="409" />
+            </a>
+            <span>礼包码查询日志</span>
+          </li>
+        </ul>
+      </div>
+      <!-- <div style="float: left;width: 25%;">
+            		<ul class="main">
+                		<li>
+                			<a class="ins" href="javascript:void(0)">
+                				<input type="checkbox" id="417"/>
+                			</a>
+                			<span>前端实时</span>
+                		</li>
+                		<li>
+                			<a class="ins" href="javascript:void(0)">
+                				<input type="checkbox" id="418"/>
+                			</a>
+                			<span>前端配置</span>
+                		</li>
+                	</ul>
+            	</div> -->
+      <div style="float: left;width: 25%;">
+        <ul class="main">
+          <li>
+            <a class="ins" href="javascript:void(0)">
+              <input type="checkbox" id="402" />
+            </a>
+            <span>用户管理</span>
+          </li>
+          <li>
+            <a class="ins" href="javascript:void(0)">
+              <input type="checkbox" id="403" />
+            </a>
+            <span>区服管理</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </form>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="https://cdn.bootcss.com/element-ui/2.12.0/index.js"></script>
+<script src="../layui/layui.all.js"></script>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/jquery.cookie.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script src="../js/bootstrap-table/bootstrap-table.min.js"></script>
+<script src="./js/urlGet.js"></script>
+<script src="./js/user_management.js"></script>
+
+
+<script>
+  localStorage.setItem('navigation', '402')
+  $("#navs").load("navHaddup.html")
+
+  function lo() {
+    $(".402").addClass("layui-this").siblings().removeClass("layui-this")
+    $(".402").parent().parent().addClass("layui-nav-itemed").siblings().removeClass("layui-nav-itemed")
+  }
+  ////layui配置
+  layui.use(['element', 'form'], function () {
+    var element = layui.element;
+    var form = layui.form;
+    element.init();
+  });
+  //		//鼠标滑过input样式
+  //		$("input[type='checkbox']").mouseover(function(){
+  //			if($(this).is(":checked")==true){
+  //				$(this).parent().css("background","#1a2e45")
+  //			}else{
+  //				$(this).parent().css("background","#2b2b2b")
+  //			}
+  //		})
+  //		//鼠标离开input样式
+  //		$("input[type='checkbox']").mouseout(function(){
+  //			$(this).parent().css("background","transparent")
+  //		})
+</script>
+
+</html>

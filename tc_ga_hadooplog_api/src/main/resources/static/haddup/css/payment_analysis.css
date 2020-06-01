@@ -1,0 +1,408 @@
+*{
+	margin: 0;
+	padding: 0;
+}
+.header_ul{
+	width: 100%;
+}
+.header_ul li{
+	width: 15%;
+	height: 80px;
+	background: #363636;
+	float: left;
+	list-style: none;
+	cursor: pointer;
+	color: #C0C0C0;
+	font-size: 1.2vw;
+	line-height: 80px;
+    text-align: center;
+    margin-right: 1%;
+}
+.header_ul li:hover{
+	color: white;
+	font-weight: bold;
+}
+.header_ul li:first-child{
+	color: white;
+	font-weight: bold;
+	background: #4d4d4d;
+}
+.sum_div{
+	width: 100%;
+	background: #363636;
+	clear: both;
+	margin-top: 20px;
+	padding: 30px;
+}
+.consumption,.vip_distribution,.grade_distribution,.Diamond{
+	display: none;
+}
+form label{
+	color: white;
+	font-weight: bold;
+	font-size: 1vw;
+	margin-right: 2%;
+}
+input[type="checkbox"]{
+	width: 20px;
+    height: 20px;
+    background-color: transparent;
+    -webkit-appearance:none;
+    border: 1px solid #c9c9c9;
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+    float: left;
+}
+input[type="checkbox"]:checked{
+	border: 1px solid #0078f2;
+	background: url("../../img/duihao.png") no-repeat;
+	background-position: center;
+}
+/*鍏呭�兼帓琛屾鏍峰紡*/
+#district_service{
+    position: absolute;
+    background: #363636;
+    z-index: 99;
+    top: 150px;
+    left: 7%;
+    width: 15.3%;
+}
+@media screen and (max-width: 1680px) {
+	#district_service{
+		left: 8%;
+	}
+}
+@media screen and (max-width: 1400px) {
+	#district_service{
+		left: 9%;
+	}
+}
+#district_service a{
+	width: 25px;
+	height: 25px;
+	text-align: center;
+	display: inline-block;
+	line-height: 35px;
+	float: left;
+	margin-top: 6px;
+}
+#district_service>li{
+	height: 35px;
+	line-height: 35px;
+	border: 1px solid #bcbcbc;
+	color: #C0C0C0;
+}
+#district_service ul{
+	background: #1A1A1A;
+}
+#district_service>li>span{
+	display: inline-block;
+	margin-left: 10px;
+}
+#channel,#datatimes,#Exclude,#reg_channel{
+	width: 70%;
+	height: 35px;
+	border: 1px solid #bcbcbc;
+	background: transparent;
+	color: #C0C0C0;
+}
+#channel:focus,#Exclude:focus,#reg_channel:focus{
+	border: 1px solid #FFFFFF;
+	color: white;
+}
+#channel option,#Exclude option,#reg_channel option{
+	background: #363636;
+	color: #C0C0C0;
+}
+#query,#export{
+	height: 35px;
+	line-height: 35px;
+	float: right;
+	margin-left: 15px;
+}
+/*琛ㄦ牸鍏叡鏍峰紡*/
+#datatable,#consumption_table,#vip_table,#grade_table,#Diamond_table{
+	overflow-x: scroll;
+	width: 100%;
+	border: 0;
+}
+#datatable thead,#consumption_table thead,#vip_table thead,#grade_table thead,#Diamond_table thead{
+	background: #1A1A1A;
+	border: 0;
+}
+#datatable thead tr,#consumption_table thead tr,#vip_table thead tr,#grade_table thead tr,#Diamond_table thead tr{
+	border: 0;
+}
+#datatable thead tr th,#consumption_table thead tr th,#vip_table thead tr th,#grade_table thead tr th,#Diamond_table thead tr th{
+	border: 0;
+	color: white;
+	height: 50px;
+	font-size: 14px;
+	line-height: 30px;
+}
+#datatable tbody,#consumption_table tbody,#vip_table tbody,#grade_table tbody,#Diamond_table tbody{
+	border: 0;
+}
+#datatable tbody tr,#consumption_table tbody tr,#vip_table tbody tr,#grade_table tbody tr,#Diamond_table tbody tr{
+	border: 0;
+}
+#datatable tbody tr td,#consumption_table tbody tr td,#vip_table tbody tr td,#grade_table tbody tr td,#Diamond_table tbody tr td{
+	border: 0;
+	color: #C0C0C0;
+	height: 40px;
+	font-size: 14px;
+}
+#datatable tbody tr:hover,#consumption_table tbody tr:hover,#vip_table tbody tr:hover,#grade_table tbody tr:hover,#Diamond_table tbody tr:hover{
+	background: transparent;
+	color: #C0C0C0;
+}
+
+/*娑堣垂鎺掕姒滄牱寮�*/
+#consumption_district{
+    position: absolute;
+    background: #363636;
+    z-index: 99;
+    top: 150px;
+    left: 7%;
+    width: 15.3%;
+}
+@media screen and (max-width: 1680px) {
+	#consumption_district{
+		left: 8%;
+	}
+}
+@media screen and (max-width: 1400px) {
+	#consumption_district{
+		left: 9%;
+	}
+}
+#consumption_district a{
+	width: 25px;
+	height: 25px;
+	text-align: center;
+	display: inline-block;
+	line-height: 35px;
+	float: left;
+	margin-top: 6px;
+}
+#consumption_district>li{
+	height: 35px;
+	line-height: 35px;
+	border: 1px solid #bcbcbc;
+	color: #C0C0C0;
+}
+#consumption_district ul{
+	background: #1A1A1A;
+}
+#consumption_district>li>span{
+	display: inline-block;
+	margin-left: 10px;
+}
+#consumption_channel,#contimes,#consumptionreg_channel{
+	width: 70%;
+	height: 35px;
+	border: 1px solid #bcbcbc;
+	background: transparent;
+	color: #C0C0C0;
+}
+#consumption_channel:focus,#consumptionreg_channel:focus{
+	border: 1px solid #FFFFFF;
+	color: white;
+}
+#consumption_channel option,#consumptionreg_channel option{
+	background: #363636;
+	color: #C0C0C0;
+}
+#conquery,#conexport{
+	height: 35px;
+	line-height: 35px;
+	float: right;
+	margin-left: 15px;
+}
+/*vip鍒嗗竷*/
+#vip_district{
+    position: absolute;
+    background: #363636;
+    z-index: 99;
+    top: 150px;
+    left: 7%;
+    width: 15.3%;
+}
+@media screen and (max-width: 1680px) {
+	#vip_district{
+		left: 8%;
+	}
+}
+@media screen and (max-width: 1400px) {
+	#vip_district{
+		left: 9%;
+	}
+}
+#vip_district a{
+	width: 25px;
+	height: 25px;
+	text-align: center;
+	display: inline-block;
+	line-height: 35px;
+	float: left;
+	margin-top: 6px;
+}
+#vip_district>li{
+	height: 35px;
+	line-height: 35px;
+	border: 1px solid #bcbcbc;
+	color: #C0C0C0;
+}
+#vip_district ul{
+	background: #1A1A1A;
+}
+#vip_district>li>span{
+	display: inline-block;
+	margin-left: 10px;
+}
+#vip_channel,#viptimes,#vipreg_channel{
+	width: 70%;
+	height: 35px;
+	border: 1px solid #bcbcbc;
+	background: transparent;
+	color: #C0C0C0;
+}
+#vip_channel:focus,#vipreg_channel:focus{
+	border: 1px solid #FFFFFF;
+	color: white;
+}
+#vip_channel option,#vipreg_channel option{
+	background: #363636;
+	color: #C0C0C0;
+}
+#vipquery,#vipexport{
+	height: 35px;
+	line-height: 35px;
+	float: right;
+	margin-left: 15px;
+}
+/* 等级分布 */
+#grade_district{
+    position: absolute;
+    background: #363636;
+    z-index: 99;
+    top: 150px;
+    left: 7%;
+    width: 15.3%;
+}
+@media screen and (max-width: 1680px) {
+	#grade_district{
+		left: 8%;
+	}
+}
+@media screen and (max-width: 1400px) {
+	#grade_district{
+		left: 9%;
+	}
+}
+#grade_district a{
+	width: 25px;
+	height: 25px;
+	text-align: center;
+	display: inline-block;
+	line-height: 35px;
+	float: left;
+	margin-top: 6px;
+}
+#grade_district>li{
+	height: 35px;
+	line-height: 35px;
+	border: 1px solid #bcbcbc;
+	color: #C0C0C0;
+}
+#grade_district ul{
+	background: #1A1A1A;
+}
+#grade_district>li>span{
+	display: inline-block;
+	margin-left: 10px;
+}
+#grade_channel,#gradetimes,#gradereg_channel{
+	width: 70%;
+	height: 35px;
+	border: 1px solid #bcbcbc;
+	background: transparent;
+	color: #C0C0C0;
+}
+#grade_channel:focus,#gradereg_channel:focus{
+	border: 1px solid #FFFFFF;
+	color: white;
+}
+#grade_channel option,#gradereg_channel option{
+	background: #363636;
+	color: #C0C0C0;
+}
+#gradequery,#gradeexport{
+	height: 35px;
+	line-height: 35px;
+	float: right;
+	margin-left: 15px;
+}
+/*閽荤煶娑堣垂鎺掕*/
+#Diamond_district{
+    position: absolute;
+    background: #363636;
+    z-index: 99;
+    top: 150px;
+    left: 7%;
+    width: 15.3%;
+}
+@media screen and (max-width: 1680px) {
+	#Diamond_district{
+		left: 8%;
+	}
+}
+@media screen and (max-width: 1400px) {
+	#Diamond_district{
+		left: 9%;
+	}
+}
+#Diamond_district a{
+	width: 25px;
+	height: 25px;
+	text-align: center;
+	display: inline-block;
+	line-height: 35px;
+	float: left;
+	margin-top: 6px;
+}
+#Diamond_district>li{
+	height: 35px;
+	line-height: 35px;
+	border: 1px solid #bcbcbc;
+	color: #C0C0C0;
+}
+#Diamond_district ul{
+	background: #1A1A1A;
+}
+#Diamond_district>li>span{
+	display: inline-block;
+	margin-left: 10px;
+}
+#Diamond_channel,#Diamond_times,#Diamond_type,#Diamondreg_channel{
+	width: 68%;
+	height: 35px;
+	border: 1px solid #bcbcbc;
+	background: transparent;
+	color: #C0C0C0;
+}
+#Diamond_channel:focus,#Diamond_type:focus,#Diamondreg_channel:focus{
+	border: 1px solid #FFFFFF;
+	color: white;
+}
+#Diamond_channel option,#Diamond_type option,#Diamondreg_channel option{
+	background: #363636;
+	color: #C0C0C0;
+}
+#diaquery,#diaexport{
+	height: 35px;
+	line-height: 35px;
+	float: right;
+	margin-left: 15px;
+}

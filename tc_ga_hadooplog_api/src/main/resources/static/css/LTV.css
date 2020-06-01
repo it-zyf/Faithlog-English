@@ -1,0 +1,299 @@
+@media screen and (max-width: 1280px) {
+body{
+width: 1280px;
+}
+}
+@media only screen and (min-device-width: 375px)and (-webkit-min-device-pixel-ratio: 2) {
+	#page-inner{
+		width: 82% !important;
+		margin-left: 1.3% !important;
+	}
+	#serverCos{
+		width: 30% !important;
+	}
+	#data_5{
+		width: 35% !important;
+	}
+	#dangerLine{
+		margin-top: 10% !important;
+	}
+}
+.nav>li{
+	float:left
+}
+#changett{
+	margin-right: 4% !important;
+}
+.layui-nav-child{
+	margin-left: 24% !important;
+}
+.fixed-table-container thead th .th-inner{
+	text-align: center;
+}
+.fixed-table-container thead{
+	background: #1B1B1B !important;
+}
+.fixed-table-container thead th{
+	border: 0px !important;
+}
+.fixed-table-container{
+	border: 0px !important;
+}
+#real-tbodyAll>tr>td{
+	border: 0 !important;
+}
+#real-datatableAll>tbody>tr>td{
+	border:0 !important;
+}
+#real-datatableAll{
+	border:0;
+}
+.fixed-table-body{
+	margin-top: -1px;
+}
+.pagination>li>a{
+    border:0;
+    background: #363636 !important;
+	font-size: 14px;
+}
+.pagination>.active>a{
+	background-color: #1B1B1B !important;
+}
+.table-striped > tbody > tr:nth-child(2n+1){
+	background-color: #575757 !important;
+}
+.table-striped > tbody > tr:nth-child(2n){
+	background-color: #363636 !important;
+}
+/*.btn-default:hover {*/
+	/*color: #ffffff !important;*/
+	/*border-color: #ffffff !important;*/
+/*}*/
+.el-date-table td.in-range div{
+	background-color: #4a2aff !important;
+	color: #ffffff;
+}
+/*.el-date-editor--daterange.el-input__inner:hover{*/
+	/*color: #ffffff !important;*/
+/*}*/
+
+.col-sm-12 {
+    width: 60% !important;
+}
+.el-date-range-picker.has-sidebar {
+	width: 320px !important;
+}
+.el-picker-panel__content.el-date-range-picker__content.is-right{
+	display: none !important;
+}
+.el-date-range-picker .el-picker-panel__body {
+	min-width: 180px !important;
+}
+.el-picker-panel__content.el-date-range-picker__content.is-left{
+	width: 100% !important;
+}
+/*.el-date-range-picker__content {*/
+	/*width: 100% !important;*/
+/*}*/
+.el-picker-panel [slot=sidebar], .el-picker-panel__sidebar {
+	width: 17% !important;
+}
+.el-range-editor.is-active, .el-range-editor.is-active:hover {
+	border-color: #4a2aff !important;
+}
+.el-date-table td.end-date span{
+	background-color: #4a2aff !important;
+}
+.el-date-table td.start-date span{
+	background-color: #4a2aff !important;
+}
+  .el-picker-panel__shortcut:hover {
+	color: #4a2aff !important;
+}
+.el-picker-panel {
+	line-height: 20px !important;
+}
+.el-date-table td.available:hover {
+	color: #4a2aff !important;
+}
+.el-picker-panel__body{
+	margin-left: 18% !important;
+}
+.el-range-input{
+	background: #363636 !important;
+	color: #c0c0c0 !important;
+}
+.el-range-separator{
+	color: #c0c0c0 !important;
+}
+.el-picker-panel__sidebar{
+	min-width: 70px !important;
+}
+.el-picker-panel el-date-range-picker el-popper has-sidebar{
+	min-width: 340px !important;
+}
+.laydate-footer-btns span{
+	border: 1px solid #4a2cf8 !important;
+	background-color: #4a2cf8 !important;
+}
+.layui-laydate .layui-this{
+	background-color: #4a2cf8 !important;
+}
+/*.highcharts-container{*/
+	/*background: #363636 !important;*/
+/*}*/
+/*.highcharts-root{*/
+	/*margin-top:10px !important;*/
+	/*width: 1656px !important;*/
+/*}*/
+.real-top>.p-float:hover{
+	background-color: #363636 !important;
+}
+.real-table-All{
+	/*background: #363636;*/
+	padding-left: .5%;
+	padding-right: .5%;
+	margin-bottom: 1%;
+}
+#div-one{
+	 /*background: #363636;*/
+ }
+.real-table-All>table>tbody>tr{
+	border: none !important;
+}
+
+.classpageinner{
+	position: relative;
+}
+#page-inner{
+	padding-left: 10.5%;
+}
+.main{
+	margin-top: 3%;
+}
+.calcscrollout{
+	top: 0 !important;
+	left: 0 !important;
+	width: 200px !important;
+	height: 150px !important;
+	overflow: scroll !important;
+}
+.fixed-table-body {
+	margin-right: 0px !important;
+}
+.btn-default {
+	border-color: #707070 !important;
+	height: 28px;
+	color: #999999 !important;
+}
+.btn{
+	border-radius: 0;
+	padding: 0;
+}
+.calcscrollout::-webkit-scrollbar,.fixed-table-body::-webkit-scrollbar{
+	width: 7px !important;
+	height: 13px !important;
+	background: #fff !important;
+}
+.calcscrollout::-webkit-scrollbar-track,.fixed-table-body::-webkit-scrollbar-track{
+	background: #666666 !important;
+	border: 1px solid #666666 !important;
+	/*margin-right: 4px !important;*/
+}
+.calcscrollout::-webkit-scrollbar-thumb,.fixed-table-body::-webkit-scrollbar-thumb{
+	height: 9px !important;
+	/* margin: 5px !important; */
+	border: 2px solid #666666 !important;
+	background-color: #333333 !important;
+}
+.el-input__inner{
+	border: 1px solid #707070 !important;
+	border-radius: 0 !important;
+	background: #202020 !important;
+	color: #ffffff !important;
+	text-align: center !important;
+	height: 28px !important;
+	padding: 3px 0 !important;
+}
+.fixed-table-header{
+	margin-right: 0px !important;
+}
+#page-wrapper{
+	padding: 0 1.5% 2% 1%;
+}
+.col-sm-3 {
+	width: 16% !important;
+}
+.el-date-editor .el-range__icon {
+	line-height: 20px !important;
+}
+.el-date-editor .el-range__close-icon {
+	display: none !important;
+}
+.el-date-editor .el-range-separator {
+	line-height: 20px !important;
+	padding: 0 !important;
+}
+.timePick{
+	width: 188px !important;
+}
+.el-range-input{
+	background: #202020 !important;
+	color: #999999 !important;
+}
+#real-inner{
+	border: 1px solid #707070;
+	/*background: #363636;*/
+	padding-left: 1%;
+}
+#cha:hover{
+	border: 1px solid blue;
+}
+#cha{
+	border: 1px solid #707070;
+	line-height: 28px;
+	float: left;
+	background-color: #707070;
+	color: white;
+	width: 80px;
+	margin-top: 1.1%;
+	/*margin-left: -14%;*/
+	height: 28px;
+}
+.real-btnAll{
+	text-align: center;
+	float: right;
+	width: 15px;
+	height: 15px;
+	margin-bottom: 1%;
+	margin-right: .2%;
+	cursor: pointer;
+}
+#real-btnT{
+	cursor: pointer;
+	float: right;
+	width: 15px;
+	height: 15px;
+	margin-right: 1.7%;
+	margin-top:1.05%;
+}
+.father:hover .helpDescription{display: block}
+.helpDescription{
+	display: none;
+	position: absolute;
+	/*margin-left: 63%;*/
+	margin-top: 1%;
+	z-index: 100;
+	right: 5%;
+}
+.help{
+	width: 15px;
+	height: 15px;
+	float: right;
+	margin-top: -.135%;
+	margin-right: 1%;
+}
+svg.highcharts-root {
+	padding-left: 0 !important;
+	padding-right: 10px !important;
+}

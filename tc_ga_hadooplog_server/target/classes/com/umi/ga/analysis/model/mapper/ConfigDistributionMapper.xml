@@ -1,0 +1,495 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="ConfigDistribution">
+	<resultMap id="config_distributionResult" type="ConfigDistribution">
+		<result property="id" column="id"/>
+		<result property="count" column="count"/>
+		<result property="property" column="property"/>
+		<result property="flag" column="flag"/>
+		<result property="timedate" column="timeDate"/>
+</resultMap>
+
+	<sql id="commonColumns">
+	    <![CDATA[
+        `id`,
+        `count`,
+        `property`,
+        `flag`,
+        `timeDate`
+	    ]]>
+	</sql>
+
+	<sql id="dynamicWhere">
+		<where>
+			<if test="@Ognl@isNotEmpty(id)">
+				AND `id` = #{id}
+			</if>
+			<if test="@Ognl@isNotEmpty(count)">
+				AND `count` = #{count}
+			</if>
+			<if test="@Ognl@isNotEmpty(property)">
+				AND `property` = #{property}
+			</if>
+			<if test="@Ognl@isNotEmpty(flag)">
+				AND `flag` = #{flag}
+			</if>
+			<if test="@Ognl@isNotEmpty(timedate)">
+				AND `timeDate` = #{timedate}
+			</if>
+		</where>
+	</sql>
+
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="ConfigDistribution">
+    <![CDATA[
+        INSERT INTO `config_distribution` (
+        	`id`,
+        	`count`,
+        	`property`,
+        	`flag`,
+        	`timeDate`
+        )
+        VALUES (
+        	#{id},
+        	#{count},
+        	#{property},
+        	#{flag},
+        	#{timedate}
+
+        )
+    ]]>
+	</insert>
+
+	<update id="update" parameterType="ConfigDistribution">
+    <![CDATA[
+        UPDATE `config_distribution` SET
+	        `id` = #{id},
+	        `count` = #{count},
+	        `property` = #{property},
+	        `flag` = #{flag},
+	        `timeDate` = #{timedate}
+        WHERE
+	        ID = #{id}
+    ]]>
+	</update>
+
+	<delete id="delete" parameterType="map">
+    <![CDATA[
+        delete from `config_distribution`
+    ]]>
+		<include refid="dynamicWhere"/>
+	</delete>
+
+	<select id="getById" resultMap="config_distributionResult">
+		SELECT <include refid="commonColumns" />
+	    <![CDATA[
+		    FROM `config_distribution`
+	        WHERE
+		        ID = #{id}
+	    ]]>
+	</select>
+
+    <select id="count" resultType="long">
+        SELECT count(*) FROM `config_distribution`
+		<include refid="dynamicWhere"/>
+    </select>
+  <select id="pageSelect" resultMap="config_distributionResult">
+    	SELECT
+    		<include refid="commonColumns" />
+	    FROM `config_distribution`
+		<include refid="dynamicWhere"/>
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+  </select>
+  <select id="hiveTest" resultMap="config_distributionResult">
+select    dataInfo['deviceBrand'] as property,    count(distinct dataInfo['macAddr']) as count,    "brand" as flag   from    dataInfo   where  day = '20191222'  and dataInfo['deviceBrand'] is not null   group by    dataInfo['deviceBrand']   order by count desc
+
+  </select>
+	<!--
+		###
+		###
+	-->
+
+	<!--
+		hive
+	-->
+	<select id="hiveSelectScreenResolution" parameterType="com.umi.ga.entitys.Times" resultMap="config_distributionResult">
+		select
+			concat(dataInfo.screenHeight1,'*',dataInfo.screenWidth1) as property,
+			count(dataInfo.macAddr) as count,
+			"resolution" as flag
+		from
+			(
+				select
+					distinct dataInfo['macAddr'] as macAddr,dataInfo['screenHeight1'] as screenHeight1,dataInfo['screenWidth1'] as screenWidth1
+				from
+					dataInfo
+				where
+					day=#{times} and dataInfo['screenHeight1'] is not null
+			) dataInfo
+		group by
+			concat(dataInfo.screenHeight1,'*',dataInfo.screenWidth1)
+		order by count desc
+	</select>
+
+	<select id="hiveSelectBrand" parameterType="com.umi.ga.entitys.Times" resultMap="config_distributionResult">
+		select
+			dataInfo.deviceBrand as property,
+			count(dataInfo.macAddr) as count,
+			"brand" as flag
+		from
+			(
+				select
+					distinct dataInfo['macAddr'] as macAddr,dataInfo['deviceBrand'] as deviceBrand
+				from
+					dataInfo
+				where
+					day=#{times} and dataInfo['deviceBrand'] is not null
+			) dataInfo
+		group by
+			dataInfo.deviceBrand
+		order by count desc
+	</select>
+
+	<select id="hiveSelectOS" parameterType="com.umi.ga.entitys.Times" resultMap="config_distributionResult">
+		select
+			concat(dataInfo.plantform,' ',dataInfo.systemVersion) as property,
+			count(dataInfo.macAddr) as count,
+			"os" as flag
+		from
+			(
+				select
+					distinct dataInfo['macAddr'] as macAddr,dataInfo['plantform'] as plantform,dataInfo['systemVersion'] as systemVersion
+				from
+					dataInfo
+				where
+					day=#{times} and dataInfo['plantform'] is not null
+			) dataInfo
+		group by
+			concat(dataInfo.plantform,' ',dataInfo.systemVersion)
+		order by count desc
+	</select>
+
+	<select id="hiveSelectRunMemory" parameterType="com.umi.ga.entitys.Times" resultMap="config_distributionResult">
+		select
+		    NVL(ceiling(regexp_replace(dataInfo.memoryTotalInfo,'k','')/1048576),'UNKNOW') as property,
+		    count(dataInfo.macAddr) as count,
+			"memory" as flag
+		from
+			(
+				select
+					distinct dataInfo['macAddr'] as macAddr,dataInfo['memoryTotalInfo'] as memoryTotalInfo
+				from
+					dataInfo
+				where
+					day=#{times} and dataInfo['memoryTotalInfo']  is not null
+			) dataInfo
+		group by
+			NVL(ceiling(regexp_replace(dataInfo.memoryTotalInfo,'k','')/1048576),'UNKNOW')
+		order by count desc
+	</select>
+
+	<select id="hiveSelectCPU" parameterType="com.umi.ga.entitys.Times" resultMap="config_distributionResult">
+		select
+			dataInfo.cpuName as property,
+			count(dataInfo.macAddr) as count,
+			"cpu" as flag
+		from
+			(
+				select
+					distinct dataInfo['macAddr'] as macAddr,dataInfo['cpuName'] as cpuName
+				from
+					dataInfo
+				where
+					day=#{times} and dataInfo['cpuName'] is not null
+			) dataInfo
+		group by
+			dataInfo.cpuName
+		order by count desc
+	</select>
+
+	<select id="hiveSelectGPU" parameterType="com.umi.ga.entitys.Times" resultMap="config_distributionResult">
+		select
+			dataInfo.gpuRenderer as property,
+			count(dataInfo.macAddr) as count,
+			"gpu" as flag
+		from
+			(
+				select
+					distinct dataInfo['macAddr'] as macAddr,dataInfo['gpuRenderer'] as gpuRenderer
+				from
+					dataInfo
+				where
+					day = #{times} and dataInfo['gpuRenderer'] is not null
+			) dataInfo
+		group by
+			dataInfo.gpuRenderer
+		order by count desc
+	</select>
+
+	<select id="hiveSelectNumOfPeople" parameterType="com.umi.ga.entitys.Times" resultMap="config_distributionResult">
+		select
+			"numPeople" as property,
+			count(distinct dataInfo['macAddr']) as count,
+			"numPeople" as flag
+		from
+			dataInfo
+		where
+		 	day = #{times} and dataInfo['macAddr'] is not null
+	</select>
+
+	<!--
+		MySQL
+	-->
+
+	<select id="selectMaxTimeDateResolution" resultMap="config_distributionResult">
+		select
+			max(timeDate) as timeDate
+		from
+			config_distribution
+	</select>
+
+	<select id="insertBatch" parameterType="java.util.List" resultMap="config_distributionResult">
+		insert into config_distribution
+		(
+			`count`,
+			`property`,
+			`flag`,
+			`timeDate`
+		)
+		values
+		<foreach collection="list" item="item" index="index" separator=",">
+			<trim prefix="(" suffix=")" suffixOverrides="," >
+				#{item.count},#{item.property},#{item.flag},#{item.timedate}
+			</trim>
+		</foreach>
+	</select>
+
+	<select id="selectScreenResolutionNow" parameterType="com.umi.ga.entitys.Times" resultMap="config_distributionResult">
+		select concat(screen_height1,'*',screen_width1) as property,count(distinct mac_addr) as count,'resolution' as flag
+        from dataInfo where time between #{startTime} and #{endTime} and screen_height1 is not null and screen_width1 is not null
+        group by property order by count desc limit 10
+	</select>
+
+	<select id="selectBrandNow" parameterType="com.umi.ga.entitys.Times" resultMap="config_distributionResult">
+		select device_brand as property,count(distinct mac_addr) as count,'brand' as flag
+		from dataInfo where time between #{startTime} and #{endTime} and device_brand is not null
+		group by property order by count desc limit 10
+	</select>
+
+	<select id="selectOSNow" parameterType="com.umi.ga.entitys.Times" resultMap="config_distributionResult">
+        select concat(plant_form,' ',system_version) as property,count(distinct mac_addr) as count,'os' as flag
+        from dataInfo where time between #{startTime} and #{endTime} and plant_form is not null and system_version is not null
+        group by property order by count desc limit 10
+	</select>
+
+	<select id="selectRunMemoryNow" parameterType="com.umi.ga.entitys.Times" resultMap="config_distributionResult">
+        select CEILING(memory_totalInfo/1048576)  as property,count(distinct mac_addr) as count, 'memory' as flag
+        from dataInfo where time between #{startTime} and #{endTime} and memory_totalInfo is not null
+        group by property order by count desc limit 10
+	</select>
+
+	<select id="selectCPUNow" parameterType="com.umi.ga.entitys.Times" resultMap="config_distributionResult">
+        select cpu_name as property,count(distinct mac_addr) as count
+        from dataInfo where time between #{startTime} and #{endTime}
+        group by property order by count desc
+	</select>
+
+	<select id="selectGPUNow" parameterType="com.umi.ga.entitys.Times" resultMap="config_distributionResult">
+        select gpu_renderer as property,count(distinct mac_addr) as count
+        from dataInfo where time between #{startTime} and #{endTime}
+        group by property order by count desc
+	</select>
+
+
+	<select id="selectScreenResolution" parameterType="java.util.List" resultMap="config_distributionResult">
+		select
+			property as property,
+			ifnull(sum(count),0) as count,
+			flag as flag
+		from
+			config_distribution
+		where
+				flag = 'resolution'
+			and
+				timeDate in
+				(
+					<foreach collection="list" item="item" index="index" separator=",">
+						<trim prefix="" suffix="" suffixOverrides=",">
+							#{item.times}
+						</trim>
+					</foreach>
+				)
+			group by
+				property
+			order by count desc limit 10
+
+	</select>
+
+	<select id="selectBrand" parameterType="java.util.List" resultMap="config_distributionResult">
+		select
+			property as property,
+			ifnull(sum(count),0) as count,
+			flag as flag
+		from
+			config_distribution
+		where
+				flag = 'brand'
+			and
+				timeDate in
+				(
+					<foreach collection="list" item="item" index="index" separator=",">
+						<trim prefix="" suffix="" suffixOverrides=",">
+							#{item.times}
+						</trim>
+					</foreach>
+				)
+		group by
+			property
+		order by count desc limit 10
+	</select>
+
+	<select id="selectOS" parameterType="java.util.List" resultMap="config_distributionResult">
+ 		select
+			property as property,
+			ifnull(sum(count),0) as count,
+			flag as flag
+		from
+			config_distribution
+		where
+				flag = 'os'
+			and
+				timeDate in
+				(
+					<foreach collection="list" item="item" index="index" separator=",">
+						<trim prefix="" suffix="" suffixOverrides=",">
+							#{item.times}
+						</trim>
+					</foreach>
+				)
+		group by
+			property
+		order by count desc limit 10
+	</select>
+
+	<select id="selectRunMemory" parameterType="java.util.List" resultMap="config_distributionResult">
+		select
+			property as property,
+			ifnull(sum(count),0) as count,
+			flag as flag
+		from
+			config_distribution
+		where
+				flag = 'memory'
+			and
+				timeDate in
+				(
+					<foreach collection="list" item="item" index="index" separator=",">
+						<trim prefix="" suffix="" suffixOverrides=",">
+							#{item.times}
+						</trim>
+					</foreach>
+				)
+		group by
+			property
+		order by count desc
+	</select>
+
+		<select id="selectCPU" parameterType="java.util.List" resultMap="config_distributionResult">
+		select
+			property as property,
+			ifnull(sum(count),0) as count,
+			flag as flag
+		from
+			config_distribution
+		where
+				flag = 'cpu'
+			and
+				timeDate in
+				(
+					<foreach collection="list" item="item" index="index" separator=",">
+						<trim prefix="" suffix="" suffixOverrides=",">
+							#{item.times}
+						</trim>
+					</foreach>
+				)
+		group by
+			property
+		order by count desc limit 10
+	</select>
+
+	<select id="selectGPU" parameterType="java.util.List" resultMap="config_distributionResult">
+		select
+			property as property,
+			ifnull(sum(count),0) as count,
+			flag as flag
+		from
+			config_distribution
+		where
+				flag = 'gpu'
+			and
+				timeDate in
+				(
+					<foreach collection="list" item="item" index="index" separator=",">
+						<trim prefix="" suffix="" suffixOverrides=",">
+							#{item.times}
+						</trim>
+					</foreach>
+				)
+		group by
+			property
+		order by count desc limit 10
+	</select>
+
+	<select id="selectNumOfPeople" parameterType="java.util.List" resultMap="config_distributionResult">
+		select
+			id as id,
+			count as count,
+			property as property,
+			flag as flag,
+			timeDate as timedate
+		from
+			config_distribution
+		where
+				flag = 'numPeople'
+			and
+				timedate in
+				(
+					<foreach collection="list" item="item" index="index" separator=",">
+							<trim prefix="" suffix="" suffixOverrides=",">
+								#{item.times}
+							</trim>
+						</foreach>
+				)
+		order by timedate asc
+	</select>
+
+	<select id="selectCPUSpecial" parameterType="com.umi.ga.entitys.Times" resultMap="config_distributionResult">
+		select
+			count as count,
+			property as property,
+			flag as flag,
+			timeDate as timedate
+		from
+			config_distribution
+		where
+			timeDate between #{startTime} and #{endTime} and property = #{type}
+		order by timedate asc
+	</select>
+
+		<select id="selectGPUSpecial" parameterType="com.umi.ga.entitys.Times" resultMap="config_distributionResult">
+		select
+			count as count,
+			property as property,
+			flag as flag,
+			timeDate as timedate
+		from
+			config_distribution
+		where
+			timeDate between #{startTime} and #{endTime} and property = #{type}
+		order by timedate asc
+	</select>
+</mapper>

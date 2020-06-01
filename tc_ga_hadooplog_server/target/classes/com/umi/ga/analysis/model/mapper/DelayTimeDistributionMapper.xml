@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="DelayTimeDistribution">
+	<resultMap id="delayTimeDistributionResult" type="DelayTimeDistribution">
+		<result property="id" column="id"/>
+		<result property="timequantum" column="timeQuantum"/>
+		<result property="count" column="count"/>
+		<result property="timedate" column="timeDate"/>
+</resultMap>
+
+	<sql id="commonColumns">
+	    <![CDATA[
+        `id`,
+        `timeQuantum`,
+        `count`,
+        `timeDate`
+	    ]]>
+	</sql>
+
+	<sql id="dynamicWhere">
+		<where>
+			<if test="@Ognl@isNotEmpty(id)">
+				AND `id` = #{id}
+			</if>
+			<if test="@Ognl@isNotEmpty(timequantum)">
+				AND `timeQuantum` = #{timequantum}
+			</if>
+			<if test="@Ognl@isNotEmpty(count)">
+				AND `count` = #{count}
+			</if>
+			<if test="@Ognl@isNotEmpty(timedate)">
+				AND `timeDate` = #{timedate}
+			</if>
+		</where>
+	</sql>
+
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="DelayTimeDistribution">
+    <![CDATA[
+        INSERT INTO `delayTime_distribution` (
+        	`id`,
+        	`timeQuantum`,
+        	`count`,
+        	`timeDate`
+        )
+        VALUES (
+        	#{id},
+        	#{timequantum},
+        	#{count},
+        	#{timedate}
+
+        )
+    ]]>
+	</insert>
+
+	<update id="update" parameterType="DelayTimeDistribution">
+    <![CDATA[
+        UPDATE `delayTime_distribution` SET
+	        `id` = #{id},
+	        `timeQuantum` = #{timequantum},
+	        `count` = #{count},
+	        `timeDate` = #{timedate}
+        WHERE
+	        ID = #{id}
+    ]]>
+	</update>
+
+	<delete id="delete" parameterType="map">
+    <![CDATA[
+        delete from `delayTime_distribution`
+    ]]>
+		<include refid="dynamicWhere"/>
+	</delete>
+
+	<select id="getById" resultMap="delayTimeDistributionResult">
+		SELECT <include refid="commonColumns" />
+	    <![CDATA[
+		    FROM `delayTime_distribution`
+	        WHERE
+		        ID = #{id}
+	    ]]>
+	</select>
+
+    <select id="count" resultType="long">
+        SELECT count(*) FROM `delayTime_distribution`
+		<include refid="dynamicWhere"/>
+    </select>
+  <select id="pageSelect" resultMap="delayTimeDistributionResult">
+    	SELECT
+    		<include refid="commonColumns" />
+	    FROM `delayTime_distribution`
+		<include refid="dynamicWhere"/>
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+  </select>
+
+	<!--
+		###
+		###
+	-->
+	<select id="selectTableByColumn" parameterType="com.umi.ga.entitys.tableDate" resultType="String">
+		select
+			MAX(${columnTime})
+		from
+			${table}
+		<if test="@Ognl@isNotEmpty(column)">
+		where ${column} = #{value}
+		</if>
+	</select>
+	<select id="selectMaxTimeDateDealyTime" resultMap="delayTimeDistributionResult">
+		select
+			IFNULL(MAX(timeDate),0) as timeDate
+		from
+			delayTime_distribution
+	</select>
+	<insert id="insertBatch" parameterType="java.util.List">
+		insert into delayTime_distribution
+		(
+			`timeQuantum`,
+			`count`,
+			`timeDate`
+		)
+		values
+		<foreach collection="list" item="item" index="index" separator=",">
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				#{item.timequantum},#{item.count},#{item.timedate}
+			</trim>
+		</foreach>
+	</insert>
+
+	<select id="selectListByTimeDate" parameterType="java.util.List" resultMap="delayTimeDistributionResult">
+		select
+			timeQuantum,
+			ifnull(sum(count),0) as count
+		from
+			delayTime_distribution
+		where
+			timeDate in
+			(
+				<foreach collection="list" item="item" index="index" separator=",">
+					<trim prefix=" " suffix=" " suffixOverrides=",">
+						#{item.times}
+					</trim>
+				</foreach>
+			)
+		group by
+			timeQuantum
+		order by 1 asc
+	</select>
+</mapper>

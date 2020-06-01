@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+		<link rel="shortcut  icon" type="image/x-icon" href="bitbug_favicon (2).ico" media="screen" />
+		<title class="combat_whole"></title>
+		<link rel="stylesheet" href="../layui/css/layui.css" />
+		<link rel="stylesheet" href="../css/combat_list.css" />
+		<link rel="stylesheet" href="../font-awesome-4.7.0/css/font-awesome.min.css" />
+		<link rel="stylesheet" href="../css/bootstrap.min.css" />
+		<link rel="stylesheet" type="text/css" href="../js/bootstrap-table/bootstrap-table.min.css"/>
+		<link rel="stylesheet" href="../js/multiple/bootstrap-multiselect.css" />
+		<link rel="stylesheet" href="../js/loading/jquery.mloading.css" />
+		<style type="text/css">
+			.fixed-table-loading{
+				background: #363636;
+				color: white;
+				top: 80px;
+				border: 0;
+			}
+			.pagination>li>a, .pagination>li>span{
+				color: white;
+				background-color: transparent;
+				border: 0;
+			}
+			.bootstrap-table .fixed-table-pagination>.pagination-detail .page-list{
+				color: #C0C0C0;
+			}
+			.pagination>li>a, .pagination>li>span:hover{
+				background: #464545;
+			}
+			.pagination>.disabled>a, .pagination>.disabled>a:focus, .pagination>.disabled>a:hover, .pagination>.disabled>span, .pagination>.disabled>span:focus, .pagination>.disabled>span:hover{
+				color: #C0C0C0;
+				background-color: #464545;
+				border: 0;
+			}
+			.pagination>li>a:focus, .pagination>li>a:hover, .pagination>li>span:focus, .pagination>li>span:hover{
+				color: #428BCA;
+				background: #464545;
+				border: 0;
+			}
+			.pagination-info{
+				color: #C0C0C0;
+			}
+			.checkbox{
+				color: #C0C0C0;
+				font-size: 14px;
+				line-height: 30px;
+			}
+			.dropdown-menu,.btn-default{
+				background: #363636;
+				color: #C0C0C0;
+			}
+			.btn-default:hover{
+				background: #363636;
+				color: #C0C0C0;
+			}
+			.btn-default.active, .btn-default:active, .open>.dropdown-toggle.btn-default{
+				color: #C0C0C0;
+				background: #363636;
+			}
+			.btn-default.active.focus, .btn-default.active:focus, .btn-default.active:hover, .btn-default:active.focus, .btn-default:active:focus, .btn-default:active:hover, .open>.dropdown-toggle.btn-default.focus, .open>.dropdown-toggle.btn-default:focus, .open>.dropdown-toggle.btn-default:hover{
+				color: #C0C0C0;
+				background: #363636;
+			}
+			.dropdown-menu>.active>a, .dropdown-menu>.active>a:focus, .dropdown-menu>.active>a:hover{
+				background: #363636;
+			}
+			.btn-default.focus, .btn-default:focus{
+				background: #363636;
+				color: #C0C0C0;
+			}
+			.bootstrap-table{
+				clear: both;
+			}
+			.pagination>.active>a, .pagination>.active>a:focus, .pagination>.active>a:hover, .pagination>.active>span, .pagination>.active>span:focus, .pagination>.active>span:hover{
+				background: #555555;
+				border-color: #555555;
+			}
+			.pagination>li>a:hover, .pagination>li>span:hover{
+				color: white;
+			}
+		</style>
+	</head>
+	<body style="background: #202020;" onload="lo()">
+		<div id="navs"></div>
+		<div class="layui-layout layui-layout-admin">
+			<div class="layui-body" style="padding: 20px;">
+				<ul class="header_ul">
+					<li onclick="tabs(this)" value="0" class="combat_mount"></li>
+					<li onclick="tabs(this)" value="1" class="combat_wing"></li>
+					<li onclick="tabs(this)" value="2" class="combat_equipment"></li>
+					<li onclick="tabs(this)" value="3" class="combat_spirit"></li>
+					<li onclick="tabs(this)" value="4" class="combat_all"></li>
+				</ul>
+				<div style="clear: both;"></div>
+				<div class="sum_div">
+					<div class="Mount">
+						<form role="form" class="form-inline">
+							<div class="form-group" style="width: 20%;float: left;margin-bottom: 1%;">
+								<label for="" class="combat_district"></label>
+								<select id="district_service" multiple="multiple"></select>
+							</div>
+							<div class="form-group layui-inline" style="width: 20%;float: left;">
+								<label for="" class="combat_time" style="margin-left: -3%;"></label>
+								<input type="text" class="form-control" id="datatimes"/>
+							</div>
+							<div class="form-group" style="width: 20%;float: left;">
+								<label for="" style="margin-left: 3%;" class="combat_regchannel"></label>
+								<select id="reg_channel" style="width: 65%;"></select>
+							</div>
+							
+							<div class="form-group" style="width: 17%;float: right;">
+								<button type="button" class="layui-btn layui-btn-normal combat_export" id="export" onclick="exp()"></button>
+								<button type="button" class="layui-btn layui-btn-normal combat_query" id="query" onclick="onread()"></button>
+							</div>
+						</form>
+						<table id="datatable"></table>
+					</div>
+					<div class="Wing">
+						<form role="form" class="form-inline">
+							<div class="form-group" style="width: 20%;float: left;margin-bottom: 1%;">
+								<label for="" class="combat_district"></label>
+								<select id="Wing_district" multiple="multiple"></select>
+							</div>
+							<div class="form-group layui-inline" style="width: 20%;float: left;">
+								<label for="" class="combat_time" style="margin-left: -3%;"></label>
+								<input type="text" class="form-control" id="Wing_times"/>
+							</div>
+							<div class="form-group" style="width: 20%;float: left;">
+								<label for="" style="margin-left: 3%;" class="combat_regchannel"></label>
+								<select id="Wingreg_channel" style="width: 65%;"></select>
+							</div>
+							
+							<div class="form-group" style="width: 17%;float: right;">
+								<button type="button" class="layui-btn layui-btn-normal combat_export" id="wingexport" onclick="exp2()"></button>
+								<button type="button" class="layui-btn layui-btn-normal combat_query" id="wingquery" onclick="onread2()"></button>
+							</div>
+						</form>
+						<table id="Wing_table"></table>
+					</div>
+					<div class="equipment">
+						<form role="form" class="form-inline">
+							<div class="form-group" style="width: 20%;float: left;margin-bottom: 1%;">
+								<label for="" class="combat_district"></label>
+								<select id="equipment_district" multiple="multiple"></select>
+							</div>
+							<div class="form-group layui-inline" style="width: 20%;float: left;">
+								<label for="" class="combat_time" style="margin-left: -3%;"></label>
+								<input type="text" class="form-control" id="equipment_times"/>
+							</div>
+							<div class="form-group" style="width: 20%;float: left;">
+								<label for="" style="margin-left: 3%;" class="combat_regchannel"></label>
+								<select id="equipreg_channel" style="width: 65%;"></select>
+							</div>
+							
+							<div class="form-group" style="width: 17%;float: right;">
+								<button type="button" class="layui-btn layui-btn-normal combat_export" id="equexport" onclick="exp3()"></button>
+								<button type="button" class="layui-btn layui-btn-normal combat_query" id="eququery" onclick="onread3()"></button>
+							</div>
+						</form>
+						<table id="equipment_table"></table>
+					</div>
+					<div class="spirit">
+						<form role="form" class="form-inline">
+							<div class="form-group" style="width: 20%;float: left;margin-bottom: 1%;">
+								<label for="" class="combat_district"></label>
+								<select id="spirit_district" multiple="multiple"></select>
+							</div>
+							<div class="form-group layui-inline" style="width: 20%;float: left;">
+								<label for="" class="combat_time" style="margin-left: -3%;"></label>
+								<input type="text" class="form-control" id="spirit_times"/>
+							</div>
+							<div class="form-group" style="width: 20%;float: left;">
+								<label for="" style="margin-left: 3%;" class="combat_regchannel"></label>
+								<select id="spiritreg_channel" style="width: 65%;"></select>
+							</div>
+							
+							<div class="form-group" style="width: 17%;float: right;">
+								<button type="button" class="layui-btn layui-btn-normal combat_export" id="allexport" onclick="exp4()"></button>
+								<button type="button" class="layui-btn layui-btn-normal combat_query" id="allquery" onclick="onread4()"></button>
+							</div>
+						</form>
+						<table id="spirit_table"></table>
+					</div>
+					<div class="all">
+						<form role="form" class="form-inline">
+							<div class="form-group" style="width: 20%;float: left;margin-bottom: 1%;">
+								<label for="" class="combat_district"></label>
+								<select id="all_district" multiple="multiple"></select>
+							</div>
+							<div class="form-group layui-inline" style="width: 20%;float: left;">
+								<label for="" class="combat_time" style="margin-left: -3%;"></label>
+								<input type="text" class="form-control" id="all_times"/>
+							</div>
+							<div class="form-group" style="width: 20%;float: left;">
+								<label for="" style="margin-left: 3%;" class="combat_regchannel"></label>
+								<select id="allreg_channel" style="width: 65%;"></select>
+							</div>
+							<div class="form-group" style="width: 17%;float: right;">
+								<button type="button" class="layui-btn layui-btn-normal combat_export" id="spiexport" onclick="exp5()"></button>
+								<button type="button" class="layui-btn layui-btn-normal combat_query" id="spiquery" onclick="onread5()"></button>
+							</div>
+						</form>
+						<table id="all_table"></table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="../layui/layui.js"></script>
+	<script src="../js/jquery.min.js"></script>
+	<script src="../js/loading/jquery.mloading.js"></script>
+	<script src="../js/jquery.table2excel.js"></script>
+	<script src="../js/jquery.cookie.js"></script>
+	<script src="../js/bootstrap.min.js"></script>
+	<script src="../js/multiple/bootstrap-multiselect.js"></script>
+	<script src="../js/bootstrap-table/bootstrap-table.min.js"></script>
+	<script src="../js/combat_list.js"></script>
+	<script>
+		$("#navs").load("Navigation.html")
+		function lo(){
+			$(".405").addClass("layui-this").siblings().removeClass("layui-this")
+			$(".405").parent().parent().addClass("layui-nav-itemed").siblings().removeClass("layui-nav-itemed")
+		}
+		//选项卡点击切换
+		function tabs(obj){
+			var val = $(obj).val();
+			$(obj).css({
+				"background":"#4d4d4d",
+				"color":"white",
+				"font-weight":"bold"
+			}).siblings().css({
+				"background":"#363636",
+				"color":"#c0c0c0",
+				"font-weight":"100"
+			})
+			if(val=="0"){
+				$(".Mount").css("display","block").siblings().css("display","none")
+			}
+			if(val=="1"){
+				$(".Wing").css("display","block").siblings().css("display","none")
+			}
+			if(val=="2"){
+				$(".equipment").css("display","block").siblings().css("display","none")
+			}
+			if(val=="3"){
+				$(".spirit").css("display","block").siblings().css("display","none")
+			}
+			if(val=="4"){
+				$(".all").css("display","block").siblings().css("display","none")
+			}
+		}
+		//导出下载
+		function exp(){
+			$("body").mLoading("show");
+			var combat_district_num = $("#district_service").val(); //区服
+			var combat_date = $("#datatimes").val(); //起止时间
+			var combat_reg_ways = $("#reg_channel").val(); //充值渠道
+			if(combat_district_num!=""){
+				combat_district_num=combat_district_num.join(",")
+			}
+			$.ajax({
+				type:"get",
+				url:"../querymount_Export.action",
+				async:true,
+				data:{
+					serverId: combat_district_num,
+					seDate: combat_date,
+					channelId: combat_reg_ways,
+					pageIndex:1,
+					pageSize:100000000
+				},
+				success:function(e){
+					if(e.state==false){
+						alert(e.message)
+						$("body").mLoading("hide");
+					}else{
+						window.open('/upload/log.xlsx');
+						$("body").mLoading("hide");
+					}
+				}
+			});
+		}
+		//翅膀战力导出
+		function exp2(){
+			$("body").mLoading("show");
+			var combat_district_numW = $("#Wing_district").val();//区服
+			var combat_dateW = $("#Wing_times").val(); //起止时间
+			var combat_reg_waysW = $("#Wingreg_channel").val(); //充值渠道
+			if(combat_district_numW!=""){
+				combat_district_numW=combat_district_numW.join(",")
+			}
+			//未获取数据
+			$.ajax({
+				type:"get",
+				url:"../querywing_Export.action",
+				async:true,
+				data:{
+					serverId: combat_district_numW,
+					seDate: combat_dateW,
+					channelId: combat_reg_waysW,
+					pageIndex:1,
+					pageSize:100000000
+				},
+				success:function(e){
+					if(e.state==false){
+						alert(e.message)
+						$("body").mLoading("hide");
+					}else{
+						window.open('/upload/log.xlsx');
+						$("body").mLoading("hide");
+					}
+				}
+			});
+		}
+		//装备战力导出
+		function exp3(){
+			$("body").mLoading("show");
+			var combat_district_numE = $("#equipment_district").val();//区服
+			var combat_dateE = $("#equipment_times").val(); //起止时间
+			var combat_reg_waysE = $("#equipreg_channel").val(); //充值渠道
+			if(combat_district_numE!=""){
+				combat_district_numE=combat_district_numE.join(",")
+			}
+			$.ajax({
+				type:"get",
+				url:"../queryequipment_Export.action",
+				async:true,
+				data:{
+					serverId: combat_district_numE,
+					seDate: combat_dateE,
+					channelId: combat_reg_waysE,
+					pageIndex:1,
+					pageSize:100000000
+				},
+				success:function(e){
+					if(e.state==false){
+						alert(e.message)
+						$("body").mLoading("hide");
+					}else{
+						window.open('/upload/log.xlsx');
+						$("body").mLoading("hide");
+					}
+				}
+			});
+		}
+		//精灵战力导出
+		function exp4(){
+			$("body").mLoading("show");
+			var combat_district_numS = $("#spirit_district").val();//区服
+			var combat_dateS = $("#spirit_times").val(); //起止时间
+			var combat_reg_wayS = $("#spiritreg_channel").val(); //充值渠道
+			if(combat_district_numS!=""){
+				combat_district_numS=combat_district_numS.join(",")
+			}
+			$.ajax({
+				type:"get",
+				url:"../queryespirit_Export.action",
+				async:true,
+				data:{
+					serverId: combat_district_numS,
+					seDate: combat_dateS,
+					channelId: combat_reg_wayS,
+					pageIndex:1,
+					pageSize:100000000
+				},
+				success:function(e){
+					if(e.state==false){
+						alert(e.message)
+						$("body").mLoading("hide");
+					}else{
+						window.open('/upload/log.xlsx');
+						$("body").mLoading("hide");
+					}
+				}
+			});
+		}
+		//总战力导出
+		function exp5(){
+			$("body").mLoading("show");
+			var combat_district_numS = $("#all_district").val();//区服
+			var combat_dateS = $("#all_times").val(); //起止时间
+			var combat_reg_wayS = $("#allreg_channel").val(); //充值渠道
+			if(combat_district_numS!=""){
+				combat_district_numS=combat_district_numS.join(",")
+			}
+			$.ajax({
+				type:"get",
+				url:"../queryTotalCombatPower_Export.action",
+				async:true,
+				data:{
+					serverId: combat_district_numS,
+					seDate: combat_dateS,
+					channelId: combat_reg_wayS,
+					pageIndex:1,
+					pageSize:100000000
+				},
+				success:function(e){
+					if(e.state==false){
+						alert(e.message)
+						$("body").mLoading("hide");
+					}else{
+						window.open('/upload/log.xlsx');
+						$("body").mLoading("hide");
+					}
+				}
+			});
+		}
+	</script>
+</html>

@@ -1,0 +1,1096 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="DailyAnalysis">
+    <resultMap id="daily_analysisResult" type="DailyAnalysis">
+        <result property="id" column="id"/>
+        <result property="serverId" column="serverId"/>
+        <result property="channelId" column="channelId"/>
+        <result property="timedate" column="timeDate"/>
+        <result property="dailyRegister" column="daily_register"/>
+        <result property="activeNumber" column="active_number"/>
+
+        <!--老用户 -->
+        <result property="oldUser" column="oldUser"/>
+
+        <result property="payAmount" column="pay_amount"/>
+        <result property="payNumber" column="pay_number"/>
+        <result property="firstNumber" column="first_number"/>
+        <result property="firstAmount" column="first_amount"/>
+        <result property="sumpersonnel" column="sumpersonnel"/>
+        <result property="firstSumAmount" column="first_sum_amount"/>
+        <result property="rate" column="rate"/>
+        <result property="arpu" column="arpu"/>
+        <result property="arppu" column="arppu"/>
+        <result property="dayRetain" column="day_retain"/>
+        <result property="dayAccountCount" column="day_account_count"/>
+        <result property="threeRetain" column="three_retain"/>
+        <result property="threeAccountCount" column="three_account_count"/>
+        <result property="weekRetain" column="week_retain"/>
+        <result property="weekAccountCount" column="week_account_count"/>
+
+        <!--	14留	30留	60留 -->
+        <result property="fourteenRetain" column="fourteen_retain"/>
+        <result property="fourteenAccountCount" column="fourteen_account_count"/>
+        <result property="thirtyRetain" column="thirty_retain"/>
+        <result property="thirtyAccountCount" column="thirty_account_count"/>
+        <result property="sixtyRetain" column="sixty_retain"/>
+        <result property="sixtyAccountCount" column="sixty_account_count"/>
+
+        <result property="maxOnlineNumber" column="max_online_number"/>
+        <result property="gameNumber" column="game_number"/>
+        <result property="aveGametime" column="ave_gametime"/>
+        <result property="aveGamenumber" column="ave_gamenumber"/>
+        <result property="newPlayers" column="new_players"/>
+        <result property="sumGametime" column="sum_gametime"/>
+    </resultMap>
+
+    <resultMap id="flagResult" type="com.umi.ga.entitys.Flag">
+        <result column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="flag" jdbcType="VARCHAR" property="flag"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="type" jdbcType="VARCHAR" property="type"/>
+        <result column="time" jdbcType="VARCHAR" property="time"/>
+        <result column="number" jdbcType="INTEGER" property="number"/>
+        <result column="serverId" jdbcType="VARCHAR" property="serverId"/>
+        <result column="channelId" jdbcType="VARCHAR" property="channelId"/>
+        <result column="payAmount" jdbcType="DECIMAL" property="payAmount"/>
+        <result column="payNumber" jdbcType="INTEGER" property="payNumber"/>
+        <result column="payCount" jdbcType="INTEGER" property="payCount"/>
+    </resultMap>
+
+    <sql id="commonColumns">
+	    <![CDATA[
+
+                        `id`,
+                        `server_id`,
+                        `channel_id`,
+                        `timeDate`,
+                        `daily_register`,
+                        `active_number`,
+                        `pay_amount`,
+                        `pay_number`,
+                        `first_number`,
+                        `first_amount`,
+                        `sumpersonnel`,
+                        `first_sum_amount`,
+                        `rate`,
+                        `arpu`,
+                        `arppu`,
+                        `day_retain`,
+                        `day_account_count`,
+                        `three_retain`,
+                        `three_account_count`,
+                        `week_retain`,
+                        `week_account_count`,
+                        `fourteen_retain`,
+                        `fourteen_account_count`,
+                        `thirty_retain`,
+                        `thirty_account_count`,
+                        `sixty_retain`,
+                        `sixty_account_count`,
+                        `max_online_number`,
+                        `game_number`,
+                        `ave_gametime`,
+                        `ave_gamenumber`,
+                        `new_players`,
+                        `sum_gametime`
+
+        ]]>
+	</sql>
+
+    <sql id="dynamicWhere">
+        <where>
+            <if test="@Ognl@isNotEmpty(id)">
+                AND `id` = #{id}
+            </if>
+            <if test="@Ognl@isNotEmpty(serverId)">
+                AND `server_id` = #{serverId}
+            </if>
+            <if test="@Ognl@isNotEmpty(timedate)">
+                AND `timeDate` = #{timedate}
+            </if>
+            <if test="@Ognl@isNotEmpty(dailyRegister)">
+                AND `daily_register` = #{dailyRegister}
+            </if>
+            <if test="@Ognl@isNotEmpty(activeNumber)">
+                AND `active_number` = #{activeNumber}
+            </if>
+            <if test="@Ognl@isNotEmpty(payAmount)">
+                AND `pay_amount` = #{payAmount}
+            </if>
+            <if test="@Ognl@isNotEmpty(payNumber)">
+                AND `pay_number` = #{payNumber}
+            </if>
+            <if test="@Ognl@isNotEmpty(firstNumber)">
+                AND `first_number` = #{firstNumber}
+            </if>
+            <if test="@Ognl@isNotEmpty(firstAmount)">
+                AND `first_amount` = #{firstAmount}
+            </if>
+            <if test="@Ognl@isNotEmpty(sumpersonnel)">
+                AND `sumpersonnel` = #{sumpersonnel}
+            </if>
+            <if test="@Ognl@isNotEmpty(firstSumAmount)">
+                AND `first_sum_amount` = #{firstSumAmount}
+            </if>
+            <if test="@Ognl@isNotEmpty(rate)">
+                AND `rate` = #{rate}
+            </if>
+            <if test="@Ognl@isNotEmpty(arpu)">
+                AND `arpu` = #{arpu}
+            </if>
+            <if test="@Ognl@isNotEmpty(arppu)">
+                AND `arppu` = #{arppu}
+            </if>
+            <if test="@Ognl@isNotEmpty(dayRetain)">
+                AND `day_retain` = #{dayRetain}
+            </if>
+            <if test="@Ognl@isNotEmpty(dayAccountCount)">
+                AND `day_account_count` = #{dayAccountCount}
+            </if>
+            <if test="@Ognl@isNotEmpty(threeRetain)">
+                AND `three_retain` = #{threeRetain}
+            </if>
+            <if test="@Ognl@isNotEmpty(threeAccountCount)">
+                AND `three_account_count` = #{threeAccountCount}
+            </if>
+            <if test="@Ognl@isNotEmpty(weekRetain)">
+                AND `week_retain` = #{weekRetain}
+            </if>
+            <if test="@Ognl@isNotEmpty(weekAccountCount)">
+                AND `week_account_count` = #{weekAccountCount}
+            </if>
+            <if test="@Ognl@isNotEmpty(maxOnlineNumber)">
+                AND `max_online_number` = #{maxOnlineNumber}
+            </if>
+            <if test="@Ognl@isNotEmpty(gameNumber)">
+                AND `game_number` = #{gameNumber}
+            </if>
+            <if test="@Ognl@isNotEmpty(aveGametime)">
+                AND `ave_gametime` = #{aveGametime}
+            </if>
+            <if test="@Ognl@isNotEmpty(aveGamenumber)">
+                AND `ave_gamenumber` = #{aveGamenumber}
+            </if>
+            <if test="@Ognl@isNotEmpty(newPlayers)">
+                AND `new_players` = #{newPlayers}
+            </if>
+            <if test="@Ognl@isNotEmpty(sumGametime)">
+                AND `sum_gametime` = #{sumGametime}
+            </if>
+        </where>
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="DailyAnalysis">
+    <![CDATA[
+
+
+
+                                INSERT INTO `daily_analysis` (
+                                    `server_id`,
+                                    `channel_id`,
+                                    `timeDate`,
+                                    `daily_register`,
+                                    `active_number`,
+                                    `pay_amount`,
+                                    `pay_number`,
+                                    `first_number`,
+                                    `first_amount`,
+                                    `sumpersonnel`,
+                                    `first_sum_amount`,
+                                    `rate`,
+                                    `arpu`,
+                                    `arppu`,
+                                    `day_retain`,
+                                    `day_account_count`,
+                                    `three_retain`,
+                                    `three_account_count`,
+                                    `week_retain`,
+                                    `week_account_count`,
+                                    `fourteen_retain`,
+                                    `fourteen_account_count`,
+                                    `thirty_retain`,
+                                    `thirty_account_count`,
+                                    `sixty_retain`,
+                                    `sixty_account_count`,
+                                    `max_online_number`,
+                                    `game_number`,
+                                    `ave_gametime`,
+                                    `ave_gamenumber`,
+                                    `new_players`,
+                                    `sum_gametime`
+                                )
+                                VALUES (
+                                    #{serverId},
+                                    #{channelId},
+                                    #{timedate},
+                                    #{dailyRegister},
+                                    #{activeNumber},
+                                    #{payAmount},
+                                    #{payNumber},
+                                    #{firstNumber},
+                                    #{firstAmount},
+                                    #{sumpersonnel},
+                                    #{firstSumAmount},
+                                    #{rate},
+                                    #{arpu},
+                                    #{arppu},
+                                    #{dayRetain},
+                                    #{dayAccountCount},
+                                    #{threeRetain},
+                                    #{threeAccountCount},
+                                    #{weekRetain},
+                                    #{weekAccountCount},
+                                    #{fourteenRetain},
+                                    #{fourteenAccountCount},
+                                    #{thirtyRetain},
+                                    #{thirtyAccountCount},
+                                    #{sixtyRetain},
+                                    #{sixtyAccountCount},
+                                    #{maxOnlineNumber},
+                                    #{gameNumber},
+                                    #{aveGametime},
+                                    #{aveGamenumber},
+                                    #{newPlayers},
+                                    #{sumGametime}
+                                )
+
+        ]]>
+	</insert>
+
+    <update id="update" parameterType="DailyAnalysis">
+    <![CDATA[
+
+
+
+                                UPDATE `daily_analysis` SET
+                                    `id` = #{id},
+                                    `server_id` = #{serverId},
+                                    `timeDate` = #{timedate},
+                                    `daily_register` = #{dailyRegister},
+                                    `active_number` = #{activeNumber},
+                                    `pay_amount` = #{payAmount},
+                                    `pay_number` = #{payNumber},
+                                    `first_number` = #{firstNumber},
+                                    `first_amount` = #{firstAmount},
+                                    `sumpersonnel` = #{sumpersonnel},
+                                    `first_sum_amount` = #{firstSumAmount},
+                                    `rate` = #{rate},
+                                    `arpu` = #{arpu},
+                                    `arppu` = #{arppu},
+                                    `day_retain` = #{dayRetain},
+                                    `day_account_count` = #{dayAccountCount},
+                                    `three_retain` = #{threeRetain},
+                                    `three_account_count` = #{threeAccountCount},
+                                    `week_retain` = #{weekRetain},
+                                    `week_account_count` = #{weekAccountCount},
+                                    `max_online_number` = #{maxOnlineNumber},
+                                    `game_number` = #{gameNumber},
+                                    `ave_gametime` = #{aveGametime},
+                                    `ave_gamenumber` = #{aveGamenumber},
+                                    `new_players` = #{newPlayers},
+                                    `sum_gametime` = #{sumGametime}
+                                WHERE
+                                    ID = #{id}
+
+
+
+        ]]>
+	</update>
+
+    <delete id="delete" parameterType="map">
+        <![CDATA[
+        delete from `daily_analysis`
+    ]]>
+        <include refid="dynamicWhere"/>
+    </delete>
+
+    <select id="getById" resultMap="daily_analysisResult">
+        SELECT
+        <include refid="commonColumns"/>
+        <![CDATA[
+		    FROM `daily_analysis`
+	        WHERE
+		        ID = #{id}
+	    ]]>
+    </select>
+
+    <select id="count" resultType="long">
+        SELECT count(*) FROM `daily_analysis`
+        <include refid="dynamicWhere"/>
+    </select>
+    <select id="pageSelect" resultMap="daily_analysisResult">
+        SELECT
+        <include refid="commonColumns"/>
+        FROM `daily_analysis`
+        <include refid="dynamicWhere"/>
+        <if test="@Ognl@isNotEmpty(sortColumns)">
+            ORDER BY ${sortColumns}
+        </if>
+    </select>
+
+    <!--
+        ###
+        ###
+    -->
+    <!--
+        hive
+    -->
+    <select id="hiveSelectAreas" resultMap="flagResult">
+		select
+			distinct confarea['areaid'] as flag,
+			confarea['areaname'] as name
+		from
+			confarea
+		where
+		    confarea['areaid'] is not null
+	</select>
+
+    <select id="hiveSelectChannels" resultMap="flagResult">
+		select
+			distinct channelmes['channelId'] as flag,
+			channelmes['channelName'] as name
+		from
+			channelmes
+		where
+		    channelmes['channelId'] is not null
+	</select>
+
+    <select id="hiveSelectRegisterCount" parameterType="DailyAnalysis" resultType="java.lang.Integer">
+        select
+        NVL(count(distinct user_id),0) as number
+        from
+        faith_server.server_Account_Create
+        where
+        log_time between unix_timestamp(concat(#{timedate},' 00:00:00'))*1000 and unix_timestamp(concat(#{timedate},'
+        23:59:59'))*1000 and user_id is not null
+        <if test="@Ognl@isNotEmpty(serverId)">
+            and server_id = #{serverId}
+        </if>
+        <if test="null != channelId">
+            and channel_id = #{channelId}
+        </if>
+    </select>
+
+    <!-- 今日首登账号集合 写重复了但不能删-->
+    <select id="hiveSelectFirstLogin" parameterType="DailyAnalysis" resultMap="flagResult">
+        select
+        user_id as flag,min(log_time) as time
+        from
+        faith_server.server_role_login
+        where
+        log_time <![CDATA[ <= ]]> unix_timestamp(concat(#{timedate},' 23:59:59'))*1000 and log_time is not null
+        <if test="@Ognl@isNotEmpty(serverId)">
+            and server_id = #{serverId}
+        </if>
+        <if test="null != channelId">
+            and channel_id = #{channelId}
+        </if>
+        group by
+        user_id
+        having
+        min(log_time) between unix_timestamp(concat(#{timedate},' 00:00:00'))*1000 and
+        unix_timestamp(concat(#{timedate},' 23:59:59'))*1000
+    </select>
+
+    <select id="hiveSelectActive" parameterType="DailyAnalysis" resultType="java.lang.Integer">
+        select
+        NVL(count(distinct user_id),0) as number
+        from
+        faith_server.server_role_login
+        where
+        log_time between unix_timestamp(concat(#{timedate},' 00:00:00'))*1000 and unix_timestamp(concat(#{timedate},'
+        23:59:59'))*1000 and user_id is not null
+        <if test="@Ognl@isNotEmpty(serverId)">
+            and server_id = #{serverId}
+        </if>
+        <if test="null != channelId">
+            and channel_id = #{channelId}
+        </if>
+    </select>
+
+
+    <select id="hiveSelectPCU" parameterType="DailyAnalysis" resultType="java.lang.Integer">
+        select
+        NVL(max(player_count),0) as number
+        from
+        faith_server.server_player_count
+        where
+        log_time between unix_timestamp(concat(#{timedate},' 00:00:00'))*1000 and unix_timestamp(concat(#{timedate},'
+        23:59:59'))*1000 and player_count is not null
+        <if test="@Ognl@isNotEmpty(serverId)">
+            and server_id = #{serverId}
+        </if>
+        <if test="null != channelId">
+            and channel_id = #{channelId}
+        </if>
+    </select>
+
+    <select id="hiveSelectActiveList" parameterType="DailyAnalysis" resultMap="flagResult">
+        select
+        distinct user_id as flag
+        from
+        faith_server.server_role_login
+        where
+        log_time between unix_timestamp(concat(#{timedate},' 00:00:00'))*1000 and unix_timestamp(concat(#{timedate},'
+        23:59:59'))*1000 and user_id is not null
+        <if test="@Ognl@isNotEmpty(serverId)">
+            and server_id = #{serverId}
+        </if>
+        <if test="null != channelId">
+            and channel_id = #{channelId}
+        </if>
+    </select>
+
+    <select id="hiveSelectActiveList2" parameterType="DailyAnalysis" resultMap="flagResult">
+        select
+            user_id as flag,
+            log_time as time
+         from
+            faith_server.server_role_login
+         where
+            log_time between unix_timestamp(concat(#{timedate},' 00:00:00'))*1000 and unix_timestamp(concat(#{timedate},' 23:59:59'))*1000
+          order by time asc
+    </select>
+
+    <select id="hiveSelectActiveTodayList" parameterType="DailyAnalysis" resultMap="flagResult">
+        select
+            user_id as flag,
+            min(log_time) as time
+        from
+            faith_server.server_role_login
+        where
+            log_time between unix_timestamp(concat(#{timedate},' 00:00:00'))*1000 and unix_timestamp(concat(#{timedate},' 23:59:59'))*1000
+         group by
+             user_id
+          order by time asc
+    </select>
+
+    <!-- 今日首登账号集合 写重复了但不能删-->
+    <select id="hiveSelectRetain" parameterType="DailyAnalysis" resultMap="flagResult">
+        select
+        user_id as flag,
+        min(log_time) as time
+        from
+        faith_server.server_role_login
+        where
+        log_time <![CDATA[ <= ]]> unix_timestamp(concat(#{timedate},' 23:59:59'))*1000 and user_id is not null
+        <if test="@Ognl@isNotEmpty(serverId)">
+            and server_id = #{serverId}
+        </if>
+        <if test="null != channelId">
+            and channel_id = #{channelId}
+        </if>
+        group by
+        user_id
+        having
+        min(log_time) between unix_timestamp(concat(#{timedate},' 00:00:00'))*1000 and
+        unix_timestamp(concat(#{timedate},' 23:59:59'))*1000
+    </select>
+
+    <select id="hiveSelectRegisterList" parameterType="DailyAnalysis" resultMap="flagResult">
+        select
+        user_id as flag,
+        min(log_time) as time
+        from
+        faith_server.server_account_create
+        where
+        log_time between unix_timestamp(concat(#{timedate},' 00:00:00'))*1000 and unix_timestamp(concat(#{timedate},'
+        23:59:59'))*1000 and user_id is not null
+        <if test="@Ognl@isNotEmpty(serverId)">
+            and server_id = #{serverId}
+        </if>
+        <if test="null != channelId">
+            and channel_id = #{channelId}
+        </if>
+        group by user_id
+        order by time asc
+    </select>
+
+    <!-- 今日首登账号集合 写重复了但不能删-->
+    <select id="hiveSelectFirstLoginList" parameterType="DailyAnalysis" resultMap="flagResult">
+        select
+        user_id as flag,min(log_time) as time
+        from
+        faith_server.server_role_login
+        where
+        log_time <![CDATA[ <= ]]> unix_timestamp(concat(#{timedate},' 23:59:59'))*1000 and log_time is not null
+        <if test="@Ognl@isNotEmpty(serverId)">
+            and server_id = #{serverId}
+        </if>
+        <if test="null != channelId">
+            and channel_id = #{channelId}
+        </if>
+        group by
+        user_id
+        having
+        min(log_time) between unix_timestamp(concat(#{timedate},' 00:00:00'))*1000 and
+        unix_timestamp(concat(#{timedate},' 23:59:59'))*1000
+        order by time asc
+    </select>
+
+    <!--
+        分组 - 登入登出
+    -->
+    <select id="hiveSelectRoleLoginOut" parameterType="com.umi.ga.entitys.Times" resultMap="daily_analysisResult">
+        select
+            server_id as serverId,
+            channel_id as channelId,
+            count(distinct user_id) as active_Number
+        from
+             faith_server.server_Role_Login
+        where
+            log_time between unix_timestamp(concat(#{times},' 00:00:00'))*1000 and unix_timestamp(concat(#{times},' 23:59:59'))*1000 and user_id is not null
+        group by
+            server_id,channel_id
+        order by
+            server_id asc,channel_id asc
+    </select>
+
+    <select id="hiveSelectRegister" parameterType="com.umi.ga.entitys.Times" resultMap="flagResult">
+        select
+            server_id as serverId,
+            channel_id as channelId,
+            count(distinct user_id) as number
+        from
+            faith_server.server_Account_Create
+        where
+            log_time between unix_timestamp(concat(#{times},' 00:00:00'))*1000 and unix_timestamp(concat(#{times},' 23:59:59'))*1000 and user_id is not null
+        group by
+            server_id,channel_id
+        order by
+            server_id asc,channel_id asc
+    </select>
+
+    <select id="hiveSelectFirst" parameterType="com.umi.ga.entitys.Times" resultMap="flagResult">
+        select
+            a.server_id as serverId, a.channel_id as channelId, count(a.time) as number
+        from
+            (
+                select
+                    server_id as server_id,
+                    channel_id as channel_id,
+                    user_id as accountId,
+                    min(log_time) as time
+                from
+                    faith_server.server_Role_Login
+                where
+                    log_time <![CDATA[ <= ]]> unix_timestamp(concat(#{times},' 23:59:59'))*1000 and log_time is not null
+                group by
+                        server_id,channel_id,user_id
+                    having
+                        min(log_time) between unix_timestamp(concat(#{times},' 00:00:00'))*1000 and unix_timestamp(concat(#{times},' 23:59:59'))*1000
+                order by
+                    server_id asc,channel_id asc
+            ) a
+        group by
+            a.server_id,a.channel_id
+    </select>
+
+    <select id="hiveSelectPay" parameterType="com.umi.ga.entitys.Times" resultMap="flagResult">
+        select
+            server_id as serverId,
+            channel_id as channelId,
+            round(sum(nvl(order_amount,0)),2) as payAmount,
+            nvl(count(distinct user_id),0) as payNumber,
+            nvl(count(user_id),0) as payCount
+        from
+            faith_server.server_Recharge_Success
+        where
+            log_time between unix_timestamp(concat(#{times},' 00:00:00'))*1000 and unix_timestamp(concat(#{times},' 23:59:59'))*1000 and user_id is not null and order_amount != 0
+        group by
+            server_id,channel_id
+        order by
+            server_id asc,channel_id asc
+    </select>
+
+    <select id="hiveFirstPay" parameterType="com.umi.ga.entitys.Times" resultMap="flagResult">
+        select
+            server_id as serverId,
+            channel_id as channelId,
+            round(sum(nvl(order_amount,0)),2) as payAmount,
+            nvl(count(distinct user_id),0) as payNumber
+        from
+            faith_server.server_Recharge_Success
+        where
+            log_time between unix_timestamp(concat(#{times},' 00:00:00'))*1000 and unix_timestamp(concat(#{times},' 23:59:59'))*1000 and user_id is not null and is_first_recharge = 1 and order_amount != 0
+        group by
+            server_id,channel_id
+        order by
+            server_id asc,channel_id asc
+    </select>
+
+    <select id="hiveMaxPlayCount" parameterType="com.umi.ga.entitys.Times" resultMap="flagResult">
+        select
+            server_id as serverId,
+            NVL(max(player_count),0) as number
+        from
+            faith_server.server_Player_Count
+         where
+            log_time between unix_timestamp(concat(#{times},' 00:00:00'))*1000 and unix_timestamp(concat(#{times},' 23:59:59'))*1000 and server_id is not null
+        group by
+            server_id
+        order by
+            server_id asc
+    </select>
+
+    <select id="hiveSelectRoleloginOutViewList" parameterType="com.umi.ga.entitys.Times" resultMap="flagResult">
+        select
+            distinct server_id as serverId,
+            channel_id as channelId,
+            user_id as accountId
+        from
+            faith_server.server_Role_Login
+        where
+            log_time between unix_timestamp(concat(#{times},' 00:00:00'))*1000 and unix_timestamp(concat(#{times},' 23:59:59'))*1000 and user_id is not null
+        order by
+            server_id asc,channel_id asc
+    </select>
+
+    <select id="hiveSelectFirstLoginViewList" parameterType="com.umi.ga.entitys.Times" resultMap="flagResult">
+        select
+            server_id as serverId,
+            channel_id as channelId,
+            user_id as accountId,
+            min(log_time) as time
+        from
+            faith_server.server_Role_Login
+        where
+            log_time <![CDATA[ <= ]]> unix_timestamp(concat(#{times},' 23:59:59'))*1000 and log_time is not null
+        group by
+                server_id,channel_id,user_id
+            having
+                min(log_time) between unix_timestamp(concat(#{times},' 00:00:00'))*1000 and unix_timestamp(concat(#{times},' 23:59:59'))*1000
+        order by
+            server_id asc,channel_id asc
+    </select>
+
+
+    <!--
+        impala
+    -->
+    <select id="hiveSelectDailyAnalysis" parameterType="com.umi.ga.entitys.Times" resultType="DailyAnalysis">
+        select
+            #{times} as timeDate,
+            a.server_id as serverId,
+            a.channel_id as channelId,
+            ifnull(a.active_Number,0) as activeNumber,
+            ifnull(b.number,0) as dailyRegister,
+            ifnull(d.number,0) as newPlayers,
+            ifnull(d.number,0) as dayAccountCount,
+            ifnull(d.number,0) as threeAccountCount,
+            ifnull(d.number,0) as weekAccountCount,
+            ifnull(d.number,0) as fourteenAccountCount,
+            ifnull(d.number,0) as thirtyAccountCount,
+            ifnull(d.number,0) as sixtyAccountCount,
+            ifnull(e.payAmount,0) as payAmount,
+            ifnull(e.payNumber,0) as payNumber,
+            ifnull(e.payCount,0) as gameNumber,
+            ifnull(f.payAmount,0) as firstAmount,
+            ifnull(f.payNumber,0) as firstNumber,
+            ifnull(g.number,0) as maxOnlineNumber
+        from
+        (
+            -- 活跃
+            select
+                server_id as server_id,
+                channel_id as channel_id,
+                count(distinct user_id) as active_Number
+            from
+                faith_server.server_Role_Login
+            where
+                from_unixtime(cast(log_time / 1000 as bigint),"yyyy-MM-dd") = #{times} and "" != server_id and "" != channel_id
+            group by
+                server_id,channel_id
+        ) a
+        left join
+        (
+            -- 注册
+            select
+                server_id,channel_id,count(distinct user_id) as number
+            from
+                faith_server.server_account_create
+            where
+                from_unixtime(cast(log_time / 1000 as bigint),"yyyy-MM-dd") = #{times} and "" != server_id and ""!=channel_id
+            group by
+                server_id,channel_id
+        ) b
+        on a.server_id = b.server_id and a.channel_id = b.channel_id
+        left join
+        (
+            -- 首登
+            select
+                c.server_id as server_id, c.channel_id as channel_id, count(c.time) as number
+            from
+            (
+                select
+                    server_id as server_id,
+                    channel_id as channel_id,
+                    user_id as accountId,
+                    min(log_time) as time
+                from
+                    faith_server.server_Role_Login
+                where
+                    from_unixtime(cast(log_time/1000 as bigint),'yyyy-MM-dd') <![CDATA[ <= ]]> #{times}
+                group by
+                    server_id,channel_id,user_id
+                having
+                    min(from_unixtime(cast(log_time / 1000 as bigint),'yyyy-MM-dd')) = #{times}
+                order by
+                    server_id asc,channel_id asc
+            ) c
+            group by
+                c.server_id,c.channel_id
+        ) d
+        on a.server_id = d.server_id and a.channel_id = d.channel_id
+        left join
+        (
+            -- 付费总额 付费账号 充值次数
+            select
+                server_id as server_id,
+                channel_id as channel_id,
+                round(sum(nvl(order_amount,0)),2) as payAmount,
+                nvl(count(distinct user_id),0) as payNumber,
+                nvl(count(user_id),0) as payCount
+            from
+                faith_server.server_Recharge_Success
+            where
+                from_unixtime(cast(log_time / 1000 as bigint),'yyyy-MM-dd') = #{times}
+            group by
+                server_id,channel_id
+        ) e
+        on a.server_id = e.server_id and a.channel_id = e.channel_id
+        left join
+        (
+            -- 首付总额 首付账号
+            select
+                server_id as server_id,
+                channel_id as channel_id,
+                round(sum(nvl(order_amount,0)),2) as payAmount,
+                nvl(count(distinct user_id),0) as payNumber
+            from
+                faith_server.server_Recharge_Success
+            where
+                from_unixtime(cast(log_time / 1000 as bigint),'yyyy-MM-dd') = #{times} and is_first_recharge = 1
+            group by
+                server_id,channel_id
+        ) f
+        on a.server_id = f.server_id and a.channel_id = f.channel_id
+        left join
+        (
+            -- 最大在线人数
+            select
+                server_id as server_id,
+                NVL(max(player_count),0) as number
+            from
+                faith_server.server_Player_Count
+            where
+                from_unixtime(cast(log_time / 1000 as bigint),'yyyy-MM-dd') = #{times}
+            group by
+                server_id
+        ) g
+        on a.server_id = g.server_id
+        where ""!= a.server_id and ""!=a.channel_id
+        order by a.server_id asc,a.channel_id asc
+    </select>
+
+    <select id="hiveSelectRetainLast" parameterType="com.umi.ga.entitys.Times"
+            resultType="com.umi.ga.entitys.AnalysisData">
+        select server_Id as serverId, channel_Id as channelId, target_day as timeDate, days, num
+        from
+        (
+            select
+                server_Id,
+                channel_Id,
+                target_day,
+                datediff(login_day, target_day) + 1 as days,
+                count(user_Id) as num
+            from
+                (
+                    select
+                        distinct a.server_Id,a.channel_Id,a.user_Id,
+                        from_unixtime(cast(b.time / 1000 as bigint), 'yyyy-MM-dd') target_day,
+                        from_unixtime(cast(a.log_Time / 1000 as bigint), 'yyyy-MM-dd') login_day
+                    from
+                        faith_server.server_role_login a
+                    left join
+                        (
+                            -- 账号最小登录时间
+                            SELECT
+                                server_Id, channel_Id, user_Id, min(log_Time) as time
+                            FROM
+                                faith_server.server_role_login
+                            GROUP BY server_Id,channel_Id,user_Id
+                        ) b
+                    on a.server_Id = b.server_Id and a.channel_Id = b.channel_Id and a.user_Id = b.user_Id
+                    -- 今日活跃
+                    where cast(a.day_time as string) = regexp_replace(#{times},"-","") and ""!=b.server_Id and ""!=b.channel_Id
+                ) c
+            group by server_Id, channel_Id, target_day, days
+        ) d
+        where days > 0 and days = 2
+        or days = 3
+        or days = 7
+        or days = 14
+        or days = 30
+        or days = 60
+        order by server_Id, channel_Id, target_day, days
+    </select>
+
+    <select id="selectNumber" parameterType="com.umi.ga.entitys.Flag" resultType="DailyAnalysis">
+        select a.activeNumber as activeNumber,b.payNumber as payNumber from
+        (
+        select count(distinct server_id,channel_id,user_id) as activeNumber from faith_server.server_role_login
+        where
+        cast(day_time as string) between regexp_replace(#{startTime},"-","") and regexp_replace(#{endTime},"-","") and
+        "" != server_id and "" != channel_id
+        <if test="@Ognl@isNotEmpty(serverId)">
+            and server_Id in (${serverId})
+        </if>
+        <if test="@Ognl@isNotEmpty(channelId)">
+            and channel_Id in (${channelId})
+        </if>
+        ) a,
+        (
+        select count(distinct server_id,channel_id,user_id) as payNumber from faith_server.server_recharge_success
+        where
+        cast(day_time as string) between regexp_replace(#{startTime},"-","") and regexp_replace(#{endTime},"-","") and
+        "" != server_id and "" != channel_id
+        <if test="@Ognl@isNotEmpty(serverId)">
+            and server_Id in (${serverId})
+        </if>
+        <if test="@Ognl@isNotEmpty(channelId)">
+            and channel_Id in (${channelId})
+        </if>
+        ) b
+    </select>
+    <!--
+        mysql
+    -->
+    <insert id="insertBatch" parameterType="java.util.List">
+        INSERT INTO `daily_analysis`
+        (
+        `server_id`,
+        `channel_id`,
+        `timeDate`,
+        `daily_register`,
+        `active_number`,
+        `pay_amount`,
+        `pay_number`,
+        `first_number`,
+        `first_amount`,
+        `sumpersonnel`,
+        `first_sum_amount`,
+        `rate`,
+        `arpu`,
+        `arppu`,
+        `day_retain`,
+        `day_account_count`,
+        `three_retain`,
+        `three_account_count`,
+        `week_retain`,
+        `week_account_count`,
+        `fourteen_retain`,
+        `fourteen_account_count`,
+        `thirty_retain`,
+        `thirty_account_count`,
+        `sixty_retain`,
+        `sixty_account_count`,
+        `max_online_number`,
+        `game_number`,
+        `ave_gametime`,
+        `ave_gamenumber`,
+        `new_players`,
+        `sum_gametime`
+        )
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                #{item.serverId},#{item.channelId},#{item.timedate},#{item.dailyRegister},
+                #{item.activeNumber},#{item.payAmount},#{item.payNumber},#{item.firstNumber},
+                #{item.firstAmount},#{item.sumpersonnel},#{item.firstSumAmount},#{item.rate},
+                #{item.arpu},#{item.arppu},#{item.dayRetain},#{item.dayAccountCount},
+                #{item.threeRetain},#{item.threeAccountCount},#{item.weekRetain},#{item.weekAccountCount},
+                #{item.fourteenRetain},#{item.fourteenAccountCount},#{item.thirtyRetain},#{item.thirtyAccountCount},
+                #{item.sixtyRetain},#{item.sixtyAccountCount},#{item.maxOnlineNumber},#{item.gameNumber},
+                #{item.aveGametime},#{item.aveGamenumber},#{item.newPlayers},#{item.sumGametime}
+            </trim>
+        </foreach>
+    </insert>
+
+    <update id="updateBatch" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" separator=",">
+            update
+            daily_analysis
+            set
+            ${item.flag} = #{item.number}
+            where
+            timeDate = #{item.time} and server_id = #{item.serverId} and channel_id = #{item.channelId}
+        </foreach>
+    </update>
+
+    <select id="selectServerAll" resultMap="flagResult">
+        select
+            distinct server_id as flag,
+            server_name as name
+        from
+            confarea
+        where server_id is not null
+        order by 1 asc
+    </select>
+
+    <select id="selectChannelAll" resultMap="flagResult">
+        select
+            distinct channel_id as flag,
+            channel_name as name
+        from
+            channelmes
+        where channel_id is not null
+        order by 1 asc
+    </select>
+
+    <select id="selectServerList" resultMap="flagResult">
+		select
+			distinct server_id as flag
+		from
+			daily_analysis
+		where
+			server_id is not null
+    </select>
+    <select id="selectChannelList" resultMap="flagResult">
+        select
+			distinct channel_id as flag
+		from
+			daily_analysis
+		where
+			channel_id is not null
+    </select>
+
+    <update id="updateRetain" parameterType="DailyAnalysis">
+        update
+        daily_analysis
+        set
+        ${type} = #{dayRetain}
+        where
+        timeDate = #{timedate}
+        <if test="@Ognl@isNotEmpty(serverId)">
+            and server_id = #{serverId}
+        </if>
+        <if test="@Ognl@isNotEmpty(channelId)">
+            and channel_id = #{channelId}
+        </if>
+
+    </update>
+    <select id="selectCount" parameterType="DailyAnalysis" resultType="java.lang.Integer">
+        select
+            count(distinct timeDate)
+        from
+            daily_analysis
+        where
+             timeDate between #{startTime} and #{endTime} and server_id is not null
+    </select>
+
+    <select id="selectDaily" parameterType="com.umi.ga.analysis.model.DailyAnalysis" resultMap="daily_analysisResult">
+        select
+        `timeDate`,
+        IFNULL(SUM(`daily_register`),0) AS `daily_register`,
+        IFNULL(SUM(`active_number`),0) AS `active_number`,
+        IFNULL(SUM(`new_players`),0) AS `new_players`,
+        IFNULL(SUM(`pay_amount`),0) AS `pay_amount`,
+        IFNULL(SUM(`pay_number`),0) AS `pay_number`,
+        IFNULL(SUM(`game_number`),0) AS `game_number`,
+        IFNULL(SUM(`first_number`),0) AS `first_number`,
+        IFNULL(SUM(`first_amount`),0) AS `first_amount`,
+        IFNULL(SUM(`day_retain`),0) AS `day_retain`,
+        IFNULL(SUM(`day_account_count`),0) AS `day_account_count`,
+        IFNULL(SUM(`three_retain`),0) AS `three_retain`,
+        IFNULL(SUM(`three_account_count`),0) AS `three_account_count`,
+        IFNULL(SUM(`week_retain`),0) AS `week_retain`,
+        IFNULL(SUM(`week_account_count`),0) AS `week_account_count`,
+        IFNULL(SUM(`fourteen_retain`),0) AS `fourteen_retain`,
+        IFNULL(SUM(`fourteen_account_count`),0) AS `fourteen_account_count`,
+        IFNULL(SUM(`thirty_retain`),0) AS `thirty_retain`,
+        IFNULL(SUM(`thirty_account_count`),0) AS `thirty_account_count`,
+        IFNULL(SUM(`sixty_retain`),0) AS `sixty_retain`,
+        IFNULL(SUM(`sixty_account_count`),0) AS `sixty_account_count`,
+        IFNULL(SUM(`active_number`),0)-IFNULL(SUM(`new_players`),0) AS oldUser,
+        MAX(`max_online_number`) AS `max_online_number`,
+        IFNULL(ROUND(SUM(`pay_amount`)/SUM(`active_number`),2),0.00) AS arpu,
+        IFNULL(ROUND(SUM(`pay_amount`)/SUM(`pay_number`),2),0.00) AS arppu,
+        IFNULL(ROUND(SUM(`pay_number`)/SUM(`active_number`),2),0.00) AS rate
+        from
+        daily_analysis
+        <where>
+            <if test="@Ognl@isNotEmpty(serverId)">
+                server_id in (${serverId})
+            </if>
+            <if test="@Ognl@isNotEmpty(channelId)">
+                and channel_id in (${channelId})
+            </if>
+            <if test="@Ognl@isNotEmpty(startTime) and @Ognl@isNotEmpty(endTime)">
+                and timeDate between #{startTime} and #{endTime}
+            </if>
+        </where>
+        group by timeDate
+        order by
+        timeDate DESC
+        <if test="-1 == pageSize">
+            limit
+            #{pageCount},#{pageSize}
+        </if>
+    </select>
+
+    <select id="queryData" parameterType="com.umi.ga.entitys.Times" resultMap="daily_analysisResult">
+        select
+        sum(ifnull(daily_register,0)) as daily_register,
+        sum(ifnull(active_number,0)) as active_number,
+        sum(ifnull(pay_number,0)) as pay_number,
+        sum(ifnull(pay_amount,0)) as pay_amount
+        from
+        daily_analysis
+        <where>
+            <if test="@Ognl@isNotEmpty(startTime) and @Ognl@isNotEmpty(endTime)">
+                and timeDate between #{startTime} and #{endTime}
+            </if>
+        </where>
+    </select>
+
+    <delete id="deleteBatch" parameterType="DailyAnalysis">
+        delete from daily_analysis where timeDate = #{timedate}
+    </delete>
+
+    <update id="updateAllRetainBatch" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" separator=";">
+            update
+            daily_analysis
+            set
+            ${item.days} = #{item.num}
+            where
+            timeDate = #{item.timeDate} and server_id = #{item.serverId} and channel_id = #{item.channelId}
+        </foreach>
+    </update>
+
+    <select id="hiveQueryData" parameterType="com.umi.ga.entitys.Times" resultType="DailyAnalysis">
+        select
+            a.dailyRegister, b.activeNumber, c.payNumber, c.payAmount
+        from
+        (
+            select count(distinct server_id, channel_id, user_id) as dailyRegister from faith_server.server_account_create
+            where cast(day_time as string) between regexp_replace(#{startTime},"-","") and regexp_replace(#{endTime},"-","")
+        ) a
+        ,
+        (
+            select count(distinct server_id, channel_id, user_id) as activeNumber from faith_server.server_role_login
+            where cast(day_time as string) between regexp_replace(#{startTime},"-","") and regexp_replace(#{endTime},"-","")
+        ) b
+        ,
+        (
+            select count(distinct server_id, channel_id, user_id) as payNumber, round(nvl(sum(zeroifnull(order_amount)),0),2) as payAmount from faith_server.server_recharge_success
+            where cast(day_time as string) between regexp_replace(#{startTime},"-","") and regexp_replace(#{endTime},"-","")
+        ) c
+
+    </select>
+</mapper>

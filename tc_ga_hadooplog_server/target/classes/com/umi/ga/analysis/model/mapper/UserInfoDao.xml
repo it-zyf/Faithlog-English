@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="conf_userinfo">
+  <resultMap id="BaseResultMap" type="conf_userinfo">
+    <id column="userID" jdbcType="INTEGER" property="userid" />
+    <result column="userName" jdbcType="VARCHAR" property="username" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="userCode" jdbcType="VARCHAR" property="usercode" />
+    <result column="moduleIDs" jdbcType="VARCHAR" property="moduleids" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    userID,  convert(unhex(hex(convert(userName using latin1))) using utf8) as  userName, password, userCode, moduleIDs
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from conf_userinfo
+    where userID = #{userid,jdbcType=INTEGER}
+  </select>
+  
+      <select id="selectByUseran" parameterType="conf_userinfo" resultType="java.lang.String">
+    select userCode from conf_userinfo 
+  </select>
+  
+    <select id="selectByPass" parameterType="conf_userinfo" resultType="java.lang.String">
+    select password from conf_userinfo where userCode = #{usercode} 
+  </select>
+  
+      <select id="selectByUserandPass" parameterType="conf_userinfo" resultMap="BaseResultMap">
+    select * from conf_userinfo where userCode = #{usercode} and password=#{password}
+  </select>
+  
+  <select id="getUserInfo" resultMap="BaseResultMap" parameterType="conf_userinfo">
+  select 
+  <include refid="Base_Column_List" />
+ from conf_userinfo
+ 
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from conf_userinfo
+    where userID = #{userid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="conf_userinfo">
+    insert into conf_userinfo (userName, password,userCode, moduleIDs)
+    values (convert(unhex(hex(convert(#{username} using utf8))) using latin1),#{password},#{usercode},#{moduleids})
+  </insert>
+  <insert id="insertSelective" parameterType="conf_userinfo">
+    insert into conf_userinfo
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userid != null">
+        userID,
+      </if>
+      <if test="username != null">
+        userName,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="usercode != null">
+        userCode,
+      </if>
+      <if test="moduleids != null">
+        moduleIDs,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userid != null">
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="usercode != null">
+        #{usercode,jdbcType=VARCHAR},
+      </if>
+      <if test="moduleids != null">
+        #{moduleids,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="conf_userinfo">
+    update conf_userinfo
+    <set>
+      <if test="username != null and username != ''">
+        userName =  convert(unhex(hex(convert(#{username} using utf8))) using latin1) ,
+      </if>
+      <if test="password != null and password != ''">
+        password = #{password},
+      </if>
+      <if test="usercode != null and usercode != ''">
+        userCode = #{usercode},
+      </if>
+      <if test="moduleids != null and moduleids != ''">
+        moduleIDs = #{moduleids},
+      </if>
+        buttonIDs = #{buttonids},
+    </set>
+    where userID = #{userid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="conf_userinfo">
+    update conf_userinfo
+    set userName = #{username,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      userCode = #{usercode,jdbcType=VARCHAR},
+      moduleIDs = #{moduleids,jdbcType=VARCHAR}
+    where userID = #{userid,jdbcType=INTEGER}
+  </update>
+</mapper>

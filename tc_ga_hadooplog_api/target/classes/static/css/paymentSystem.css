@@ -1,0 +1,166 @@
+/*侧边栏*/
+.layui-layout-admin .layui-side {
+    top: 0;
+    width: 7.9%;
+    background-color: #1B1B1B !important;
+}
+.layui-side-scroll {
+    width: 100%;
+}
+.layui-layout-admin .layui-side .layui-logo {
+    width: 100%;
+    height: 3.1%;
+    line-height: 30px;
+    margin: 39% 0;
+    text-align: center;
+}
+.layui-layout-admin .layui-side .layui-logo a{
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+.layui-layout-admin .layui-side ul {
+    width: 100%;
+    margin-top: 98%;
+}
+.layui-layout-admin .layui-side ul a {
+    text-align: center;
+    font-size: 16px;
+    text-decoration: none;
+}
+.layui-nav li {
+    background-color: #1B1B1B;
+}
+.layui-layout-body .layui-layout .layui-body {
+    top: 78px;
+    left: 261px;
+}
+/*主体*/
+.chat .fixed-table-container {
+    border: 0;
+}
+.pay_system, .acc_system{
+    height: 92px;
+    padding: 31px 12px;
+    background-color:#363636;
+    /*border-radius: 5px;*/
+    color: #fff;
+}
+.pay_system .form-group label, .acc_system .form-group label{
+    margin-right: 10px;
+    /*margin-left: 60px;*/
+}
+.pay_system .form-group input, .acc_system .form-group input, .pay_system .form-group select{
+    text-align: center;
+    background: transparent;
+    margin-right: 36px;
+    color: #fff;
+    height: 31px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+.pay_system .form-group select{
+    width: 200px;
+    border-radius: 5px;
+    text-align: center;
+}
+.pay_system .form-group select option {
+    background-color: #363636;
+}
+.pay_system .paysys_query, .acc_system .acc_query{
+    width: 80px;
+    height: 30px;
+    line-height: 31px;
+    float: right;
+    background-color: #1E9FFF;
+    border: 0;
+}
+/*表格*/
+.chat {
+    /*height: 800px;*/
+    background-color:#363636;
+    /*border-radius: 5px;*/
+    color: #fff;
+    margin-top: 9px;
+    padding: 13px 11px 11px;
+}
+.chat .psysys_export, .chat .acc_export {
+    width: 94px;
+    height: 35px;
+    float: right;
+    background-color: #1E9FFF;
+    margin-bottom: 30px;
+    border: 0;
+}
+#accSys_table {
+    text-align: center;
+    border: 0;
+}
+#accSys_table tr {
+    background-color: #363636;
+    margin-top: 10px;
+    border-top: 8px solid #575757;
+    border-bottom: 8px solid #575757;
+}
+#accSys_table th,
+#accSys_table td {
+    border: 0;
+    text-align: center;
+    background-color: #363636;
+    line-height: 31px;
+}
+#paySys_table tr th,
+#paySys_table tr td {
+    text-align: center;
+}
+#paySys_table tr td {
+    border: 1px solid #fff;
+    background: #202020;
+}
+#paySys_table tr:nth-child(1) th:nth-child(1),
+#paySys_table tr:nth-child(1) th:nth-child(2),
+#paySys_table tr:nth-child(1) th:nth-child(3),
+#paySys_table tr:nth-child(1) th:nth-child(4),
+#paySys_table tr:nth-child(1) th:nth-child(5),
+#paySys_table tr:nth-child(1) th:nth-child(6),
+#paySys_table tr:nth-child(1) th:nth-child(8){
+    line-height: 60px;
+}
+#paySys_table tr th {
+    border: 1px solid #fff;
+    background: #202020;
+}
+.table-hover>tbody>tr:hover{
+    background: transparent !important;
+}
+#paySys_table {
+    border:0 !important;
+}
+.layui-table-cell {
+    width: 103px !important;
+    padding: 0;
+}
+.laytable-cell-group {
+    width: 88% !important;
+}
+.chat .fixed-table-toolbar {
+    display: none;
+}
+.layui-layer {
+    background: #fff !important;
+}
+.mloading {
+    display: none !important;
+}
+/*.fixed-table-container {*/
+    /*padding-bottom: 34px !important;*/
+/*}*/
+.fixed-table-loading {
+    background: #575757;
+    color: #fff !important;
+    height: 44px;
+    line-height: 44px;
+}
+input[type=text]:focus {
+    border: 1px solid #66afe9 !important;
+}

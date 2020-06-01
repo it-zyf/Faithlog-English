@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <link rel="shortcut  icon" type="image/x-icon" href="bitbug_favicon (2).ico" media="screen" />
+  <title class="Novice_Guidance"></title>
+  <link rel="stylesheet" href="../layui/css/layui.css" />
+  <link rel="stylesheet" href="./css/Novice_Guidance.css" />
+  <link href="../css/font-awesome.css" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/bootstrap.min.css" />
+  <link rel="stylesheet" type="text/css" href="../js/bootstrap-table/bootstrap-table.min.css" />
+  <link rel="stylesheet" type="text/css" href="../js/multiple/bootstrap-multiselect.css" />
+  <link rel="stylesheet" href="../js/loading/jquery.mloading.css" />
+  <link href="https://cdn.bootcss.com/element-ui/2.12.0/theme-chalk/index.css" rel="stylesheet">
+  <style type="text/css">
+    .fixed-table-loading {
+      background: #363636;
+      color: white;
+      top: 80px;
+      border: 0;
+    }
+
+    .pagination>li>a,
+    .pagination>li>span {
+      color: white;
+      background-color: transparent;
+      border: 0;
+    }
+
+    .bootstrap-table .fixed-table-pagination>.pagination-detail .page-list {
+      color: #C0C0C0;
+    }
+
+    .pagination>li>a,
+    .pagination>li>span:hover {
+      background: #464545;
+    }
+
+    .pagination>.disabled>a,
+    .pagination>.disabled>a:focus,
+    .pagination>.disabled>a:hover,
+    .pagination>.disabled>span,
+    .pagination>.disabled>span:focus,
+    .pagination>.disabled>span:hover {
+      color: #C0C0C0;
+      background-color: #464545;
+      border: 0;
+    }
+
+    .pagination>li>a:focus,
+    .pagination>li>a:hover,
+    .pagination>li>span:focus,
+    .pagination>li>span:hover {
+      color: #428BCA;
+      background: #464545;
+      border: 0;
+    }
+
+    .pagination-info {
+      color: #C0C0C0;
+    }
+
+    .checkbox {
+      color: #C0C0C0;
+      font-size: 14px;
+      line-height: 30px;
+    }
+
+    .dropdown-menu,
+    .btn-default {
+      background: #363636;
+      color: #C0C0C0;
+    }
+
+    .btn-default:hover {
+      background: #363636;
+      color: #C0C0C0;
+    }
+
+    .btn-default.active,
+    .btn-default:active,
+    .open>.dropdown-toggle.btn-default {
+      color: #C0C0C0;
+      background: #363636;
+    }
+
+    .btn-default.active.focus,
+    .btn-default.active:focus,
+    .btn-default.active:hover,
+    .btn-default:active.focus,
+    .btn-default:active:focus,
+    .btn-default:active:hover,
+    .open>.dropdown-toggle.btn-default.focus,
+    .open>.dropdown-toggle.btn-default:focus,
+    .open>.dropdown-toggle.btn-default:hover {
+      color: #C0C0C0;
+      background: #363636;
+    }
+
+    .dropdown-menu>.active>a,
+    .dropdown-menu>.active>a:focus,
+    .dropdown-menu>.active>a:hover {
+      background: #363636;
+    }
+
+    .btn-default.focus,
+    .btn-default:focus {
+      background: #363636;
+      color: #C0C0C0;
+    }
+
+    .bootstrap-table {
+      clear: both;
+    }
+
+    .pagination>.active>a,
+    .pagination>.active>a:focus,
+    .pagination>.active>a:hover,
+    .pagination>.active>span,
+    .pagination>.active>span:focus,
+    .pagination>.active>span:hover {
+      background: #555555;
+      border-color: #555555;
+    }
+
+    .pagination>li>a:hover,
+    .pagination>li>span:hover {
+      color: white;
+    }
+
+    .sum_div,
+    .Recharge {
+      height: 100%
+    }
+
+    .bootstrap-table {
+      height: 80%;
+      max-height: 640px;
+    }
+
+    .fixed-table-container {
+      height: 100%;
+    }
+
+    #replace_table thead tr th {
+      border: 0;
+      color: white;
+      height: 50px;
+      font-size: 14px;
+      line-height: 30px;
+    }
+
+    .bootstrap-table .fixed-table-container .fixed-table-header .table thead th {
+      line-height: 34px;
+      background-color: #1a1a1a;
+      color: #fff;
+    }
+  </style>
+</head>
+
+<body style="background: #202020;" onload="lo()">
+  <div id="navs"></div>
+  <div class="layui-layout layui-layout-admin">
+    <div class="layui-body" style="padding: 20px;">
+      <div class="sum_div">
+        <div class="Recharge">
+          <form role="form" class="form-inline" style="height: 140px;">
+            <div class="form-group" style="width: 22%;float: left;">
+              <label for="" class="nov_district"></label>
+              <select id="district_service" multiple="multiple"></select>
+            </div>
+            <div class="form-group" style="width: 22%;float: left;">
+              <label for="" class="nov_account"></label>
+              <input type="text" class="form-control" id="accountID" placeholder="" />
+            </div>
+            <div class="form-group layui-inline" style="width: 23%;float: left;">
+              <label for="" class="nov_time"></label>
+              <input type="text" class="form-control" id="datatimes" />
+            </div>
+            <div class="form-group" style="width: 23%;float: left;">
+              <label for="" style="margin-left: 1%;" class="nov_stepID"></label>
+              <input type="text" class="form-control" id="step_number" placeholder="" />
+            </div>
+            <button type="button" class="layui-btn layui-btn-normal nov_query" id="query" onclick="onread()"></button>
+            <br /><br /><br /><br />
+            <div class="form-group" style="width: 22%;float: left;">
+              <label for="" class="nov_roleID"></label>
+              <input type="text" class="form-control" id="roleID" placeholder="" />
+            </div>
+            <div class="form-group" style="width: 22%;float: left;">
+              <label for="" class="nov_rolename"></label>
+              <input type="text" class="form-control" id="roleName" placeholder="" />
+            </div>
+            <!-- <div class="form-group" style="width: 23%;float: left;">
+              <label for="" class="nov_channel"></label>
+              <select id="channel"></select>
+            </div> -->
+            <div class="form-group" style="width: 23%;float: left;">
+              <label for="" class="nov_regchannel"></label>
+              <select id="reg_channel" multiple="multiple" ></select>
+            </div>
+            <!--<button type="button" class="layui-btn layui-btn-normal nov_report" id="export" onclick="exp()"></button>-->
+            <br /><br /><br /><br />
+          </form>
+          <!--<div class="replace_area"-->
+          <!--style="width:100%;max-width:1603px;height:50px;position:fixed;overflow-y:hidden;background: #1A1A1A;z-index:99;display:none;">-->
+          <!--<table id="replace_table" class="table table-bordered table-hover"-->
+          <!--style="width:100%;border:1px solid transparent;"></table>-->
+          <!--</div>-->
+          <table id="datatable"></table>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+<script src="../layui/layui.all.js"></script>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/jquery.cookie.js"></script>
+<script src="../js/loading/jquery.mloading.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script src="../js/multiple/bootstrap-multiselect.js"></script>
+<script src="../js/bootstrap-table/bootstrap-table.min.js"></script>
+<script src="./js/urlGet.js"></script>
+<script src="./js/Novice_Guidance.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="https://cdn.bootcss.com/element-ui/2.12.0/index.js"></script>
+<script>
+  localStorage.setItem('navigation', '2-3')
+  $("#navs").load("navHaddup.html")
+
+  function lo() {
+    $(".310").addClass("layui-this").siblings().removeClass("layui-this")
+    $(".310").parent().parent().addClass("layui-nav-itemed").siblings().removeClass("layui-nav-itemed")
+  }
+  ////layui配置
+  layui.use(['element', 'form'], function () {
+    var element = layui.element;
+    var form = layui.form;
+    element.init();
+  });
+
+  function exp() {
+    $("body").mLoading("show");
+    var district_service = $("#district_service").val(); //区服
+    var account = $("#accountID").val(); //账号ID
+    var roleid = $("#roleID").val(); //角色ID
+    var rolename = $("#roleName").val(); //角色名
+    var step_number = $("#step_number").val(); //设备号
+    var channel = $("#channel").val(); //登录方式
+    var reg_channel = $("#reg_channel").val(); //充值渠道
+    if (district_service != null) {
+      district_service = district_service.join(',')
+    };
+    if (reg_channel != null) {
+      reg_channel = reg_channel.join(',')
+    };
+    $.ajax({
+      type: "get",
+      url: "../queryGuideLogExport.action",
+      async: true,
+      data: {
+        serverId: district_service,
+        accountId: account,
+        seDate: times,
+        stepId: step_number,
+        roleId: roleid,
+        roleName: rolename,
+        loginType: channel,
+        channelId: reg_channel,
+        pageIndex: 1,
+        pageSize: 100000000
+      },
+      success: function (e) {
+        if (e.state == false) {
+          alert(e.message)
+          $("body").mLoading("hide");
+        } else {
+          window.open('/upload/log.xlsx');
+          $("body").mLoading("hide");
+        }
+      }
+    });
+  }
+</script>
+
+</html>

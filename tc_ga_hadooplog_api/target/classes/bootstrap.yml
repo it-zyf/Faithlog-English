@@ -1,0 +1,39 @@
+server:
+  port: 9100
+  discover-list-ennable: true
+  discover-list: ga-hadoop-server-curry30
+spring:
+  application:
+    name: ga-hadoop-api-curry30
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://192.168.0.207:8761/eureka/,http://192.168.0.207:8762/eureka/,http://192.168.0.207:8760/eureka/  # dev
+      #      defaultZone: http://10.1.214.210:8760/eureka/,http://10.1.214.210:8761/eureka/,http://10.1.214.210:8762/eureka/    # online
+      #      defaultZone: http://172.29.0.8:8760/eureka/,http://172.29.0.8:8761/eureka/,http://172.29.0.8:8762/eureka/    # korea
+    #      defaultZone: http://172.17.0.1:8760/eureka/,http://172.17.0.1:8761/eureka/,http://172.17.0.1:8762/eureka/    # Thailand
+    instance-info-replication-interval-seconds: 5
+    registry-fetch-interval-seconds: 5
+  instance:
+    #    ip-address: 10.1.214.210  # dev - 192.168.0.116  # test - 192.168.0.208
+    ip-address: 192.168.0.36    # online - 152.136.218.252 ( 172.21.32.21 )
+    #    ip-address: 172.29.0.8       # korea - 150.109.84.142 ( 172.29.0.8 )
+    #    ip-address: 172.17.0.1       # Thailand - 150.109.167.142 ( 172.17.0.1 )
+    lease-renewal-interval-in-seconds: 5
+    lease-expiration-duration-in-seconds: 10
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+management:
+  health:
+    redis:
+      enabled: false
+    db:
+      enabled: false
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+

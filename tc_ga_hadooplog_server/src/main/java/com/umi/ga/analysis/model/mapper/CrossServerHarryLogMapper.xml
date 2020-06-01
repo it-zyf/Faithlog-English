@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="CrossServerHarryLog">
+	<resultMap id="cross_server_harry_logResult" type="CrossServerHarryLog">
+		<result column="game_id" property="gameId" />
+		<result column="channel_id" property="channelId" />
+		<result column="media_id" property="mediaId" />
+		<result column="device_id" property="deviceId" />
+		<result column="version_name" property="versionName" />
+		<result column="version_code" property="versionCode" />
+		<result column="user_id" property="accountId" />
+		<result column="server_id"  property="serverId" />
+		<result column="log_time"  property="logTime" />
+		<result column="role_id" property="roleId" />
+		<result column="role_name"  property="roleName" />
+		<result column="role_level" property="roleLevel" />
+		<result column="role_gender"  property="roleGender" />
+		<result column="battle_points"  property="rolePower" />
+		<result column="role_type" property="roleType" />
+		<result column="vip_level" property="roleVip" />
+		<result column="log_name" property="logName" />
+		<result property="operType" column="oper_type"/>
+		<result property="harryType" column="harry_type"/>
+		<result property="harryServerId" column="harry_serverid"/>
+		<result property="normalHarryCount" column="normal_harry_count"/>
+		<result property="sepcailHarryCount" column="sepcail_harry_count"/>
+		
+</resultMap>
+	<sql id="Base_Column_List">
+ game_id ,
+   channel_id ,
+   media_id ,
+   device_id ,
+   version_name ,
+   version_code ,
+   user_id ,
+   server_id ,
+   from_timestamp(date_time, 'yyyy-MM-dd HH:mm:ss') as log_time,
+	role_id ,
+	role_name ,
+	role_level ,
+	role_gender ,
+	battle_points ,
+	role_type ,
+	vip_level ,
+	log_name ,
+	oper_type,
+	harry_type,
+	harry_server_id,
+	normal_harry_count,
+	sepcail_harry_count
+  </sql>
+
+	<select id="findCrossHarryList" parameterType="com.umi.ga.entitys.Condition" resultMap="cross_server_harry_logResult">
+		select
+		 <include refid="Base_Column_List"></include>
+		 from faith_server.server_cross_server_harry
+		<trim prefix="where" suffixOverrides="and">
+			<if test="null != serverId and '' != serverId">
+				server_Id in
+				<foreach collection="stringsArray" item="serverId" index="index" open="(" close=")" separator=",">
+					#{serverId}
+				</foreach>
+				and
+			</if>
+			<if test="accountId != null and accountId !='' ">
+				user_id = #{accountId} and
+			</if>
+			<if test="roleId != null and roleId !='' ">
+				role_Id = #{roleId} and
+			</if>
+			<if test="roleName != null and roleName !='' ">
+				role_Name =  #{roleName} and
+			</if>
+			<if test="operType != null and operType !='' or operType==0 ">
+				oper_Type = #{operType} and
+			</if>
+			<if test="harryType != null and harryType !='' or harryType==0 ">
+				harry_Type = #{harryType} and
+			</if>
+			<if test="startTime != null and startTime != '' and  endTime != null and endTime != ''">
+				 from_timestamp(date_time, 'yyyy-MM-dd')  between #{startTime} and #{endTime} and
+			</if>
+		</trim>
+		ORDER BY log_time DESC limit  ${pageSize}  offset ${pageIndex}
+	</select>
+
+
+
+	<select id="findCrossHarryListCount" parameterType="com.umi.ga.entitys.Condition" resultType="int">
+		select
+		count(*)
+		from faith_server.server_cross_server_harry
+		<trim prefix="where" suffixOverrides="and">
+			<if test="null != serverId and '' != serverId">
+				server_Id in
+				<foreach collection="stringsArray" item="serverId" index="index" open="(" close=")" separator=",">
+					#{serverId}
+				</foreach>
+				and
+			</if>
+			<if test="accountId != null and accountId !='' ">
+				user_id = #{accountId} and
+			</if>
+			<if test="roleId != null and roleId !='' ">
+				role_Id = #{roleId} and
+			</if>
+			<if test="roleName != null and roleName !='' ">
+				role_Name =  #{roleName} and
+			</if>
+			<if test="operType != null and operType !='' or operType==0 ">
+				oper_Type = #{operType} and
+			</if>
+			<if test="harryType != null and harryType !='' or harryType==0 ">
+				harry_Type = #{harryType} and
+			</if>
+			<if test="startTime != null and startTime != '' and  endTime != null and endTime != ''">
+				 from_timestamp(date_time, 'yyyy-MM-dd')  between #{startTime} and #{endTime} and
+			</if>
+		</trim>
+
+	</select>
+
+
+</mapper>

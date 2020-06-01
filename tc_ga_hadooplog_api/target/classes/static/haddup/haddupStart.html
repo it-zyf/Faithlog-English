@@ -1,0 +1,668 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+  <meta http-equiv="content-type" content="text/html" charset="utf-8">
+  <title>启动分析</title>
+  <!-- Bootstrap Styles-->
+  <link href="../css/bootstrap.min.css" rel="stylesheet" />
+  <script src="../js/jquery.min.js"></script>
+  <script src="../js/bootstrap.min.js"></script>
+  <link href="https://cdn.bootcss.com/element-ui/2.12.0/theme-chalk/index.css" rel="stylesheet">
+  <!--bs multiselect  -->
+  <!-- FontAwesome Styles-->
+  <!-- Google Fonts-->
+  <link rel="stylesheet" href="../css/clientData.css" />
+  <link rel="stylesheet" href="../js/bootstrap-table/bootstrap-table.css" />
+  <link rel="stylesheet" href="../js/loading/jquery.mloading.css" />
+  <script src="../js/loading/jquery.mloading.js"></script>
+</head>
+
+<body style="background: #202020;min-width:1900px;">
+  <div id="wrapper" style="background: #202020">
+    <!-- main结构-->
+    <div id="navigation"></div>
+    <div id="page-wrapper" style="overflow-x: hidden;">
+      <div id="page-inner" class="classpageinner" style="min-height: 896px;color: white;min-width:1670px;">
+        <div class="form-group col-xs-3 col-xs-pull-0" id="dataOnly">
+          <div style="font-size:14px;padding-left: 4px" class="timeTime" id="queryTime">
+            日期&nbsp;&nbsp;<el-date-picker v-model="ruleFormA.dateValue" align="bottom" style="margin-left: 2px"
+              value-format="yyyy-MM-dd" type="date" placeholder="选择日期" :picker-options="pickerOptionsA">
+            </el-date-picker>
+          </div>
+          <button type="button" id="chaTop" class="btn" onclick="onbluTop()">查询</button>
+          <!--<div class="countDownTime">&nbsp;(&nbsp;<span class="countdown" style="color:#B63DF2;"></span>&nbsp;)&nbsp;后更新</div>-->
+        </div>
+        <div id="partTwo" style="margin-top:1%;">
+          <div class="countDownTime">&nbsp;(&nbsp;<span class="countdown" style="color: #ffffff"></span>&nbsp;)&nbsp;后更新
+          </div>
+          <span style="margin-left: 40%;color: #999999;font-size: 14px">实时启动</span>
+          <i style="background: url('../image/exp2.png')" id="real-btnM"></i>
+          <!--<button id="real-btnM" style="margin-top:.8%;color:#fff;"><span style="font-size: 14px">导出</span></button>-->
+          <div class="father">
+            <div class="helpDescription">
+              <table style="border-radius: 4px;">
+                <tr style="height: 30px;line-height: 30px">
+                  <td colspan="8" style="background: #121212;padding-left: 3px">实时启动说明</td>
+                </tr>
+                <tr style="height: 30px;line-height: 30px;background: #1B1B1B">
+                  <td colspan="1" style="padding-left: 3px">实时启动</td>
+                  <td colspan="7" style="padding-left: 15px;color: #A4A3AE;">默认为当前启动时间和昨日启动时间点&nbsp;&nbsp;&nbsp;</td>
+                </tr>
+              </table>
+            </div>
+            <i style="background: url('../image/help2.png')" class="help"></i>
+          </div>
+          <div class="chart_top" style="width: 100%;float: left">
+            <!--<div class="partTwo" style="font-weight: 200;text-align: center;width: 100%">-->
+            <div id="chartTop" style="text-align: center;table-layout: fixed;font-weight: 200;height: 280px;">
+            </div>
+            <!--</div>-->
+          </div>
+          <div class="titleLoadAdd"
+            style="font-size: 12px;padding-top: 6%;margin-left:-4%;text-align: center;color:#ffffff;" id="loadstart"><i
+              class="el-icon-loading" style="font-size:28px;vertical-align: middle;"></i>
+            <div style="margin-top: 5px">加载中...</div>
+          </div>
+        </div>
+        <div class="real-tableStart" style="display: none">
+          <table id="real-datatableStart">
+            <thead>
+              <tr>
+                <th>时间范围</th>
+                <th>人数</th>
+              </tr>
+            </thead>
+            <tbody id="real-tbodyStart"></tbody>
+          </table>
+        </div>
+        <div class="form-group col-xs-12" style="width:100%;" id="dangerLine">
+          <div class="form-group col-xs-3 col-xs-pull-0" id="data_5" style="margin-top:1.1%;width: 20%;display: flex">
+            <div style="font-size:14px" class="timeTime">
+              日期&nbsp;&nbsp;<el-date-picker class="timePick" style="margin-left: 3px" value-format="yyyy-MM-dd"
+                v-model="ruleForm.dateValue" type="daterange" align="bottom" unlink-panels range-separator="~"
+                start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions">
+              </el-date-picker>
+            </div>
+            <!--<div class="countDownTime">&nbsp;(&nbsp;<span class="countdown" style="color:#B63DF2;"></span>&nbsp;)&nbsp;后更新</div>-->
+          </div>
+          <button type="button" id="cha" class="btn" onclick="onblu()">查询</button>
+          <!--<button type="button" id="cha" class="btn" style="float: left;background-color: #4a2cf8;color: white;width:68px !important;margin-top:1%;" onclick="onblu()">查询</button>-->
+        </div>
+        <div class="delaytime">
+          <div class="countDownTime">&nbsp;(&nbsp;<span class="countdown" style="color:#ffffff;"></span>&nbsp;)&nbsp;后更新
+          </div>
+          <span style="margin-left: -3%;color: #999999;font-size: 14px">启动延迟时间</span>
+          <i style="background: url('../image/exp2.png')" id="real-btnN"></i>
+          <div class="titleLoadAdd"
+            style="font-size: 12px;float: left;padding-top: 1%;margin-left:40%;margin-top:5%;text-align: center;color:#ffffff;"
+            id="loaddelay"><i class="el-icon-loading" style="font-size: 28px;vertical-align: middle;"></i>
+            <div style="margin-top: 5px">加载中...</div>
+          </div>
+          <div class="partThree">
+            <div style="width: 100%;">
+              <div id="partThreeLeft" style="width: 1650px;height:300px;margin-top: 15px"></div>
+            </div>
+          </div>
+        </div>
+        <div class="real-tableDelay" style="display: none">
+          <table id="real-datatableDelay">
+            <thead>
+              <tr>
+                <th>启动延迟时间(ms)</th>
+                <th>人数</th>
+              </tr>
+            </thead>
+            <tbody id="real-tbodyDelay"></tbody>
+          </table>
+        </div>
+        <div>
+          <div class="partFour" style="margin-top: 1%;min-width:1650px;float: left;width: 100%">
+            <div style="width: 49%;display: inline;background: #363636">
+              <div class="titleLoadAdd"
+                style="width: 822px;height: 430px;border: 1px solid #707070;font-size: 12px;float: left;padding-top: 1%;text-align: center;color:#ffffff;padding-top: 5%"
+                id="loadip"><i class="el-icon-loading" style="font-size: 28px;vertical-align: middle;"></i>
+                <div style="margin-top: 5px">加载中...</div>
+              </div>
+              <div id="partFourLeft" style="width: 822px;height: 430px;border: 1px solid #707070;"></div>
+            </div>
+            <div class="inner" style="display: none"></div>
+            <div style="display: inline;width: 49%;background: #363636">
+              <div class="titleLoadAdd"
+                style="width: 828px;height: 430px;margin-left:.6%;float: right;border: 1px solid #707070;font-size: 12px;float: left;padding-top: 1%;text-align: center;color:#ffffff;padding-top: 5%"
+                id="loadnet"><i class="el-icon-loading" style="font-size: 28px;vertical-align: middle;"></i>
+                <div style="margin-top: 5px">加载中...</div>
+              </div>
+              <div id="partFiveRight"
+                style="width: 828px;height: 430px;margin-right:-.6%;float: right;margin-top:-430px;border: 1px solid #707070;">
+              </div>
+            </div>
+            <!--<div style="display: inline;width: 49%;">-->
+            <!--<div id="partFourRight" style="width: 819px;height: 470px;float: right;margin-top: -28.3%"></div>-->
+            <!--</div>-->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+<script src="../haddup/js/urlGet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="https://cdn.bootcss.com/element-ui/2.12.0/index.js"></script>
+<script src="http://cdn.highcharts.com.cn/highcharts/highcharts.js"></script>
+<script src="../js/highcharts/exporting.js"></script>
+<script src="http://cdn.hcharts.cn/highcharts/6.1.1/modules/data.js"></script>
+<script src="https://cdn.bootcss.com/echarts/4.3.0-rc.2/echarts.min.js"></script>
+<script src="../js/dist/china.js"></script>
+<!--<script src="../js/clientData.js"></script>-->
+<script src="../haddup/js/haddupStart.js"></script>
+<script src="../js/bootstrap-table/bootstrap-table.min.js"></script>
+<script src="../js/jquery.table2excel.js"></script>
+<script type="text/javascript">
+  localStorage.setItem('navigation', '6-6-3')
+  $('#navigation').load('navHaddup.html')
+  // window.localStorage.clear()
+  var vm = new Vue({
+    el: '#page-inner',
+    data: {
+      msg: 'hello',
+      pickerOptions: {
+        disabledDate(time) {
+          return time.getTime() > Date.now(); //如果有后面的-8.64e7就是不可以选择今天的
+        },
+        shortcuts: [{
+            text: '今日',
+            onClick(picker) {
+              var end = new Date();
+              var start = new Date();
+              start.setTime(start.getTime());
+              picker.$emit('pick', [start, end]);
+            }
+          },
+          {
+            text: '昨日',
+            onClick(picker) {
+              var end = new Date();
+              var start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24);
+              end.setTime(end.getTime() - 3600 * 1000 * 24);
+              picker.$emit('pick', [start, end]);
+            }
+          }, {
+            text: '近7日',
+            onClick(picker) {
+              var end = new Date();
+              var start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+              end.setTime(end.getTime() - 3600 * 1000 * 24);
+              picker.$emit('pick', [start, end]);
+            }
+          }, {
+            text: '近30日',
+            onClick(picker) {
+              var end = new Date();
+              var start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+              end.setTime(end.getTime() - 3600 * 1000 * 24);
+              picker.$emit('pick', [start, end]);
+            }
+          }, {
+            text: '全部',
+            onClick(picker) {
+              var end = new Date();
+              var start = new Date('2019-11-30 00:00:00');
+              end.setTime(end.getTime());
+              picker.$emit('pick', [start, end]);
+            }
+          }
+        ]
+      },
+      pickerOptionsA: {
+        disabledDate(time) {
+          return time.getTime() > Date.now();
+        },
+        shortcuts: [{
+            text: '今天',
+            onClick(picker) {
+              picker.$emit('pick', new Date());
+            }
+          },
+          {
+            text: '昨天',
+            onClick(picker) {
+              var date = new Date();
+              date.setTime(date.getTime() - 3600 * 1000 * 24);
+              picker.$emit('pick', date);
+            }
+          }, {
+            text: '一周前',
+            onClick(picker) {
+              var date = new Date();
+              date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit('pick', date);
+            }
+          }
+        ]
+      },
+      ruleForm: {
+        dateValue: ""
+      },
+      ruleFormA: {
+        dateValue: ""
+      },
+    },
+    computed: {
+      timeDefault() {
+        var date = new Date();
+        var oneweekdate = new Date(date - 24 * 3600 * 1000);
+        var y = oneweekdate.getFullYear();
+        var m = oneweekdate.getMonth() + 1;
+        var d = oneweekdate.getDate();
+        var formatwdate = y + '-' + m + '-' + d;
+        return formatwdate;
+      },
+      timeDefaulttoday() {
+        var date = new Date();
+        var y = date.getFullYear();
+        var m = date.getMonth() + 1;
+        var d = date.getDate();
+        var formatwdate = y + '-' + m + '-' + d;
+        return formatwdate;
+      },
+      timeDefaultLast() {
+        var date = new Date();
+        var oneweekdate = new Date(date - 30 * 24 * 3600 * 1000);
+        var y = oneweekdate.getFullYear();
+        var m = oneweekdate.getMonth() + 1;
+        var d = oneweekdate.getDate();
+        var formatwdate = y + '-' + m + '-' + d;
+        return formatwdate;
+      }
+    },
+    mounted() {
+      // 初始化查询，默认为前30
+      this.ruleForm.dateValue = [this.timeDefaultLast, this.timeDefaulttoday];
+      this.ruleFormA.dateValue = this.timeDefault;
+    },
+    methods: {}
+  })
+
+  function onbluTop() {
+    $('#chartTop').css('display', 'none')
+    $('#loadstart').css('display', 'block')
+    var timeMM = document.getElementsByClassName('el-input__inner')
+    var timegive = timeMM[0].value //开始时间
+    querytime(timegive)
+  }
+
+  function onblu() {
+    $('.partThree').css('display', 'none')
+    $('#partFourLeft').css('display', 'none')
+    $('#partFiveRight').css('display', 'none')
+    $('#loaddelay').css('display', 'block')
+    $('#loadip').css('display', 'block')
+    $('#loadnet').css('display', 'block')
+    var timeMM = document.getElementsByClassName('el-range-input')
+    var timegivestart = timeMM[0].value //开始时间
+    var timegiveend = timeMM[1].value //结束时间
+    querydurationTime(timegivestart, timegiveend)
+  }
+  window.setInterval(function () {
+    var monthtt = document.getElementsByClassName('el-icon-arrow-right')
+    var yeartt = document.getElementsByClassName('el-icon-d-arrow-right')
+    monthtt[0].disabled = false
+    monthtt[0].classList.remove("is-disabled");
+    yeartt[0].disabled = false
+    yeartt[0].classList.remove("is-disabled");
+  }, 400)
+  //ip地址分布，这里需要调用echarts的map文件china.js，所以我放在html里
+  function map(ob) {
+    var partFourLeft = echarts.init(document.getElementById('partFourLeft'));
+    var mapName = 'china';
+    var data = []
+    var array = []
+    if (ob.region.length === 0) {
+      data = []
+    } else {
+      for (var i = 0; i < ob.region.length; i++) {
+        var obj = {}
+        obj.name = ob.region[i].ipaddr
+        obj.value = ob.region[i].count
+        array.push(obj)
+      }
+      data = array
+    }
+
+    function compare(property) {
+      return function (obj1, obj2) {
+        var value1 = obj1[property];
+        var value2 = obj2[property];
+        return value2 - value1; // 升序
+      }
+    }
+    var toparray = data.sort(compare("value"));
+    var topsub = toparray.slice(0, 10)
+    var geoCoordMap = {};
+    /*获取地图数据*/
+    partFourLeft.showLoading();
+    var mapFeatures = echarts.getMap(mapName).geoJson.features;
+    partFourLeft.hideLoading();
+    mapFeatures.forEach(function (v) {
+      // 地区名称
+      var name = v.properties.name;
+      // 地区经纬度
+      geoCoordMap[name] = v.properties.cp;
+
+    });
+    var max = 480,
+      min = 9; // todo
+    var maxSize4Pin = 100,
+      minSize4Pin = 20;
+    var convertData = function (data) {
+      var res = [];
+      for (var i = 0; i < data.length; i++) {
+        var geoCoord = geoCoordMap[data[i].name];
+        if (geoCoord) {
+          res.push({
+            name: data[i].name,
+            value: geoCoord.concat(data[i].value),
+          });
+        }
+      }
+      return res;
+    };
+    var yData = [];
+    var barData = [];
+    if (data.length === 0) {
+      for (var i = 0; i < 10; i++) {
+        barData.push({
+          name: '',
+          value: ''
+        });
+        yData.push('');
+      }
+    } else {
+      for (var i = 0; i < 10; i++) {
+        barData.push(data[i]);
+        yData.push(i + topsub[i].name + topsub[i].value);
+      }
+    }
+    var option = {
+      // backgroundColor: '#363636',
+      title: [{
+        show: true,
+        text: 'IP分布排行',
+        textStyle: {
+          color: '#999999',
+          fontSize: 12,
+          fontWeight: 400
+        },
+        right: 63,
+        top: 32
+      }, {
+        show: true,
+        text: 'IP地址分布',
+        left: 'center',
+        y: 10,
+        textStyle: {
+          color: '#999999',
+          fontSize: 14,
+          fontWeight: 'normal',
+        },
+      }],
+      tooltip: {
+        padding: 0,
+        enterable: true,
+        transitionDuration: 1,
+        textStyle: {
+          color: '#000',
+          decoration: 'none',
+        },
+        // position: function (point, params, dom, rect, size) {
+        //   return [point[0], point[1]];
+        // },
+        formatter: function (params) {
+          var tipHtml = '';
+          tipHtml =
+            '<div style="width:200px;height:40px;line-height:40px;padding-left:10px;background:#363F48">' +
+            '<i style="display:inline-block;width:8px;height:8px;background:#16d6ff;border-radius:4px;">' + '</i>' +
+            '<span style="margin-left:10px;color:#fff;font-size:14px;">' + params.name + ':  ' + params.data[
+              'value'] + '人' + '</span>' + '</div>'
+          // +'<div style="padding-left:8px;">'
+          // +'<p style="color:#fff;font-size:14px;margin-top: 8px;">'+'<i style="display:inline-block;width:10px;height:10px;background:#16d6ff;border-radius:40px;margin:0 8px">'+'</i>'
+          // +'总数：'+'<span style="color:#ffffff;margin:0 6px;">'+params.data['value']+'</span>'+'人'+'</p>'
+          // +'</div>'+'</div>';
+          // setTimeout(function() {
+          //     tooltipCharts(params.name);
+          // }, 10);
+          return tipHtml;
+        }
+      },
+      visualMap: {
+        type: 'continuous',
+        itemWidth: 20,
+        itemHeight: 85,
+        text: ['多', '少'],
+        showLabel: true,
+        seriesIndex: [0],
+        min: 0,
+        max: 1000,
+        inRange: {
+          color: ['#96AFEF', '#0549F3'] // 蓝绿
+        },
+        textStyle: {
+          color: '#999999'
+        },
+        bottom: 5,
+        left: 10,
+      },
+      grid: {
+        right: 63,
+        top: 60,
+        width: '6%'
+      },
+      xAxis: {
+        show: false
+      },
+      yAxis: {
+        type: 'category',
+        inverse: true,
+        nameGap: 16,
+        axisLine: {
+          show: false,
+          lineStyle: {
+            color: '#999999'
+          }
+        },
+        axisTick: {
+          show: false,
+          lineStyle: {
+            color: '#ddd'
+          }
+        },
+        axisLabel: {
+          interval: 0,
+          margin: 15,
+          textStyle: {
+            color: '#ffffff',
+            align: 'left',
+            fontSize: 14
+          },
+          rich: {
+            a: {
+              color: '#fff',
+              backgroundColor: '#D92525',
+              width: 20,
+              height: 20,
+              align: 'center',
+              borderRadius: 2
+            },
+            b: {
+              color: '#fff',
+              backgroundColor: '#D6731B',
+              width: 20,
+              height: 20,
+              align: 'center',
+              borderRadius: 2
+            },
+            c: {
+              color: '#fff',
+              backgroundColor: '#3BA433',
+              width: 20,
+              height: 20,
+              align: 'center',
+              borderRadius: 2
+            },
+            d: {
+              color: '#fff',
+              backgroundColor: '#0549F3',
+              width: 20,
+              height: 20,
+              align: 'center',
+              borderRadius: 2
+            }
+          },
+          formatter: function (params) {
+            var reg = /[\u4e00-\u9fa5]/g;
+            if (parseInt(params.slice(0, 1)) <= 0) {
+              var city = params.match(reg).join(""); //汉字
+              var num = params.replace(reg, "");
+              return [
+                '{a|' + (parseInt(params.slice(0, 1)) + 1) + '}' + '  ' + city + ' ' + parseInt(num.slice(1)) +
+                '人'
+              ].join('\n')
+            } else if (parseInt(params.slice(0, 1)) > 0 && parseInt(params.slice(0, 1)) <= 1) {
+              var city = params.match(reg).join(""); //汉字
+              var num = params.replace(reg, "");
+              return [
+                '{b|' + (parseInt(params.slice(0, 1)) + 1) + '}' + '  ' + city + ' ' + parseInt(num.slice(1)) +
+                '人'
+              ].join('\n')
+            } else if (parseInt(params.slice(0, 1)) > 1 && parseInt(params.slice(0, 1)) <= 2) {
+              var city = params.match(reg).join(""); //汉字
+              var num = params.replace(reg, ""); //去掉汉字
+              return [
+                '{c|' + (parseInt(params.slice(0, 1)) + 1) + '}' + '  ' + city + ' ' + parseInt(num.slice(1)) +
+                '人'
+              ].join('\n')
+            } else {
+              var city = params.match(reg).join(""); //汉字
+              var num = params.replace(reg, ""); //去掉汉字
+              return [
+                '{d|' + (parseInt(params.slice(0, 1)) + 1) + '}' + '  ' + city + ' ' + parseInt(num.slice(1)) +
+                '人'
+              ].join('\n')
+            }
+          }
+        },
+        data: yData
+      },
+      geo: {
+        // roam: true,
+        map: 'china',
+        left: '60',
+        right: '200',
+        top: '20',
+        width: '70%',
+        height: '95%',
+        label: {
+          emphasis: {
+            show: false
+          }
+        },
+        itemStyle: {
+          normal: {
+            areaColor: '#ffffff',
+            borderColor: '#ffffff',
+          },
+          emphasis: {
+            areaColor: '#4499d0', //鼠标悬浮地区背景色
+          }
+        }
+      },
+      series: [{
+        name: 'mapSer',
+        type: 'map',
+        roam: false,
+        geoIndex: 0,
+        label: {
+          show: false,
+        },
+        data: data
+      }, {
+        name: '散点',
+        type: 'scatter',
+        coordinateSystem: 'geo',
+        data: convertData(data),
+        symbolSize: .1,
+        opacity: .1,
+        // function(val) {
+        //     return val[2] / 10;
+        // },
+        label: {
+          normal: {
+            formatter: '{b}',
+            position: 'center',
+            show: true
+          },
+          emphasis: {
+            show: true
+          }
+        },
+        itemStyle: {
+          normal: {
+            color: '#fff',
+          }
+        }
+      }, ]
+    };
+    partFourLeft.setOption(option);
+  }
+  //开始导出
+  $("#real-btnM").click(function () {
+    $("#real-datatableStart").table2excel({
+      exclude: ".noExl",
+      name: "Excel Document Name",
+      filename: "启动时间",
+      exclude_img: true,
+      exclude_links: true,
+      exclude_inputs: true,
+    });
+  });
+  //延迟时间
+  $("#real-btnN").click(function () {
+    $("#real-datatableDelay").table2excel({
+      exclude: ".noExl",
+      name: "Excel Document Name",
+      filename: "延迟时间",
+      exclude_img: true,
+      exclude_links: true,
+      exclude_inputs: true,
+    });
+  });
+  var winWidth = 0,
+    winHeight = 0;
+
+  function changebleWidthHeight() {
+    if (window.innerWidth)
+      winWidth = window.innerWidth;
+    else if ((document.body) && (document.body.clientWidth))
+      winWidth = document.body.clientWidth;
+    //获取窗口高度
+    if (window.innerHeight)
+      winHeight = window.innerHeight;
+    else if ((document.body) && (document.body.clientHeight))
+      winHeight = document.body.clientHeight;
+    //通过深入Document内部对body进行检测，获取窗口大小
+    if (document.documentElement && document.documentElement.clientHeight && document.documentElement.clientWidth) {
+      winHeight = document.documentElement.clientHeight;
+      winWidth = document.documentElement.clientWidth;
+    }
+    // document.getElementById("serverCos").style.width = winWidth - 50
+    // document.getElementById("data_5").style.width = winWidth - 40
+  }
+  window.onresize = changebleWidthHeight();
+</script>
+</body>
+
+</html>

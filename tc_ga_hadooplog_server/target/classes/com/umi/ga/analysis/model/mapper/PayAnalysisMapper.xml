@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="PayAnalysis">
+	<resultMap id="pay_analysisResult" type="PayAnalysis">
+		<result property="id" column="id"/>
+		<result property="timedate" column="timeDate"/>
+		<result property="serverId" column="server_id"/>
+		<result property="channelId" column="channel_id"/>
+		<result property="payNumber" column="pay_number"/>
+		<result property="payAmount" column="pay_amount"/>
+		<result property="firstPayNumber" column="first_pay_number"/>
+		<result property="firstPayAmount" column="first_pay_amount"/>
+		<result property="paycount" column="payCount"/>
+		<result property="activeNumber" column="active_number"/>
+		<result property="arpu" column="arpu"/>
+		<result property="arppu" column="arppu"/>
+		<result property="rate" column="rate"/>
+</resultMap>
+
+	<resultMap id="flagResult" type="com.umi.ga.entitys.Flag">
+		<result column="id" jdbcType="VARCHAR" property="id"/>
+		<result column="flag" jdbcType="VARCHAR" property="flag"/>
+		<result column="name" jdbcType="VARCHAR" property="name"/>
+		<result column="type" jdbcType="VARCHAR" property="type"/>
+		<result column="time" jdbcType="VARCHAR" property="time"/>
+		<result column="number" jdbcType="INTEGER" property="number"/>
+	</resultMap>
+
+	<sql id="commonColumns">
+	    <![CDATA[
+			`id`,
+			`timeDate`,
+			`server_id`,
+			`channel_id`,
+			`pay_number`,
+			`pay_amount`,
+			`first_pay_number`,
+			`first_pay_amount`,
+			`payCount`,
+			`active_number`,
+			`arpu`,
+			`arppu`,
+			`rate`
+	    ]]>
+	</sql>
+
+	<sql id="dynamicWhere">
+		<where>
+			<if test="@Ognl@isNotEmpty(id)">
+				AND `id` = #{id}
+			</if>
+			<if test="@Ognl@isNotEmpty(timedate)">
+				AND `timeDate` = #{timedate}
+			</if>
+			<if test="@Ognl@isNotEmpty(serverId)">
+				AND `server_id` = #{serverId}
+			</if>
+			<if test="@Ognl@isNotEmpty(channelId)">
+				AND `channel_id` = #{channelId}
+			</if>
+			<if test="@Ognl@isNotEmpty(payNumber)">
+				AND `pay_number` = #{payNumber}
+			</if>
+			<if test="@Ognl@isNotEmpty(payAmount)">
+				AND `pay_amount` = #{payAmount}
+			</if>
+			<if test="@Ognl@isNotEmpty(firstPayNumber)">
+				AND `first_pay_number` = #{firstPayNumber}
+			</if>
+			<if test="@Ognl@isNotEmpty(firstPayAmount)">
+				AND `first_pay_amount` = #{firstPayAmount}
+			</if>
+			<if test="@Ognl@isNotEmpty(paycount)">
+				AND `payCount` = #{paycount}
+			</if>
+			<if test="@Ognl@isNotEmpty(activeNumber)">
+				AND `active_number` = #{activeNumber}
+			</if>
+			<if test="@Ognl@isNotEmpty(arpu)">
+				AND `arpu` = #{arpu}
+			</if>
+			<if test="@Ognl@isNotEmpty(arppu)">
+				AND `arppu` = #{arppu}
+			</if>
+			<if test="@Ognl@isNotEmpty(rate)">
+				AND `rate` = #{rate}
+			</if>
+		</where>
+	</sql>
+
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="PayAnalysis">
+    <![CDATA[
+        INSERT INTO `pay_analysis` (
+        	`timeDate`,
+        	`server_id`,
+        	`channel_id`,
+        	`pay_number`,
+        	`pay_amount`,
+        	`first_pay_number`,
+        	`first_pay_amount`,
+        	`payCount`,
+        	`active_number`,
+        	`arpu`,
+        	`arppu`,
+        	`rate`
+        )
+        VALUES (
+        	#{timedate},
+        	#{serverId},
+        	#{channelId},
+        	#{payNumber},
+        	#{payAmount},
+        	#{firstPayNumber},
+        	#{firstPayAmount},
+        	#{paycount},
+        	#{activeNumber},
+        	#{arpu},
+        	#{arppu},
+        	#{rate}
+        )
+    ]]>
+	</insert>
+
+	<update id="update" parameterType="PayAnalysis">
+    <![CDATA[
+        UPDATE `pay_analysis` SET
+	        `id` = #{id},
+	        `timeDate` = #{timedate},
+	        `server_id` = #{serverId},
+	        `channel_id` = #{channelId},
+	        `pay_number` = #{payNumber},
+	        `pay_amount` = #{payAmount},
+	        `first_pay_number` = #{firstPayNumber},
+	        `first_pay_amount` = #{firstPayAmount},
+	        `payCount` = #{paycount},
+	        `active_number` = #{activeNumber},
+	        `arpu` = #{arpu},
+	        `arppu` = #{arppu},
+	        `rate` = #{rate}
+        WHERE
+	        ID = #{id}
+    ]]>
+	</update>
+
+	<delete id="delete" parameterType="map">
+    <![CDATA[
+        delete from `pay_analysis`
+    ]]>
+		<include refid="dynamicWhere"/>
+	</delete>
+
+	<select id="getById" resultMap="pay_analysisResult">
+		SELECT <include refid="commonColumns" />
+	    <![CDATA[
+		    FROM `pay_analysis`
+	        WHERE
+		        ID = #{id}
+	    ]]>
+	</select>
+
+    <select id="count" resultType="long">
+        SELECT count(*) FROM `pay_analysis`
+		<include refid="dynamicWhere"/>
+    </select>
+  <select id="pageSelect" resultMap="pay_analysisResult">
+    	SELECT
+    		<include refid="commonColumns" />
+	    FROM `pay_analysis`
+		<include refid="dynamicWhere"/>
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+  </select>
+
+	<!--
+	 	###
+	 	###
+	 -->
+
+	<!--
+		hive
+	-->
+	<select id="hiveSelectPayAmount" parameterType="com.umi.ga.entitys.Times" resultType="java.lang.Double">
+		select
+			NVL(sum(order_amount),0) as amount
+		from
+			faith_server.server_recharge_success
+		where
+			log_time between unix_timestamp(concat(#{times},' 00:00:00'))*1000 and unix_timestamp(concat(#{times},' 23:59:59'))*1000
+			<if test="@Ognl@isNotEmpty(serverId)">
+				and server_id = #{serverId}
+			</if>
+			<if test="null != channelId">
+				and channel_id = #{channelId}
+			</if>
+	</select>
+
+	<select id="hiveSelectPayNumber" parameterType="com.umi.ga.entitys.Times" resultType="java.lang.Integer">
+		select
+			NVL(count(distinct user_id),0) as number
+		from
+			faith_server.server_recharge_success
+		where
+				log_time between unix_timestamp(concat(#{times},' 00:00:00'))*1000 and unix_timestamp(concat(#{times},' 23:59:59'))*1000 and user_id is not null
+			<if test="@Ognl@isNotEmpty(serverId)">
+				and server_id = #{serverId}
+			</if>
+			<if test="null != channelId">
+				and channel_id = #{channelId}
+			</if>
+	</select>
+
+	<select id="hiveSelectFirstPayAmount" parameterType="com.umi.ga.entitys.Times" resultType="java.lang.Double">
+		select
+			NVL(sum(order_amount),0) as amount
+		from
+			faith_server.server_recharge_success
+		where
+				log_time between unix_timestamp(concat(#{times},' 00:00:00'))*1000 and unix_timestamp(concat(#{times},' 23:59:59'))*1000 and user_id is not null and is_first_recharge = 1
+			<if test="@Ognl@isNotEmpty(serverId)">
+				and server_id = #{serverId}
+			</if>
+			<if test="null != channelId">
+				and channel_id = #{channelId}
+			</if>
+	</select>
+
+	<select id="hiveSelectFirstPayNumber" parameterType="com.umi.ga.entitys.Times" resultType="java.lang.Integer">
+		select
+			NVL(count(distinct user_id),0) as number
+		from
+			faith_server.server_recharge_success
+		where
+				log_time between unix_timestamp(concat(#{times},' 00:00:00'))*1000 and unix_timestamp(concat(#{times},' 23:59:59'))*1000 and user_id is not null and is_first_recharge = 1
+			<if test="@Ognl@isNotEmpty(serverId)">
+				and server_id = #{serverId}
+			</if>
+			<if test="null != channelId">
+				and channel_id = #{channelId}
+			</if>
+	</select>
+
+	<select id="hiveSelectPayCount" parameterType="com.umi.ga.entitys.Times" resultType="java.lang.Integer">
+		select
+			NVL(count(user_id),0) as number
+		from
+			faith_server.server_recharge_success
+		where
+				log_time between unix_timestamp(concat(#{times},' 00:00:00'))*1000 and unix_timestamp(concat(#{times},' 23:59:59'))*1000 and user_id is not null
+			<if test="@Ognl@isNotEmpty(serverId)">
+				and server_id = #{serverId}
+			</if>
+			<if test="null != channelId">
+				and channel_id = #{channelId}
+			</if>
+	</select>
+
+	<select id="hiveSelectActiveNumber" parameterType="com.umi.ga.entitys.Times" resultType="java.lang.Integer">
+		select
+			NVL(count(distinct user_id),0)
+		from
+		faith_server.server_role_login
+		where
+				log_time between unix_timestamp(concat(#{times},' 00:00:00'))*1000 and unix_timestamp(concat(#{times},' 23:59:59'))*1000
+			<if test="@Ognl@isNotEmpty(serverId)">
+				and server_id = #{serverId}
+			</if>
+			<if test="null != channelId">
+				and channel_id = #{channelId}
+			</if>
+	</select>
+
+	<select id="hiveSelectPayList" parameterType="DailyAnalysis" resultMap="flagResult">
+		select
+            user_id as flag,
+            log_time as time
+        from
+            faith_server.server_recharge_success
+        where
+           log_time between unix_timestamp(concat(#{timedate},' 00:00:00'))*1000 and unix_timestamp(concat(#{timedate},' 23:59:59'))*1000
+        order by time asc
+	</select>
+
+	<select id="hiveSelectPayAmountList" parameterType="DailyAnalysis" resultMap="flagResult">
+		select
+            order_amount as flag,
+            log_time as time
+        from
+            faith_server.server_recharge_success
+        where
+           log_time between unix_timestamp(concat(#{timedate},' 00:00:00'))*1000 and unix_timestamp(concat(#{timedate},' 23:59:59'))*1000
+        order by time asc
+	</select>
+	<!--
+		mysql
+	-->
+	<insert id="insertBatch" parameterType="java.util.List">
+		insert into pay_analysis
+		(
+			`timeDate`,
+			`server_id`,
+			`channel_id`,
+			`pay_number`,
+			`pay_amount`,
+			`first_pay_number`,
+			`first_pay_amount`,
+			`payCount`,
+			`active_number`
+		)
+		VALUES
+		<foreach collection="list" item="item" index="index" separator=",">
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				#{item.timedate},#{item.serverId},#{item.channelId},#{item.payNumber},
+				#{item.payAmount},#{item.firstPayNumber},#{item.firstPayAmount},#{item.paycount},
+				#{item.activeNumber}
+			</trim>
+		</foreach>
+	</insert>
+
+	<select id="queryPayForAnalysis" parameterType="com.umi.ga.entitys.Times" resultMap="pay_analysisResult">
+		select
+			timeDate as timeDate,
+			SUM(pay_number) AS pay_number,
+			SUM(pay_amount) AS pay_amount,
+			SUM(first_pay_number) AS first_pay_number,
+			SUM(first_pay_amount) AS first_pay_amount,
+			SUM(payCount) AS payCount,
+			SUM(active_number) AS active_number
+		from
+			pay_analysis
+		where
+				timeDate between #{startTime} and #{endTime}
+			<if test="@Ognl@isNotEmpty(serverId)">
+				and server_id in(${serverId})
+			</if>
+			<if test="null != channelId">
+				and channel_id in(${channelId})
+			</if>
+		group by timeDate
+		order by timeDate asc
+	</select>
+
+	<select id="selectServerList" resultMap="flagResult">
+		select
+			distinct server_id as flag
+		from
+			pay_analysis
+		where
+			server_id is not null
+	</select>
+
+	<select id="selectChannelList" resultMap="flagResult">
+		select
+			distinct channel_id as flag
+		from
+			pay_analysis
+		where
+			channel_id is not null
+	</select>
+</mapper>

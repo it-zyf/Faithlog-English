@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+		<title>排行榜日志</title>
+		<link rel="shortcut  icon" type="image/x-icon" href="bitbug_favicon (2).ico" media="screen" />
+		<link rel="stylesheet" href="../layui/css/layui.css" />
+		<link rel="stylesheet" href="../css/roleChat.css" />
+		<link rel="stylesheet" href="../font-awesome-4.7.0/css/font-awesome.min.css" />
+		<link rel="stylesheet" href="../css/bootstrap.min.css" />
+		<link rel="stylesheet" type="text/css" href="../js/bootstrap-table/bootstrap-table.min.css"/>
+		<link rel="stylesheet" href="../js/multiple/bootstrap-multiselect.css" />
+		<link rel="stylesheet" href="../js/loading/jquery.mloading.css" />
+		<style type="text/css">
+			.fixed-table-loading{
+				background: #363636;
+				color: white;
+				top: 80px;
+				border: 0;
+			}
+			.pagination>li>a, .pagination>li>span{
+				color: white;
+				background-color: transparent;
+				border: 0;
+			}
+			.bootstrap-table .fixed-table-pagination>.pagination-detail .page-list{
+				color: #C0C0C0;
+			}
+			.pagination>li>a, .pagination>li>span:hover{
+				background: #464545;
+			}
+			.pagination>.disabled>a, .pagination>.disabled>a:focus, .pagination>.disabled>a:hover, .pagination>.disabled>span, .pagination>.disabled>span:focus, .pagination>.disabled>span:hover{
+				color: #C0C0C0;
+				background-color: #464545;
+				border: 0;
+			}
+			.pagination>li>a:focus, .pagination>li>a:hover, .pagination>li>span:focus, .pagination>li>span:hover{
+				color: #428BCA;
+				background: #464545;
+				border: 0;
+			}
+			.pagination-info{
+				color: #C0C0C0;
+			}
+			.checkbox{
+				color: #C0C0C0;
+				font-size: 14px;
+				line-height: 30px;
+			}
+			.dropdown-menu,.btn-default{
+				background: #363636;
+				color: #C0C0C0;
+			}
+			.btn-default:hover{
+				background: #363636;
+				color: #C0C0C0;
+			}
+			.btn-default.active, .btn-default:active, .open>.dropdown-toggle.btn-default{
+				color: #C0C0C0;
+				background: #363636;
+			}
+			.btn-default.active.focus, .btn-default.active:focus, .btn-default.active:hover, .btn-default:active.focus, .btn-default:active:focus, .btn-default:active:hover, .open>.dropdown-toggle.btn-default.focus, .open>.dropdown-toggle.btn-default:focus, .open>.dropdown-toggle.btn-default:hover{
+				color: #C0C0C0;
+				background: #363636;
+			}
+			.dropdown-menu>.active>a, .dropdown-menu>.active>a:focus, .dropdown-menu>.active>a:hover{
+				background: #363636;
+			}
+			.btn-default.focus, .btn-default:focus{
+				background: #363636;
+				color: #C0C0C0;
+			}
+			.bootstrap-table{
+				clear: both;
+			}
+			.pagination>.active>a, .pagination>.active>a:focus, .pagination>.active>a:hover, .pagination>.active>span, .pagination>.active>span:focus, .pagination>.active>span:hover{
+				background: #555555;
+				border-color: #555555;
+			}
+			.pagination>li>a:hover, .pagination>li>span:hover{
+				color: white;
+			}
+			#rank_type + .btn-group {
+				width:71% !important;
+			}
+		</style>
+	</head>
+	<body style="background: #202020;" onload="lo()">
+		<div id="navs"></div>
+		<div class="layui-layout layui-layout-admin">
+			<div class="layui-body" style="padding: 20px;">
+				<div class="sum_div">
+					<div class="Recharge">
+						<form role="form" class="form-inline" style="height: 140px;">
+							<div class="form-group" style="width: 22%;float: left;">
+								<label for="">区服号</label>
+								<select id="district_service" multiple="multiple"></select>
+							</div>
+							<div class="form-group" style="width: 22%;float: left;">
+								<label for="" >账号ID</label>
+								<input type="text" class="form-control" id="accountID" placeholder="请输入账号ID" />
+							</div>
+							<div class="form-group layui-inline" style="width: 23%;float: left;">
+								<label for="" >日&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;期</label>
+								<input type="text" class="form-control" id="datatimes" />
+							</div>
+							<!-- <div class="form-group" style="width: 23%;float: left;">
+								<label for="" style="margin-left: 5%;">物品ID</label>
+								<input type="text" class="form-control" id="itemID" placeholder="请输入物品ID" />
+							</div> -->
+							
+							
+							<button type="button" class="layui-btn layui-btn-normal" id="query" onclick="onread()">查询</button>
+							<br /><br /><br /><br />
+							<div class="form-group" style="width: 22%;float: left;">
+								<label for="">角色ID</label>
+								<input type="text" class="form-control" id="roleID" placeholder="请输入角色ID" />
+							</div>
+							<div class="form-group" style="width: 21%;float: left;">
+								<label for="">角色名</label>
+								<input type="text" class="form-control" id="roleName" placeholder="请输入角色名" style="width:77%"/>
+							</div>
+							<!-- <div class="form-group" style="width: 23%;float: left;">
+								<label for="" style="margin-right:1%">登录方式</label>
+								<select id="channel" style="width:70%"></select>
+							</div> -->
+							<!-- <div class="form-group" style="width: 23%;float: left;">
+								<label for="" style="margin-right:1%">充值渠道</label>
+								<select id="reg_channel"></select>
+							</div> -->
+							<div class="form-group" style="width: 24%;float: left;">
+								<label for="" style="margin-right:0.3%">排行榜类型</label>
+								<select class="form-control" multiple="multiple" id="rank_type" style="width:67%">
+									<option value="0">战力总榜</option>
+									<option value="1">等级总榜</option>
+									<option value="2">个人榜财富</option>
+									<option value="3">万魔塔</option>
+									<option value="4">羽翼总战力</option>
+									<option value="5">坐骑总战力</option>
+									<option value="6">个人 威望</option>
+									<option value="7">竞技场</option>
+									<option value="8">军团榜 总战力</option>
+									<option value="9">战力 战士</option>
+									<option value="10">战力 法师</option>
+									<option value="11">战力 骑士</option>
+									<option value="12">战力 刺客</option>
+									<option value="13">等级 战士</option>
+									<option value="14">等级 法师</option>
+									<option value="15">等级 骑士</option>
+									<option value="16">等级 刺客</option>
+									<option value="17">装备榜 总战力</option>
+									<option value="18">装备榜 武器</option>
+									<option value="19">装备榜 项链</option>
+									<option value="20">装备榜 衣服</option>
+									<option value="21">装备榜 裤子</option>
+									<option value="22">装备榜 头饰</option>
+									<option value="23">装备榜 鞋子</option>
+									<option value="24">装备榜 手套</option>
+									<option value="25">装备榜 戒指</option>
+									<option value="26">装备榜 耳环</option>
+									<option value="27">坐骑榜 培养</option>
+									<option value="28">羽翼榜 培养</option>
+									<option value="29">精灵榜 培养</option>
+									<option value="30">个人榜 信仰</option>
+									<option value="31">个人榜 符文</option>
+									<option value="32">个人榜 启示之魂</option>
+									<option value="33">个人榜 军衔</option>
+									<option value="34">个人榜 成就</option>
+									<option value="35">个人榜 图鉴</option>
+									<option value="36">军团榜 领地排行</option>
+									<option value="37">军团榜 军团boss</option>
+									<option value="38">军团榜 军团篝火</option>
+									<option value="39">世界BOSS boss1</option>
+									<option value="40">世界BOSS boss2</option>
+									<option value="41">世界BOSS boss3</option>
+									<option value="42">世界BOSS boss4</option>
+									<option value="43">世界BOSS boss5</option>
+									<option value="44">世界BOSS boss6</option>
+									<option value="45">世界BOSS boss7</option>
+									<option value="46">精英讨伐 boss1</option>
+									<option value="47">精英讨伐 boss2</option>
+									<option value="48">精英讨伐 boss3</option>
+									<option value="49">精英讨伐 boss4</option>
+									<option value="50">精英讨伐 boss5</option>
+									<option value="51">精英讨伐 boss6</option>
+									<option value="52">精英讨伐 boss7</option>
+									<option value="53">精英讨伐 boss8</option>
+									<option value="54">精灵总战力</option>
+									<option value="55">VIP榜 VIP1</option>
+									<option value="56">VIP榜 VIP5</option>
+									<option value="57">VIP榜 VIP7</option>
+									<option value="58">充值榜</option>
+									<option value="59">限时活动累计充值排行榜</option>
+									<option value="60">限时活动累计消费排行榜</option>
+									<option value="61">限时活动宝藏抽取排行榜</option>
+									<option value="62">跨服战力榜</option>
+									<option value="63">跨服掠夺守卫值榜</option>
+									<option value="64">跨服军团战力榜</option>
+									<option value="65">跨服天梯本服积分榜</option>
+									<option value="66">神翎榜</option>
+									<option value="67">跨服世界boss1</option>
+									<option value="68">跨服世界boss2</option>
+									<option value="69">跨服世界boss3</option>
+									<option value="70">跨服世界boss4</option>
+									<option value="71">跨服世界boss5</option>
+									<option value="72">跨服世界boss6</option>
+									<option value="73">跨服世界boss7</option>
+									<option value="74">跨服世界boss8</option>
+									<option value="75">跨服世界boss9</option>
+									<option value="76">跨服世界boss10</option>
+									<option value="77">跨服世界boss11</option>
+									<option value="78">跨服世界boss12</option>
+									<option value="79">限时活动战力提升榜</option>
+									<option value="80">限时活动坐骑提升榜</option>
+									<option value="81">限时活动翅膀提升榜</option>
+									<option value="82">限时活动装备提升榜</option>
+									<option value="83">限时活动精灵提升榜</option>
+									<option value="84">跨服限时活动战力提升榜</option>
+									<option value="85">跨服限时活动坐骑提升榜</option>
+									<option value="86">跨服限时活动翅膀提升榜</option>
+									<option value="87">跨服限时活动装备提升榜</option>
+									<option value="88">跨服限时活动精灵提升榜</option>
+									<option value="89">跨服等级榜</option>
+									<option value="90">夫妻榜</option>
+									<option value="91">天启试炼</option>
+									<option value="92">跨服天梯上赛季王者榜</option>
+									<option value="93">跨服天梯本赛季王者榜</option>
+								</select>
+							</div>
+							<button type="button" class="layui-btn layui-btn-normal" id="export" onclick="exportT()">导出</button>
+							<br /><br /><br /><br />
+						</form>
+						<table id="datatable"></table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="../layui/layui.js"></script>
+	<script src="../js/jquery.min.js"></script>
+	<script src="../js/loading/jquery.mloading.js"></script>
+	<script src="../js/jquery.cookie.js"></script>
+	<script src="../js/bootstrap.min.js"></script>
+	<script src="../js/multiple/bootstrap-multiselect.js"></script>
+	<script src="../js/bootstrap-table/bootstrap-table.min.js"></script>
+	<script src="../js/rankList.js"></script>
+	<script>
+		$("#navs").load("Navigation.html")
+		function lo(){
+			$(".468").addClass("layui-this").siblings().removeClass("layui-this")
+			$(".468").parent().parent().addClass("layui-nav-itemed").siblings().removeClass("layui-nav-itemed")
+		}
+		////layui配置
+		layui.use(['element', 'form'], function() {
+			var element = layui.element;
+			var form = layui.form;
+			element.init();
+		});
+		function exportT(){
+			$("body").mLoading("show");
+			var pay_district_num = $("#district_service").val(); //区服号
+			var account=$("#accountID").val();//账号ID
+			var pay_date = $("#datatimes").val(); //日期
+			/* var goslsID = $("#itemID").val(); //物品ID */
+			var roles = $("#roleID").val(); //角色ID
+			var rolesname = $("#roleName").val(); //角色名
+			var logintype = $("#channel").val(); //登陆方式
+			var pay_reg_ways = $("#reg_channel").val(); //充值渠道
+			if(pay_district_num!=""){
+				pay_district_num=pay_district_num.join(",")
+			}
+			$.ajax({
+				type:"get",
+				url:"../query_rankLogExport.action",
+				async:true,
+				data:{
+					serverId: pay_district_num,
+					accountId: account,
+					seDate: pay_date,
+					/* itemId: goslsID, */
+					roleId: roles,
+					roleName: rolesname,
+					loginType: logintype,
+					channelId: pay_reg_ways,
+					pageIndex:1,
+					pageSize:100000000
+				},
+				success:function(e){
+					if(e.state==false){
+						alert(e.message)
+						$("body").mLoading("hide");
+					}else{
+						window.open('/upload/log.xlsx');
+						$("body").mLoading("hide");
+					}
+				}
+			});
+		}
+		$('#rank_type').multiselect({
+			buttonWidth: '60%',
+			nonSelectedText: '请选择',
+			maxHeight: 200,
+			numberDisplayed: 2,
+			includeSelectAllOption: true,
+			selectAllText: '全选/全不选', //全选按钮显示的文本	
+			nSelectedText: '项被选中',
+			allSelectedText: '已选中所有活动',
+			enableFiltering: false, //搜索框
+		});
+	</script>
+</html>

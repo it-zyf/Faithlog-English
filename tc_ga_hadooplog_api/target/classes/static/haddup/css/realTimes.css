@@ -1,0 +1,589 @@
+*{
+	margin: 0;
+	padding: 0;
+}
+form label{
+	color: white;
+	font-weight: bold;
+	font-size: 1vw;
+	margin-right: 2%;
+}
+input[type="checkbox"]{
+	width: 20px;
+    height: 20px;
+    background-color: transparent;
+    -webkit-appearance:none;
+    border: 1px solid #c9c9c9;
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+    float: left;
+}
+input[type="checkbox"]:checked{
+	border: 1px solid #0078f2;
+	background: url("../../img/duihao.png") no-repeat;
+	background-position: center;
+}
+.query_criteria{
+	height: 80px;
+	padding: 20px;
+	background: #363636;
+}
+.displays{
+	height: 80px;
+	padding: 20px;
+	background: #363636;
+	display: none;
+}
+#district_service,#channel,#datatimes,#Exclude,#reg_channel{
+	width: 73%;
+	height: 35px;
+	border: 1px solid #bcbcbc;
+	background: transparent;
+	color: #C0C0C0;
+}
+#district_service:focus,#channel:focus,#Exclude:focus,#reg_channel:focus{
+	border: 1px solid #FFFFFF;
+	color: white;
+}
+#district_service option,#channel option,#Exclude option,#reg_channel option{
+	background: #363636;
+	color: #C0C0C0;
+}
+#query{
+	height: 35px;
+	line-height: 35px;
+	float: right;
+}
+
+.chart{
+	background: #363636;
+	margin-top: 20px;
+	padding: 20px;
+}
+.chart p{
+	text-align: center;
+}
+.chart p .tit{
+	color: white;
+	background: #363636;
+	font-size: 1vw;
+    display: inline-block;
+    line-height: 30px;
+    float: left;
+    font-weight: bold;
+}
+.chart p .help{
+	font-size: 16px;
+    color: #C0C0C0;
+    display: inline-block;
+    height: 35px;
+    line-height: 35px;
+    margin-right: 1%;
+    float: right;
+}
+.chart p .export{
+	color: #fff;
+    font-size: 14px;
+    background: #1E9FFF;
+    display: inline-block;
+    width: 70px;
+    height: 35px;
+    line-height: 35px;
+    float: right;
+}
+.help_block{
+	width: 350px;
+	/*height: 260px;*/
+	background: #191919;
+	padding: 20px;
+	position: absolute;
+    top: 18%;
+    right: 175px;
+    z-index: 99;
+    display: none;
+}
+.help_block p{
+	color: #C0C0C0;
+	text-align: left;
+	margin-bottom: 20px;
+}
+.help_block p:last-child{
+	margin-bottom: 0;
+}
+.help_block>p>span{
+	color: #F0B51F;
+}
+#datatable{
+	margin-top: 2%;
+	width: 96%;
+}
+#selection{
+	display: none;
+}
+#selection form{
+	padding: 20px;
+}
+#selection form .form-group label{
+	color: #C0C0C0;
+	font-size: 14px;
+	font-weight: 100;
+}
+#selection a{
+	width: 28px;
+	height: 28px;
+	text-align: center;
+	display: inline-block;
+	line-height: 35px;
+	float: left;
+	margin-top: -5px;
+}
+.btns{
+	border-top: 1px solid #272727;
+	text-align: center;
+}
+.btns button{
+	height: 35px;
+	margin-top: 5px;
+	background: #191919;
+	border: 1px solid #575757;
+	width: 100px;
+    line-height: 35px;
+}
+.tab_switching{
+	width: 60%;
+	margin: 0 auto;
+}
+.tab_switching li{
+	float: left;
+	color: #C0C0C0;
+	width: 12%;
+	border: 1px solid #C0C0C0;
+	height: 30px;
+	text-align: center;
+	line-height: 29px;
+	cursor: pointer;
+	font-size: 0.7vw;
+}
+.tab_switching li:hover{
+	background: #5b5b5b;
+	color:white;
+	font-weight: bold;
+}
+
+.tab_switching li:first-child{
+	background: #5b5b5b;
+	color:white;
+	font-weight: bold;
+}
+.change{
+	width: 5%;
+	height: 30px;
+	text-align: center;
+	line-height: 30px;
+	border: 1px solid #f0b51f;
+	margin-left: 1%;
+	color: #f0b51f;
+	display: inline-block;
+	font-size: 0.7vw;
+}
+.change:hover{
+	color: #F0B51F;
+}
+.change:focus{
+	color: #F0B51F;
+}
+.clear,.group{
+	display: none;
+}
+
+#district_service a{
+	width: 25px;
+    height: 25px;
+    text-align: center;
+    display: inline-block;
+    line-height: 35px;
+    float: left;
+    margin-top: 6px;
+}
+#district_service>li{
+	height: 33px;
+	line-height: 35px;
+	/*border: 1px solid #bcbcbc;*/
+	color: #C0C0C0;
+}
+#district_service ul{
+	background: #1A1A1A;
+}
+#district_service>li>span{
+	display: list-item;
+	margin-left: 10px;
+}
+.clear{
+	margin-top: 10px;
+	width: 500px;
+	max-height: 500px;
+	overflow-y: auto;
+}
+.clear>li{
+	line-height: 37px;
+	padding-top: 10px;
+	padding-left: 10px;
+	border-top: 1px solid #232323;
+	color: #C0C0C0;
+	clear: both;
+}
+.clear>li>span{
+	margin-top: -5px;
+}
+.clear>li:hover{
+	background: #232323;
+}
+.group li{
+	width: 20%;
+	float: left;
+	height: 44px;
+}
+#datatable{
+	overflow-x: scroll;
+	width: 100%;
+	border: 0;
+}
+#datatable thead {
+	background: #1A1A1A;
+	border: 0;
+}
+#datatable thead tr{
+	border: 0;
+}
+#datatable thead tr th{
+	border: 0;
+	color: white;
+	height: 50px;
+	font-size: 14px;
+	line-height: 30px;
+}
+#datatable tbody{
+	border: 0;
+}
+#datatable tbody tr{
+	border: 0;
+}
+#datatable tbody tr td{
+	border: 0;
+	color: #C0C0C0;
+	height: 40px;
+	font-size: 14px;
+}
+#datatable tbody tr:hover{
+	background: transparent;
+	color: #C0C0C0;
+}
+
+.real-top{
+	width: 100%;
+	height: 120px;
+	clear: both;
+}
+.real-top .p-float{
+	width: 25%;
+    height: 120px;
+    float: left;
+    border: 1px solid #7b7b7b;
+    box-sizing: border-box;
+    position: relative;
+    background: #363636;
+    font-size: 32px;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #C0C0C0;
+    padding-top: 2%;
+}
+/*.real-top>.p-float:hover{
+	background-color: #edf5f6;
+}*/
+#real-p1{
+	border-top: 2px solid #2196f3;
+	border-bottom: none;
+}
+#real-histogram{
+	float: left;
+	width: 80px;
+	height: 30px;
+	background-color: #edf5f6;
+	margin-bottom: 15px;
+	margin-left: 15px;
+	margin-right: 15px;
+}
+#real-sheet{
+	float: left;
+	width: 80px;
+	height: 30px;
+	background-color: #edf5f6;
+}
+#real-histogram:hover{
+	background-color: #c1dfe9;
+}
+#real-sheet:hover{
+	background-color:#c1dfe9 ;
+}
+.real-yin{
+	display: none;
+}
+.real-yin2{
+	display: none;
+}
+.real-yin3{
+	display: none;
+}
+.real-yin4{
+	display: none;
+}
+.real-table{
+	margin-top: 15px;
+	-webkit-animation-name: fadeIn; /*动画名称*/
+    -webkit-animation-duration: 1s; /*动画持续时间*/
+    -webkit-animation-iteration-count: 1; /*动画次数*/
+    -webkit-animation-delay: 0s; /*延迟时间*/
+}
+.real-table-one{
+	margin-top: 15px;
+	-webkit-animation-name: fadeIn; /*动画名称*/
+    -webkit-animation-duration: 1s; /*动画持续时间*/
+    -webkit-animation-iteration-count: 1; /*动画次数*/
+    -webkit-animation-delay: 0s; /*延迟时间*/
+}
+.real-table-two{
+	margin-top: 15px;
+	-webkit-animation-name: fadeIn; /*动画名称*/
+    -webkit-animation-duration: 1s; /*动画持续时间*/
+    -webkit-animation-iteration-count: 1; /*动画次数*/
+    -webkit-animation-delay: 0s; /*延迟时间*/
+}
+.real-table-four{
+	margin-top: 15px;
+	-webkit-animation-name: fadeIn; /*动画名称*/
+    -webkit-animation-duration: 1s; /*动画持续时间*/
+    -webkit-animation-iteration-count: 1; /*动画次数*/
+    -webkit-animation-delay: 0s; /*延迟时间*/
+}
+#div-one{
+	-webkit-animation-name: fadeIn; /*动画名称*/
+    -webkit-animation-duration: 1s; /*动画持续时间*/
+    -webkit-animation-iteration-count: 1; /*动画次数*/
+    -webkit-animation-delay: 0s; /*延迟时间*/
+}
+#div-two{
+	-webkit-animation-name: fadeIn; /*动画名称*/
+    -webkit-animation-duration: 1s; /*动画持续时间*/
+    -webkit-animation-iteration-count: 1; /*动画次数*/
+    -webkit-animation-delay: 0s; /*延迟时间*/
+}
+#div-three{
+	-webkit-animation-name: fadeIn; /*动画名称*/
+    -webkit-animation-duration: 1s; /*动画持续时间*/
+    -webkit-animation-iteration-count: 1; /*动画次数*/
+    -webkit-animation-delay: 0s; /*延迟时间*/
+}
+#div-four{
+	-webkit-animation-name: fadeIn; /*动画名称*/
+    -webkit-animation-duration: 1s; /*动画持续时间*/
+    -webkit-animation-iteration-count: 1; /*动画次数*/
+    -webkit-animation-delay: 0s; /*延迟时间*/
+}
+.real-table>table{
+	width: 100%;
+	height: 100%;
+	border: 0;
+}
+
+.real-table>table>thead>tr>th{
+	width: 33%;
+	height: 40px;
+	background-color: #1A1A1A;
+	border: 0;
+	color: #C0C0C0;
+	text-align: center;
+}
+.real-table>table>tbody>tr>td{
+	width: 33%;
+	height: 35px;
+	border: 0;
+	text-align: center;
+	color: #C0C0C0;
+}
+.real-table>table>tbody>tr>th{
+	text-align: center;
+}
+.real-table-one>table{
+	width: 100%;
+	height: 100%;
+	border: 0;
+}
+
+.real-table-one>table>thead>tr>th{
+	width: 33%;
+	height: 40px;
+	background-color: #1A1A1A;
+	color: #C0C0C0;
+	border: 0;
+	text-align: center;
+}
+.real-table-one>table>tbody>tr>td{
+	width: 33%;
+	height: 35px;
+	border: 0;
+	text-align: center;
+	color: #C0C0C0;
+	
+}
+.real-table-one>table>tbody>tr>th{
+	text-align: center;
+}
+.real-table-two>table{
+	width: 100%;
+	height: 100%;
+	border: 0;
+}
+
+.real-table-two>table>thead>tr>th{
+	width: 33%;
+	height: 40px;
+	background-color: #1A1A1A;
+	color: #C0C0C0;
+	border: 0;
+	text-align: center;
+}
+.real-table-two>table>tbody>tr>td{
+	width: 33%;
+	height: 35px;
+	border: 0;
+	text-align: center;
+	color: #C0C0C0;
+}
+.real-table-two>table>tbody>tr>th{
+	text-align: center;
+}
+.real-table-four>table{
+	width: 100%;
+	height: 100%;
+	border: 0;
+}
+
+.real-table-four>table>thead>tr>th{
+	width: 33%;
+	height: 40px;
+	background-color: #1A1A1A;
+	color: #C0C0C0;
+	border: 0;
+	text-align: center;
+}
+.real-table-four>table>tbody>tr>td{
+	width: 33%;
+	height: 35px;
+	border: 0;
+	text-align: center;
+	color: #C0C0C0;
+}
+.real-table-four>table>tbody>tr>th{
+	text-align: center;
+}
+#real-btn{
+	float: right;
+}
+#real-btn2{
+	float: right;
+}
+#real-btn3{
+	float: right;
+}
+#real-btn4{
+	float: right;
+}
+.conceal{
+	display: none;
+}
+.reveal{
+	display: block;
+}
+#real-histogram2{
+	float: left;
+	width: 80px;
+	height: 30px;
+	background-color: #edf5f6;
+	margin-bottom: 15px;
+	margin-left: 15px;
+	margin-right: 15px;
+}
+#real-sheet2{
+	float: left;
+	width: 80px;
+	height: 30px;
+	background-color: #edf5f6;
+}
+#real-histogram2:hover{
+	background-color: #c1dfe9;
+}
+#real-sheet2:hover{
+	background-color:#c1dfe9 ;
+}
+#real-histogram3{
+	float: left;
+	width: 80px;
+	height: 30px;
+	background-color: #edf5f6;
+	margin-bottom: 15px;
+	margin-left: 15px;
+	margin-right: 15px;
+}
+#real-sheet3{
+	float: left;
+	width: 80px;
+	height: 30px;
+	background-color: #edf5f6;
+}
+#real-histogram3:hover{
+	background-color: #c1dfe9;
+}
+#real-sheet3:hover{
+	background-color:#c1dfe9 ;
+}
+#real-histogram4{
+	float: left;
+	width: 80px;
+	height: 30px;
+	background-color: #edf5f6;
+	margin-bottom: 15px;
+	margin-left: 15px;
+	margin-right: 15px;
+}
+#real-sheet4{
+	float: left;
+	width: 80px;
+	height: 30px;
+	background-color: #edf5f6;
+}
+#real-histogram4:hover{
+	background-color: #c1dfe9;
+}
+#real-sheet4:hover{
+	background-color:#c1dfe9 ;
+}
+#cha{
+	width: 60px;
+	height: 35px;
+	margin-left: -2%;
+	background-color: #428BCA;
+	color: white;
+}
+
+#real-tbody tr:nth-of-type(odd){background: rgb(59, 59, 59);}
+#real-tbody tr:nth-of-type(even){background: rgb(50, 50, 50);}
+#real-tbody2 tr:nth-of-type(odd){background: rgb(59, 59, 59);}
+#real-tbody2 tr:nth-of-type(even){background: rgb(50, 50, 50);}
+#real-tbody3 tr:nth-of-type(odd){background: rgb(59, 59, 59);}
+#real-tbody3 tr:nth-of-type(even){background: rgb(50, 50, 50);}
+#real-tbody4 tr:nth-of-type(odd){background: rgb(59, 59, 59);}
+#real-tbody4 tr:nth-of-type(even){background: rgb(50, 50, 50);}

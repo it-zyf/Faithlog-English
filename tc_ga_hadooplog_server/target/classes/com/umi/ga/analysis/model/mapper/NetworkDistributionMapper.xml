@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="NetworkDistribution">
+    <resultMap id="networkDistributionResult" type="NetworkDistribution">
+        <result property="id" column="id"/>
+        <result property="networktype" column="networkType"/>
+        <result property="count" column="count"/>
+        <result property="timedate" column="timeDate"/>
+    </resultMap>
+
+    <sql id="commonColumns">
+	    <![CDATA[
+
+                `id`,
+                `networkType`,
+                `count`,
+                `timeDate`
+
+        ]]>
+	</sql>
+
+    <sql id="dynamicWhere">
+        <where>
+            <if test="@Ognl@isNotEmpty(id)">
+                AND `id` = #{id}
+            </if>
+            <if test="@Ognl@isNotEmpty(networktype)">
+                AND `networkType` = #{networktype}
+            </if>
+            <if test="@Ognl@isNotEmpty(count)">
+                AND `count` = #{count}
+            </if>
+            <if test="@Ognl@isNotEmpty(timedate)">
+                AND `timeDate` = #{timedate}
+            </if>
+        </where>
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="NetworkDistribution">
+    <![CDATA[
+
+                INSERT INTO `network_distribution` (
+                    `id`,
+                    `networkType`,
+                    `count`,
+                    `timeDate`
+                )
+                VALUES (
+                    #{id},
+                    #{networktype},
+                    #{count},
+                    #{timedate}
+
+                )
+
+        ]]>
+	</insert>
+
+    <update id="update" parameterType="NetworkDistribution">
+    <![CDATA[
+
+                UPDATE `network_distribution` SET
+                    `id` = #{id},
+                    `networkType` = #{networktype},
+                    `count` = #{count},
+                    `timeDate` = #{timedate}
+                WHERE
+                    ID = #{id}
+
+        ]]>
+	</update>
+
+    <delete id="delete" parameterType="map">
+        <![CDATA[
+        delete from `network_distribution`
+    ]]>
+        <include refid="dynamicWhere"/>
+    </delete>
+
+    <select id="getById" resultMap="networkDistributionResult">
+        SELECT
+        <include refid="commonColumns"/>
+        <![CDATA[
+		    FROM `network_distribution`
+	        WHERE
+		        ID = #{id}
+	    ]]>
+    </select>
+
+    <select id="count" resultType="long">
+        SELECT count(*) FROM `network_distribution`
+        <include refid="dynamicWhere"/>
+    </select>
+    <select id="pageSelect" resultMap="networkDistributionResult">
+        SELECT
+        <include refid="commonColumns"/>
+        FROM `network_distribution`
+        <include refid="dynamicWhere"/>
+        <if test="@Ognl@isNotEmpty(sortColumns)">
+            ORDER BY ${sortColumns}
+        </if>
+    </select>
+
+    <!--
+         ###
+         ###
+    -->
+
+    <select id="selectMaxTimeNetwork" resultMap="networkDistributionResult">
+		select
+			MAX(timeDate) as timeDate
+		from
+			network_distribution
+    </select>
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into network_distribution
+        (
+            `networkType`,
+            `count`,
+            `timeDate`
+        )
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                #{item.networktype},#{item.count},#{item.timedate}
+            </trim>
+        </foreach>
+    </insert>
+
+    <select id="selectListByTimeDate" parameterType="java.util.List" resultMap="networkDistributionResult">
+        select
+        networkType,
+        ifnull(sum(count),0) as count
+        from
+        network_distribution
+        where
+        timeDate in
+        (
+        <foreach collection="list" item="item" index="index" separator=",">
+            <trim prefix="" suffix="" suffixOverrides=",">
+                #{item.times}
+            </trim>
+        </foreach>
+        )
+        group by
+            networkType
+        order by 1 asc
+    </select>
+</mapper>

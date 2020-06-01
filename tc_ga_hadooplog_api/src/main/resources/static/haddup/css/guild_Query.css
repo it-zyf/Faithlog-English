@@ -1,0 +1,193 @@
+*{
+	margin: 0;
+	padding: 0;
+}
+.header_ul{
+	width: 100%;
+}
+.header_ul li{
+	width: 15%;
+	height: 80px;
+	background: #363636;
+	float: left;
+	list-style: none;
+	cursor: pointer;
+	color: #C0C0C0;
+	font-size: 1.2vw;
+	line-height: 80px;
+    text-align: center;
+    margin-right: 1%;
+}
+.header_ul li:hover{
+	color: white;
+	font-weight: bold;
+}
+.header_ul li:first-child{
+	color: white;
+	font-weight: bold;
+	background: #4d4d4d;
+}
+.sum_div{
+	width: 100%;
+	background: #363636;
+	clear: both;
+	padding: 30px;
+}
+
+form label{
+	color: white;
+	font-weight: bold;
+	font-size: 1vw;
+	margin-right: 2%;
+	/*text-align: justify;
+	width: 21%;*/
+}
+input[type="checkbox"]{
+	width: 20px;
+    height: 20px;
+    background-color: transparent;
+    -webkit-appearance:none;
+    border: 1px solid #c9c9c9;
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+}
+input[type="checkbox"]:checked{
+	border: 1px solid #0078f2;
+	background: url("../../img/duihao.png") no-repeat;
+	background-position: center;
+}
+ul li{
+	color: white;
+	cursor: pointer;
+}
+.clear,.group{
+	display: none;
+}
+.clear{
+	margin-top: 10px;
+	width: 500px;
+	max-height: 500px;
+	overflow-y: auto;
+	position: absolute;
+	z-index: 99;
+}
+.clear>li{
+	line-height: 37px;
+	padding-top: 10px;
+	padding-left: 10px;
+	border-top: 1px solid #232323;
+	color: #C0C0C0;
+	clear: both;
+}
+.clear>li>span{
+	margin-top: -5px;
+}
+.clear>li:hover{
+	background: #232323;
+}
+.group li{
+	width: 20%;
+	float: left;
+	height: 44px;
+}
+/*区间数据报告样式*/
+#district_service{
+    background: #363636;
+    z-index: 99;
+    width: 65%;
+    float: left;
+}
+@media screen and (max-width: 1680px) {
+	#district_service{
+		left: 8.8%;
+	}
+}
+@media screen and (max-width: 1400px) {
+	#district_service{
+		left: 10%;
+	}
+}
+
+#district_service a{
+	width: 25px;
+	height: 25px;
+	text-align: center;
+	display: inline-block;
+	line-height: 35px;
+	float: left;
+	margin-top: 6px;
+}
+#district_service>li{
+	height: 35px;
+	line-height: 35px;
+	border: 1px solid #bcbcbc;
+	color: #C0C0C0;
+}
+#district_service ul{
+	background: #1A1A1A;
+}
+#district_service>li>span{
+	display: inline-block;
+	margin-left: 10px;
+}
+#channel,#datatimes,#guildname,#presidentID,#presidentName{
+	width: 65%;
+	height: 35px;
+	border: 1px solid #bcbcbc;
+	background: transparent;
+	color: #C0C0C0;
+	border-radius: 0;
+}
+#channel:focus,#chat_type:focus{
+	border: 1px solid #FFFFFF;
+	color: white;
+}
+#channel option,#chat_type option{
+	background: #363636;
+	color: #C0C0C0;
+}
+#query,#export{
+	height: 35px;
+	line-height: 35px;
+	float: right;
+	margin-left: 15px;
+}
+/*表格公共样式*/
+#datatable{
+	overflow-x: scroll;
+	width: 100%;
+	border: 0;
+}
+#datatable thead{
+	background: #1A1A1A;
+	border: 0;
+}
+#datatable thead tr{
+	border: 0;
+}
+#datatable thead tr th{
+	border: 0;
+	color: white;
+	height: 50px;
+	font-size: 14px;
+	line-height: 30px;
+}
+#datatable tbody{
+	border: 0;
+}
+#datatable tbody tr{
+	border: 0;
+}
+#datatable tbody tr td{
+	border: 0;
+	color: #C0C0C0;
+	height: 40px;
+	font-size: 14px;
+}
+#datatable tbody tr:hover{
+	background: transparent;
+	color: #C0C0C0;
+}
+
+

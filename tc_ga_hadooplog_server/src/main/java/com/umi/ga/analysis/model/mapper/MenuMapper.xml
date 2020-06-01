@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="Menu">
+	<resultMap id="menuResult" type="com.umi.ga.analysis.model.Menu">
+		<result property="vId" column="id"/>
+		<result property="menuId" column="menu_id"/>
+		<result property="menuName" column="menu_name"/>
+		<result property="url" column="url"/>
+		<result property="pId" column="p_id"/>
+</resultMap>
+
+	<sql id="commonColumns">
+	    <![CDATA[
+        `id`,
+        `menu_id`,
+        `menu_name`,
+        `url`,
+        `p_id`
+	    ]]>
+	</sql>
+
+	<sql id="dynamicWhere">
+		<where>
+			<if test="@Ognl@isNotEmpty(vId)">
+				AND `id` = #{vId}
+			</if>
+			<if test="@Ognl@isNotEmpty(menuId)">
+				AND `menu_id` = #{menuId}
+			</if>
+			<if test="@Ognl@isNotEmpty(menuName)">
+				AND `menu_name` = #{menuName}
+			</if>
+			<if test="@Ognl@isNotEmpty(url)">
+				AND `url` = #{url}
+			</if>
+			<if test="@Ognl@isNotEmpty(pId)">
+				AND `p_id` = #{pId}
+			</if>
+		</where>
+	</sql>
+
+	<insert id="insert" useGeneratedKeys="true" keyProperty="vId" parameterType="Menu">
+    <![CDATA[
+        INSERT INTO `menu` (
+        	`id`,
+        	`menu_id`,
+        	`menu_name`,
+        	`url`,
+        	`p_id`
+        )
+        VALUES (
+        	#{vId},
+        	#{menuId},
+        	#{menuName},
+        	#{url},
+        	#{pId}
+
+        )
+    ]]>
+	</insert>
+
+	<update id="update" parameterType="Menu">
+    <![CDATA[
+        UPDATE `menu` SET
+	        `id` = #{vId},
+	        `menu_id` = #{menuId},
+	        `menu_name` = #{menuName},
+	        `url` = #{url},
+	        `p_id` = #{pId}
+        WHERE 
+	        ID = #{vId}
+    ]]>
+	</update>
+
+	<delete id="delete" parameterType="map">
+    <![CDATA[
+        delete from `menu`
+    ]]>
+		<include refid="dynamicWhere"/>
+	</delete>
+
+	<select id="getById" resultMap="menuResult">
+		SELECT <include refid="commonColumns" />
+	    <![CDATA[
+		    FROM `menu`
+	        WHERE
+		        ID = #{vId}
+	    ]]>
+	</select>
+
+    <select id="count" resultType="long">
+        SELECT count(*) FROM `menu` 
+		<include refid="dynamicWhere"/>    
+    </select>
+  <select id="pageSelect" resultMap="menuResult">
+    	SELECT 
+    		<include refid="commonColumns" />
+	    FROM `menu` 
+		<include refid="dynamicWhere"/>
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+  </select>
+
+
+
+
+
+	<select id="queryMenu" parameterType="int" resultMap="menuResult">
+		SELECT * FROM menu WHERE  menu_id = #{menuId}
+	</select>
+
+	<select id="queryFirstMenu"  resultMap="menuResult">
+		select * from  menu where p_id = 0
+	</select>
+
+	<select id="querySecondMenu" parameterType="int" resultMap="menuResult">
+		select * from  menu where p_id = #{pId}
+	</select>
+	<select id="queryThridMenu" parameterType="int" resultMap="menuResult">
+		select * from  menu where p_id = #{pId}
+	</select>
+
+</mapper>

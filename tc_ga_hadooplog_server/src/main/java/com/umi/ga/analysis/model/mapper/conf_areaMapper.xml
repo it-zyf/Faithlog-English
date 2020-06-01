@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="conf_area">
+  <resultMap id="BaseResultMap" type="conf_area">
+    <id column="confID" jdbcType="INTEGER" property="confid" />
+    <result column="areaID" jdbcType="VARCHAR" property="areaid" />
+    <result column="areaName" jdbcType="VARCHAR" property="areaname" />
+  </resultMap>
+ 
+  <sql id="Base_Column_List">
+     confid as confID,server_id as areaId,server_name as areaName
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from confarea
+    where confID = #{confid,jdbcType=INTEGER}
+  </select>
+  
+    
+   <select id="getAreas" resultMap="BaseResultMap" statementType="CALLABLE"  parameterType="conf_area">
+<!-- 	 <![CDATA[
+		/*!dble: sql=select 1 from conf_area */ call test_proc();
+		]]> -->
+		select 
+	  <include refid="Base_Column_List" />
+		 from confarea
+  </select>
+    <insert id="insertConfarea" parameterType="java.util.List" useGeneratedKeys="false">
+    	/*!dble: sql=select 1 from account_create_log where areaID=00000 */ 
+    			insert into conf_area
+    			(areaID, areaName)
+    			values
+    			<foreach collection="list" item="item" index="index" separator=",">
+    				(
+    					#{item.areaid},
+    					#{item.areaname}
+    				)
+    		     </foreach>		
+    </insert>  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from confarea
+    where confid = #{confid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="conf_area">
+    insert into confarea (confid, server_id, server_name)
+    values (#{confid,jdbcType=INTEGER}, #{areaid}, #{areaname})
+  </insert>
+  <insert id="insertSelective" parameterType="conf_area">
+    insert into conf_area
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="confid != null">
+        confID,
+      </if>
+      <if test="areaid != null">
+        areaID,
+      </if>
+      <if test="areaname != null">
+        areaName,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="confid != null">
+        #{confid,jdbcType=INTEGER},
+      </if>
+      <if test="areaid != null">
+        #{areaid,jdbcType=VARCHAR},
+      </if>
+      <if test="areaname != null">
+        #{areaname,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="conf_area">
+    update confarea
+    <set>
+      <if test="areaid != null">
+        server_id = #{areaid,jdbcType=VARCHAR},
+      </if>
+      <if test="areaname != null">
+         server_name = #{areaname},
+      </if>
+    </set>
+    where confid = #{confid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="conf_area">
+    update conf_area
+    set areaID = #{areaid,jdbcType=VARCHAR},
+      areaName = #{areaname,jdbcType=VARCHAR}
+    where confID = #{confid,jdbcType=INTEGER}
+  </update>
+
+</mapper>

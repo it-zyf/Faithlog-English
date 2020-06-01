@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <title>区服管理</title>
+  <link rel="stylesheet" href="../layui/css/layui.css" />
+  <link rel="stylesheet" href="./css/District_service.css" />
+  <link rel="stylesheet" href="../css/bootstrap.min.css" />
+  <link rel="stylesheet" type="text/css" href="../js/bootstrap-table/bootstrap-table.min.css" />
+  <link href="https://cdn.bootcss.com/element-ui/2.12.0/theme-chalk/index.css" rel="stylesheet">
+  <style type="text/css">
+    .fixed-table-loading {
+      background: #363636;
+      color: white;
+      top: 80px;
+      border: 0;
+    }
+
+    .pagination>li>a,
+    .pagination>li>span {
+      color: white;
+      background-color: transparent;
+      border: 0;
+    }
+
+    .bootstrap-table .fixed-table-pagination>.pagination-detail .page-list {
+      color: #C0C0C0;
+    }
+
+    .pagination>li>a,
+    .pagination>li>span:hover {
+      background: #464545;
+    }
+
+    .pagination>.disabled>a,
+    .pagination>.disabled>a:focus,
+    .pagination>.disabled>a:hover,
+    .pagination>.disabled>span,
+    .pagination>.disabled>span:focus,
+    .pagination>.disabled>span:hover {
+      color: #C0C0C0;
+      background-color: #464545;
+      border: 0;
+    }
+
+    .pagination>li>a:focus,
+    .pagination>li>a:hover,
+    .pagination>li>span:focus,
+    .pagination>li>span:hover {
+      color: #428BCA;
+      background: #464545;
+      border: 0;
+    }
+
+    .pagination-info {
+      color: #C0C0C0;
+    }
+
+    .layui-layer-btn {
+      border-top: 1px solid #272727;
+    }
+
+    .layui-layer-content {
+      color: white;
+    }
+
+    #changett {
+      margin-right: 5% !important;
+    }
+
+    .fixed-table-loading {
+      display: none !important;
+    }
+  </style>
+</head>
+
+<body style="background: #202020;" onload="lo()">
+  <div id="navs"></div>
+  <div class="layui-layout layui-layout-admin">
+    <div class="layui-body" style="padding: 20px;">
+      <div class="sum_div">
+        <div class="Recharge">
+          <span class="tit">区服设备管理</span><span class="adduser">+新增区服</span>
+          <table id="datatable"></table>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+<div id="add">
+  <form role="form">
+    <div class="form-group">
+      <label>区服编号</label>
+      <input type="text" class="form-control" placeholder="请输入区服编号" id="add_account" />
+    </div>
+    <div class="form-group">
+      <label>区服名称</label>
+      <input type="text" class="form-control" placeholder="请输入区服名称" id="add_Initial_pwd" />
+    </div>
+    <!--			<div class="form-group">-->
+    <!--				<label>开服时间</label>-->
+    <!--				<input type="text" class="form-control" placeholder="请输入开服时间" id="add_username" />-->
+    <!--			</div>-->
+  </form>
+</div>
+<div id="modifys">
+  <form role="form">
+    <div class="form-group">
+      <label>区服编号</label>
+      <input type="text" class="form-control" placeholder="请输入区服编号" id="modify_account" />
+    </div>
+    <div class="form-group">
+      <label>区服名称</label>
+      <input type="text" class="form-control" placeholder="请输入区服名称" id="modify_Initial_pwd" />
+    </div>
+    <!--			<div class="form-group">-->
+    <!--				<label>开服时间</label>-->
+    <!--				<input type="text" class="form-control" placeholder="请输入开服时间" id="modify_username" />-->
+    <!--			</div>-->
+  </form>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="https://cdn.bootcss.com/element-ui/2.12.0/index.js"></script>
+<script src="../layui/layui.all.js"></script>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/jquery.cookie.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script src="../js/bootstrap-table/bootstrap-table.min.js"></script>
+<script src="./js/urlGet.js"></script>
+<script src="./js/District_service.js"></script>
+<script>
+  localStorage.setItem('navigation', '403')
+  $("#navs").load("navHaddup.html")
+
+  function lo() {
+    $(".403").addClass("layui-this").siblings().removeClass("layui-this")
+    $(".403").parent().parent().addClass("layui-nav-itemed").siblings().removeClass("layui-nav-itemed")
+  }
+  ////layui配置
+  layui.use(['element', 'form'], function () {
+    var element = layui.element;
+    var form = layui.form;
+    element.init();
+  });
+</script>
+
+</html>

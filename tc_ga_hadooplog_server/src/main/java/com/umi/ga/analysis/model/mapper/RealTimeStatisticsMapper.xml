@@ -1,0 +1,484 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="RealTimeStatistics">
+    <resultMap id="realtime_statisticsResult" type="RealTimeStatistics">
+        <result property="id" column="id"/>
+        <result property="timedate" column="timeDate"/>
+        <result property="flag" column="flag"/>
+        <result property="timepoint" column="timePoint"/>
+        <result property="online" column="online"/>
+        <result property="register" column="register"/>
+        <result property="active" column="active"/>
+        <result property="firstlogin" column="firstLogin"/>
+        <result property="numofpay" column="numOfPay"/>
+        <result property="payamount" column="payAmount"/>
+        <result property="serverId" column="serverId"/>
+        <result property="channelId" column="channelId"/>
+    </resultMap>
+
+    <resultMap id="heartLogResult" type="com.umi.ga.entitys.HeartLog">
+        <result property="logId" column="logId"/>
+        <result property="serverId" column="serverId"/>
+        <result property="logTime" column="logTime"/>
+        <result property="normversion" column="normversion"/>
+        <result property="onlinePlayerCount" column="onlinePlayerCount"/>
+    </resultMap>
+
+    <resultMap id="realTimeRetainResult" type="com.umi.ga.entitys.RealTimeRetain">
+        <result property="timeDate" column="timeDate"/>
+        <result property="timePoint" column="timePoint"/>
+        <result property="dayAccount" column="dayAccount"/>
+        <result property="dayRetain" column="dayRetain"/>
+        <result property="serverId" column="serverId"/>
+        <result property="channelId" column="channelId"/>
+    </resultMap>
+
+    <sql id="commonColumns">
+	    <![CDATA[
+
+                `id`,
+                `timeDate`,
+                `flag`,
+                `timePoint`,
+                `online`,
+                `register`,
+                `active`,
+                `firstLogin`,
+                `numOfPay`,
+                `payAmount`
+
+        ]]>
+	</sql>
+
+    <sql id="dynamicWhere">
+        <where>
+            <if test="@Ognl@isNotEmpty(id)">
+                AND `id` = #{id}
+            </if>
+            <if test="@Ognl@isNotEmpty(timedate)">
+                AND `timeDate` = #{timedate}
+            </if>
+            <if test="@Ognl@isNotEmpty(flag)">
+                AND `flag` = #{flag}
+            </if>
+            <if test="@Ognl@isNotEmpty(timepoint)">
+                AND `timePoint` = #{timepoint}
+            </if>
+            <if test="@Ognl@isNotEmpty(online)">
+                AND `online` = #{online}
+            </if>
+            <if test="@Ognl@isNotEmpty(register)">
+                AND `register` = #{register}
+            </if>
+            <if test="@Ognl@isNotEmpty(active)">
+                AND `active` = #{active}
+            </if>
+            <if test="@Ognl@isNotEmpty(firstlogin)">
+                AND `firstLogin` = #{firstlogin}
+            </if>
+            <if test="@Ognl@isNotEmpty(numofpay)">
+                AND `numOfPay` = #{numofpay}
+            </if>
+            <if test="@Ognl@isNotEmpty(payamount)">
+                AND `payAmount` = #{payamount}
+            </if>
+        </where>
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="RealTimeStatistics">
+    <![CDATA[
+
+                INSERT INTO `realTime_statistics` (
+                    `id`,
+                    `timeDate`,
+                    `flag`,
+                    `timePoint`,
+                    `online`,
+                    `register`,
+                    `active`,
+                    `firstLogin`,
+                    `numOfPay`,
+                    `payAmount`
+                )
+                VALUES (
+                    #{id},
+                    #{timedate},
+                    #{flag},
+                    #{timepoint},
+                    #{online},
+                    #{register},
+                    #{active},
+                    #{firstlogin},
+                    #{numofpay},
+                    #{payamount}
+
+                )
+
+        ]]>
+	</insert>
+
+    <update id="update" parameterType="RealTimeStatistics">
+    <![CDATA[
+
+                UPDATE `realTime_statistics` SET
+                    `id` = #{id},
+                    `timeDate` = #{timedate},
+                    `flag` = #{flag},
+                    `timePoint` = #{timepoint},
+                    `online` = #{online},
+                    `register` = #{register},
+                    `active` = #{active},
+                    `firstLogin` = #{firstlogin},
+                    `numOfPay` = #{numofpay},
+                    `payAmount` = #{payamount}
+                WHERE
+                    ID = #{id}
+
+        ]]>
+	</update>
+
+    <delete id="delete" parameterType="map">
+        <![CDATA[
+        delete from `realTime_statistics`
+    ]]>
+        <include refid="dynamicWhere"/>
+    </delete>
+
+    <select id="getById" resultMap="realtime_statisticsResult">
+        SELECT
+        <include refid="commonColumns"/>
+        <![CDATA[
+		    FROM `realTime_statistics`
+	        WHERE
+		        ID = #{id}
+	    ]]>
+    </select>
+
+    <select id="count" resultType="long">
+        SELECT count(*) FROM `realTime_statistics`
+        <include refid="dynamicWhere"/>
+    </select>
+    <select id="pageSelect" resultMap="realtime_statisticsResult">
+        SELECT
+        <include refid="commonColumns"/>
+        FROM `realTime_statistics`
+        <include refid="dynamicWhere"/>
+        <if test="@Ognl@isNotEmpty(sortColumns)">
+            ORDER BY ${sortColumns}
+        </if>
+    </select>
+
+    <!--
+         ###
+         ###
+     -->
+
+    <!--
+        hive
+     -->
+    <select id="hiveSelectHeartLog" parameterType="com.umi.ga.entitys.Times" resultMap="heartLogResult">
+		select
+			server_id as serverId,
+			player_count as onlinePlayerCount,
+			log_time as logTime
+		from
+			faith_server.server_player_count
+		where
+			log_time between unix_timestamp(concat(#{times},' 00:00:00'))*1000 and unix_timestamp(concat(#{times},' 23:59:59'))*1000 and log_time is not null
+		order by
+			log_time asc
+	</select>
+
+    <select id="hiveSelectMaxTime" parameterType="com.umi.ga.entitys.Times" resultType="java.lang.String">
+		select
+			max(log_time) as time
+		from
+			faith_server.server_role_login
+		where
+			log_time between unix_timestamp(concat(#{times},' 00:00:00'))*1000 and unix_timestamp(concat(#{times},' 23:59:59'))*1000
+	</select>
+
+    <!--
+        impala
+     -->
+    <select id="hiveRealTimeOnline" parameterType="com.umi.ga.entitys.Flag" resultType="RealTimeStatistics">
+        select
+            a.timepoint as timepoint,sum(a.online) as online
+        from
+            (
+                select
+                    server_id,channel_id,from_timestamp(date_time,"yyyy-MM-dd HH:mm") as timepoint, max(player_count) as online
+                from
+                    faith_server.server_player_count
+                    where
+                            cast(day_time as string) = regexp_replace(#{startTime},"-","")
+                        <if test="@Ognl@isNotEmpty(serverId)">
+                            and server_id in (${serverId})
+                        </if>
+                    group by server_id,channel_id,timepoint
+                    order by timepoint asc
+            ) a
+        group by a.timepoint
+        order by a.timepoint asc
+    </select>
+
+    <select id="selectRealTimeRegister" parameterType="com.umi.ga.entitys.Flag" resultType="RealTimeStatistics">
+        select
+            a.timepoint as timepoint,sum(a.register) as register
+        from
+        (
+            -- 注册账号
+            select
+                server_id,channel_id,from_timestamp(date_time,"yyyy-MM-dd HH:mm") as timepoint,count(distinct user_id) as register
+            from
+                faith_server.server_account_create
+            where
+                    cast(day_time as string) = regexp_replace(#{startTime},"-","")
+                <if test="@Ognl@isNotEmpty(serverId)">
+                    and server_id in (${serverId})
+                </if>
+                <if test="@Ognl@isNotEmpty(channelId)">
+                    and channel_id in (${channelId})
+                </if>
+            group by server_id,channel_id,timepoint
+        ) a
+        group by a.timepoint
+        order by a.timepoint asc
+    </select>
+
+    <select id="selectRealTimeActive" parameterType="com.umi.ga.entitys.Flag" resultType="RealTimeStatistics">
+        select
+            a.timepoint as timepoint,sum(a.active) as active
+        from
+        (
+            -- 活跃账号
+            select
+                server_id,channel_id,from_timestamp(date_time,"yyyy-MM-dd HH:mm") as timepoint,count(distinct user_id) as active
+            from
+                faith_server.server_role_login
+            where
+                    cast(day_time as string) = regexp_replace(#{startTime},"-","")
+                <if test="@Ognl@isNotEmpty(serverId)">
+                    and server_id in (${serverId})
+                </if>
+                <if test="@Ognl@isNotEmpty(channelId)">
+                    and channel_id in (${channelId})
+                </if>
+            group by server_id,channel_id,timepoint
+        ) a
+        group by a.timepoint
+        order by a.timepoint asc
+    </select>
+
+    <select id="selectRealTimePayNumber" parameterType="com.umi.ga.entitys.Flag" resultType="RealTimeStatistics">
+        select
+            a.timepoint as timepoint,sum(a.numofpay) as numofpay
+        from
+        (
+            -- 付费账号
+            select
+                server_id,channel_id,from_timestamp(date_time,"yyyy-MM-dd HH:mm") as timepoint,count(user_id) as numofpay
+            from
+                faith_server.server_recharge_success
+            where
+                    cast(day_time as string) = regexp_replace(#{startTime},"-","")
+                <if test="@Ognl@isNotEmpty(serverId)">
+                    and server_id in (${serverId})
+                </if>
+                <if test="@Ognl@isNotEmpty(channelId)">
+                    and channel_id in (${channelId})
+                </if>
+            group by server_id,channel_id,timepoint
+        ) a
+        group by a.timepoint
+        order by a.timepoint asc
+    </select>
+
+    <select id="selectRealTimePayAmount" parameterType="com.umi.ga.entitys.Flag" resultType="RealTimeStatistics">
+        select
+            a.timepoint as timepoint,round(sum(a.payamount),2) as payamount
+        from
+        (
+            -- 付费金额
+            select
+                server_id,channel_id,from_timestamp(date_time,"yyyy-MM-dd HH:mm") as timepoint,sum(order_amount) as payamount
+            from
+                faith_server.server_recharge_success
+            where
+                    cast(day_time as string) = regexp_replace(#{startTime},"-","")
+                <if test="@Ognl@isNotEmpty(serverId)">
+                    and server_id in (${serverId})
+                </if>
+                <if test="@Ognl@isNotEmpty(channelId)">
+                    and channel_id in (${channelId})
+                </if>
+            group by server_id,channel_id,timepoint
+        ) a
+        group by a.timepoint
+        order by a.timepoint asc
+    </select>
+
+    <select id="selectRealTimeRetainLast" parameterType="com.umi.ga.entitys.Flag" resultType="com.umi.ga.entitys.RealTimeRetain">
+        select
+            a.timepoint as timePoint,b.dayAccount as dayAccount,a.dayRetain as dayRetain
+        from
+        (
+        select from_timestamp(b.time,'yyyy-MM-dd HH') as timepoint,count(b.user_id) as dayRetain
+        from
+        (
+            select
+                server_id,channel_id,user_id
+            from
+                faith_server.server_role_login
+            where
+                    "" != server_id and "" != channel_id
+                <if test="@Ognl@isNotEmpty(serverId)">
+                    and server_id in (${serverId})
+                </if>
+                <if test="@Ognl@isNotEmpty(channelId)">
+                    and channel_id in (${channelId})
+                </if>
+            group by server_id,channel_id,user_id
+            having cast(min(day_time) as string) = regexp_replace(from_timestamp(date_add(#{endTime},-1),'yyyy-MM-dd'),"-","")
+        ) a
+        inner join
+        (
+        select
+            server_id,channel_id,user_id,min(date_time) as time
+        from
+            faith_server.server_role_login
+        where
+            cast(day_time as string) = regexp_replace(#{endTime},"-","")
+        group by
+            server_id,channel_id,user_id
+        ) b
+        on a.server_id = b.server_id and a.channel_id = b.channel_id and a.user_id = b.user_id
+        group by timepoint
+        order by timepoint asc
+        ) a,
+        (
+           select
+            count(user_id) as dayAccount
+           from
+           (
+             select
+                server_id,channel_id,user_id
+            from
+                faith_server.server_role_login
+            where "" != server_id and "" != channel_id
+            group by server_id,channel_id,user_id
+            having cast(min(day_time) as string) = regexp_replace(from_timestamp(date_add(#{endTime},-1),'yyyy-MM-dd'),"-","")
+           ) a
+        ) b
+        order by a.timepoint asc
+    </select>
+
+    <!--
+        mysql
+    -->
+    <select id="selectRealTimeOnline" parameterType="com.umi.ga.entitys.Times" resultMap="realtime_statisticsResult">
+		select
+			timeDate,
+			serverId,
+			channelId,
+			timePoint,
+			online
+		from
+			realTime_statistics
+		where
+			timeDate = #{startTime}
+		order by timePoint asc
+	</select>
+
+    <select id="selectRealTimeStatistics" parameterType="com.umi.ga.entitys.Times"
+            resultMap="realtime_statisticsResult">
+		select
+			timeDate,
+			serverId,
+			channelId,
+			timePoint,
+			online,
+			register,
+			active,
+			firstLogin,
+			numOfPay,
+			payAmount
+		from
+			realTime_statistics
+		where
+			timeDate = #{startTime}
+		order by timePoint asc
+	</select>
+
+    <select id="selectRealTimeRetain" parameterType="com.umi.ga.entitys.Times" resultMap="realTimeRetainResult">
+		select
+			timeDate,
+			timePoint,
+			dayAccount,
+			dayRetain,
+			serverId,
+			channelId
+		from
+			realTime_retain
+		where
+			timeDate = #{startTime}
+		order by timePoint asc
+	</select>
+
+    <select id="insertBatchRTStatistics" parameterType="RealTimeStatistics" resultType="java.lang.Integer">
+        insert into realTime_statistics
+        (
+        `timeDate`,
+        `timePoint`,
+        `online`,
+        `register`,
+        `active`,
+        `firstLogin`,
+        `numOfPay`,
+        `payAmount`
+        )
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                #{item.timedate},#{item.timepoint},#{item.online},#{item.register},#{item.active},#{item.firstlogin},#{item.numofpay},#{item.payamount}
+            </trim>
+        </foreach>
+    </select>
+
+    <select id="insertBatchStatisticsRetain" parameterType="com.umi.ga.entitys.RealTimeRetain"
+            resultType="java.lang.Integer">
+        insert into realTime_retain
+        (
+        timeDate,
+        timePoint,
+        dayAccount,
+        dayRetain
+        )
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                #{item.timeDate},#{item.timePoint},#{item.dayAccount},#{item.dayRetain}
+            </trim>
+        </foreach>
+    </select>
+
+    <select id="selectDailyData" parameterType="com.umi.ga.entitys.Times" resultType="com.umi.ga.entitys.RealTimeTotal">
+    SELECT
+        IFNULL(SUM(daily_register),0) AS totalRegister,
+        IFNULL(SUM(active_number),0) AS totalActive,
+        IFNULL(SUM(pay_number),0) AS totalPay,
+        IFNULL(SUM(pay_amount),0) AS totalPayAmount
+    FROM
+        daily_analysis
+    WHERE timeDate = #{startTime}
+        <if test="@Ognl@isNotEmpty(serverId)">
+            and server_id in (${serverId})
+        </if>
+        <if test="@Ognl@isNotEmpty(channelId)">
+            and channel_id in (${channelId})
+        </if>
+    </select>
+</mapper>

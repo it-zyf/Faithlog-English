@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="RoleTaskLog">
+	<resultMap id="role_task_logResult" type="RoleTaskLog">
+		<result column="game_id" property="gameId" />
+		<result column="channel_id" property="channelId" />
+		<result column="media_id" property="mediaId" />
+		<result column="device_id" property="deviceId" />
+		<result column="version_name" property="versionName" />
+		<result column="version_code" property="versionCode" />
+		<result column="user_id" property="accountId" />
+		<result column="server_id"  property="serverId" />
+		<result column="log_time"  property="logTime" />
+		<result column="role_id" property="roleId" />
+		<result column="role_name"  property="roleName" />
+		<result column="role_level" property="roleLevel" />
+		<result column="role_gender"  property="roleGender" />
+		<result column="battle_points"  property="rolePower" />
+		<result column="role_type" property="roleType" />
+		<result column="vip_level" property="vipLevel" />
+		<result column="log_name" property="logName" />
+		<result column="task_id" property="taskId" />
+		<result column="task_type" property="taskType" />
+		<result column="task_status" property="taskStatus" />
+		<result column="spend_second" property="spendSecond" />
+
+</resultMap>
+
+	<resultMap id="taskMap" type="TaskEntity">
+		<result column="num" property="num" />
+		<result column="taskId" property="taskId" />
+	</resultMap>
+
+
+
+	<sql id="Base_Column_List">
+  	game_id ,
+    channel_id ,
+    media_id ,
+    device_id ,
+    version_name ,
+    version_code ,
+    user_id ,
+    server_id ,
+    from_timestamp(date_time, 'yyyy-MM-dd HH:mm:ss') as log_time,
+	role_id ,
+	role_name ,
+	role_level ,
+	role_gender,
+	battle_points,
+	role_type ,
+	vip_level,
+	log_name,
+	task_id ,
+	task_type ,
+	task_status ,
+	spend_second
+  </sql>
+
+
+
+	<select id="getRole_Task" resultMap="role_task_logResult" parameterType="com.umi.ga.entitys.Condition" >
+		select
+		<include refid="Base_Column_List" />
+		from faith_server.server_task
+		<trim prefix="where" suffixOverrides="and">
+			<if test="null != serverId and '' != serverId">
+				server_id in
+				<foreach collection="stringsArray" item="serverId" index="index" open="(" close=")" separator=",">
+					#{serverId}
+				</foreach>
+				and
+			</if>
+			<if test="accountId != null and accountId !='' ">
+				user_id = #{accountId} and
+			</if>
+			<if test="roleId != null and roleId !='' ">
+				role_id = #{roleId} and
+			</if>
+			<if test="roleName != null and roleName !='' ">
+				role_name =  #{roleName} and
+			</if>
+			<if test="startTime != null and startTime != '' and  endTime != null and endTime != ''">
+				from_timestamp(date_time, 'yyyy-MM-dd')  between #{startTime} and #{endTime} and
+			</if>
+			<if test="taskType != null and taskType !='' ">
+				task_type = #{taskType} and
+			</if>
+			<if test="taskId != null and taskId !='' ">
+				task_id = #{taskId} and
+			</if>
+			<if test="channelId != null and channelId !='' ">
+				channel_id in
+				<foreach collection="channelArray" item="channelId" index="index" open="(" close=")" separator=",">
+					#{channelId}
+				</foreach>
+			</if>
+
+		</trim>
+		ORDER BY log_time DESC limit  ${pageSize}  offset ${pageIndex}
+	</select>
+
+
+
+	<select id="getRole_TaskCount" resultType="int" parameterType="com.umi.ga.entitys.Condition" >
+		select
+		count(*)
+		from faith_server.server_task
+		<trim prefix="where" suffixOverrides="and">
+			<if test="null != serverId and '' != serverId">
+				server_id in
+				<foreach collection="stringsArray" item="serverId" index="index" open="(" close=")" separator=",">
+					#{serverId}
+				</foreach>
+				and
+			</if>
+			<if test="accountId != null and accountId !='' ">
+				user_id = #{accountId} and
+			</if>
+			<if test="roleId != null and roleId !='' ">
+				role_id = #{roleId} and
+			</if>
+			<if test="roleName != null and roleName !='' ">
+				role_name =  #{roleName} and
+			</if>
+			<if test="startTime != null and startTime != '' and  endTime != null and endTime != ''">
+				from_timestamp(date_time, 'yyyy-MM-dd')  between #{startTime} and #{endTime} and
+			</if>
+			<if test="taskType != null and taskType !='' ">
+				task_type = #{taskType} and
+			</if>
+			<if test="taskId != null and taskId !='' ">
+				task_id = #{taskId} and
+			</if>
+			<if test="channelId != null and channelId !='' ">
+				channel_id in
+				<foreach collection="channelArray" item="channelId" index="index" open="(" close=")" separator=",">
+					#{channelId}
+				</foreach>
+			</if>
+
+		</trim>
+	</select>
+
+
+
+	<select id="getLossOfTaskCount" resultType="int" parameterType="com.umi.ga.entitys.Condition" >
+	select
+	count(*)
+	from
+	(SELECT
+	count(f.role_id) AS num,
+	f.task_id
+	FROM
+	(
+	SELECT
+	d.role_id,
+	d.task_id
+	FROM
+	faith_server.server_task d,
+	(
+	SELECT
+	a.user_id,
+	a.role_id,
+	max(a.log_time) AS maxlogtime
+	FROM
+	faith_server.server_task a,
+	(
+	SELECT
+	user_id,
+	role_id
+	FROM
+	faith_server.server_role_create a
+
+	<trim prefix="where" suffixOverrides="and">
+		<if test="null != serverId and '' != serverId">
+			server_id in
+			<foreach collection="stringsArray" item="serverId" index="index" open="(" close=")" separator=",">
+				#{serverId}
+			</foreach>
+			and
+		</if>
+		<if test="startTime != null and startTime != '' and  endTime != null and endTime != ''">
+			from_timestamp(date_time, 'yyyy-MM-dd')  between #{startTime} and #{endTime} and
+		</if>
+		<if test="channelId != null and channelId !='' ">
+			channel_id in
+			<foreach collection="channelArray" item="channelId" index="index" open="(" close=")" separator=",">
+				#{channelId}
+			</foreach>
+		</if>
+
+	</trim>
+	and	user_id NOT IN (
+	SELECT
+	user_id
+	FROM
+	faith_server.server_role_login
+	<trim prefix="where" suffixOverrides="and">
+		<if test="null != serverId and '' != serverId">
+			server_id in
+			<foreach collection="stringsArray" item="serverId" index="index" open="(" close=")" separator=",">
+				#{serverId}
+			</foreach>
+			and
+		</if>
+		<if test="startTime2 != null and startTime2 != '' and  endTime2 != null and endTime2 != ''">
+			from_timestamp(date_time, 'yyyy-MM-dd')  between #{startTime2} and #{endTime2} and
+		</if>
+		<if test="channelId != null and channelId !='' ">
+			channel_id in
+			<foreach collection="channelArray" item="channelId" index="index" open="(" close=")" separator=",">
+				#{channelId}
+			</foreach>
+		</if>
+
+	</trim>
+	)
+	) b
+	WHERE
+	a.role_id = b.role_id
+	GROUP BY
+	a.user_id,
+	a.role_id
+	) c
+	WHERE
+	d.role_id = c.role_id
+	AND d.log_time = c.maxlogtime
+	) f
+	GROUP BY
+	f.task_id
+	ORDER BY
+	num DESC) y
+
+</select>
+
+
+
+
+	<select id="getTaskEntity" resultMap="taskMap" parameterType="com.umi.ga.entitys.Condition" >
+		SELECT
+		count(f.role_id) AS num,
+		f.task_id as taskId
+		FROM
+		(
+		SELECT
+		d.role_id,
+		d.task_id
+		FROM
+		faith_server.server_task d,
+		(
+		SELECT
+		a.user_id,
+		a.role_id,
+		max(a.log_time) AS maxlogtime
+		FROM
+		faith_server.server_task a,
+		(
+		SELECT
+		user_id,
+		role_id
+		FROM
+		faith_server.server_role_create a
+
+		<trim prefix="where" suffixOverrides="and">
+			<if test="null != serverId and '' != serverId">
+				server_id in
+				<foreach collection="stringsArray" item="serverId" index="index" open="(" close=")" separator=",">
+					#{serverId}
+				</foreach>
+				and
+			</if>
+			<if test="startTime != null and startTime != '' and  endTime != null and endTime != ''">
+				from_timestamp(date_time, 'yyyy-MM-dd')  between #{startTime} and #{endTime} and
+			</if>
+			<if test="channelId != null and channelId !='' ">
+				channel_id in
+				<foreach collection="channelArray" item="channelId" index="index" open="(" close=")" separator=",">
+					#{channelId}
+				</foreach>
+			</if>
+
+		</trim>
+		and	user_id NOT IN (
+		SELECT
+		user_id
+		FROM
+		faith_server.server_role_login
+		<trim prefix="where" suffixOverrides="and">
+			<if test="null != serverId and '' != serverId">
+				server_id in
+				<foreach collection="stringsArray" item="serverId" index="index" open="(" close=")" separator=",">
+					#{serverId}
+				</foreach>
+				and
+			</if>
+			<if test="startTime2 != null and startTime2 != '' and  endTime2 != null and endTime2 != ''">
+				from_timestamp(date_time, 'yyyy-MM-dd')  between #{startTime2} and #{endTime2} and
+			</if>
+			<if test="channelId != null and channelId !='' ">
+				channel_id in
+				<foreach collection="channelArray" item="channelId" index="index" open="(" close=")" separator=",">
+					#{channelId}
+				</foreach>
+			</if>
+
+		</trim>
+		)
+		) b
+		WHERE
+		a.role_id = b.role_id
+		GROUP BY
+		a.user_id,
+		a.role_id
+		) c
+		WHERE
+		d.role_id = c.role_id
+		AND d.log_time = c.maxlogtime
+		) f
+		GROUP BY
+		f.task_id
+		ORDER BY
+		num DESC limit  ${pageSize}  offset ${pageIndex}
+
+	</select>
+
+
+
+
+
+
+</mapper>

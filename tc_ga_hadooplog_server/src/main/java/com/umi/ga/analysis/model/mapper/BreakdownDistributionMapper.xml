@@ -1,0 +1,563 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="BreakdownDistribution">
+    <resultMap id="breakdown_distributionResult" type="BreakdownDistribution">
+        <result property="id" column="id"/>
+        <result property="count" column="count"/>
+        <result property="property" column="property"/>
+        <result property="flag" column="flag"/>
+        <result property="timedate" column="timeDate"/>
+    </resultMap>
+
+    <resultMap id="TimesReulstMap" type="com.umi.ga.entitys.Times">
+        <result column="times" jdbcType="VARCHAR" property="times"/>
+		<result column="count" jdbcType="VARCHAR" property="number"/>
+    </resultMap>
+
+    <sql id="commonColumns">
+	    <![CDATA[
+
+                `id`,
+                `count`,
+                `property`,
+                `flag`,
+                `timeDate`
+
+        ]]>
+	</sql>
+
+    <sql id="dynamicWhere">
+        <where>
+            <if test="@Ognl@isNotEmpty(id)">
+                AND `id` = #{id}
+            </if>
+            <if test="@Ognl@isNotEmpty(count)">
+                AND `count` = #{count}
+            </if>
+            <if test="@Ognl@isNotEmpty(property)">
+                AND `property` = #{property}
+            </if>
+            <if test="@Ognl@isNotEmpty(flag)">
+                AND `flag` = #{flag}
+            </if>
+            <if test="@Ognl@isNotEmpty(timedate)">
+                AND `timeDate` = #{timedate}
+            </if>
+        </where>
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="BreakdownDistribution">
+    <![CDATA[
+
+                INSERT INTO `breakdown_distribution` (
+                    `id`,
+                    `count`,
+                    `property`,
+                    `flag`,
+                    `timeDate`
+                )
+                VALUES (
+                    #{id},
+                    #{count},
+                    #{property},
+                    #{flag},
+                    #{timedate}
+
+                )
+
+        ]]>
+	</insert>
+
+    <update id="update" parameterType="BreakdownDistribution">
+    <![CDATA[
+
+                UPDATE `breakdown_distribution` SET
+                    `id` = #{id},
+                    `count` = #{count},
+                    `property` = #{property},
+                    `flag` = #{flag},
+                    `timeDate` = #{timedate}
+                WHERE
+                    ID = #{id}
+
+        ]]>
+	</update>
+
+    <delete id="delete" parameterType="map">
+        <![CDATA[
+        delete from `breakdown_distribution`
+    ]]>
+        <include refid="dynamicWhere"/>
+    </delete>
+
+    <select id="getById" resultMap="breakdown_distributionResult">
+        SELECT
+        <include refid="commonColumns"/>
+        <![CDATA[
+		    FROM `breakdown_distribution`
+	        WHERE
+		        ID = #{id}
+	    ]]>
+    </select>
+
+    <select id="count" resultType="long">
+        SELECT count(*) FROM `breakdown_distribution`
+        <include refid="dynamicWhere"/>
+    </select>
+    <select id="pageSelect" resultMap="breakdown_distributionResult">
+        SELECT
+        <include refid="commonColumns"/>
+        FROM `breakdown_distribution`
+        <include refid="dynamicWhere"/>
+        <if test="@Ognl@isNotEmpty(sortColumns)">
+            ORDER BY ${sortColumns}
+        </if>
+    </select>
+
+    <!--
+        ###
+        ###
+    -->
+
+    <!--
+        hive
+    -->
+    <select id="hiveSelectTime" parameterType="com.umi.ga.entitys.Times" resultMap="TimesReulstMap">
+        select
+        collapseInfo['time'] as times
+        from
+        collapseInfo
+        where
+        day in (${times}) and collapseInfo['time'] is not null
+        <if test="startTime != null and '' != startTime and endTime != null and '' != endTime">
+            and collapseInfo['time'] between #{startTime} and #{endTime}
+        </if>
+    </select>
+	<select id="hiveSelectBreakdownTime" parameterType="com.umi.ga.entitys.Times" resultMap="breakdown_distributionResult">
+		select
+			collapseInfo['time'] as times
+		from
+			collapseinfo
+		where
+			day = #{times} and collapseinfo['time'] is not null
+
+	</select>
+
+    <select id="hiveSelectBreakdownScreenResolution" parameterType="com.umi.ga.entitys.Times"
+            resultMap="breakdown_distributionResult">
+		select
+			concat(collapseInfo['screenHeight1'],'*',collapseInfo['screenWidth1']) as property,
+			count(1) as count,
+			"breakdown_resolution" as flag
+		from
+			collapseInfo
+		where day = #{times} and collapseInfo['time'] is not null
+		group by
+			concat(collapseInfo['screenHeight1'],'*',collapseInfo['screenWidth1'])
+		order by count desc
+	</select>
+
+    <select id="hiveSelectBreakdownBrand" parameterType="com.umi.ga.entitys.Times"
+            resultMap="breakdown_distributionResult">
+		select
+			if(collapseInfo['deviceBrand']='','UNKNOW',collapseInfo['deviceBrand']) as property,
+			count(1) as count,
+			"breakdown_brand" as flag
+		from
+			collapseInfo
+		where
+		 	day = #{times} and collapseInfo['deviceBrand'] is not null
+		group by
+			if(collapseInfo['deviceBrand']='','UNKNOW',collapseInfo['deviceBrand'])
+		order by count desc
+	</select>
+
+    <select id="hiveSelectBreakdownOS" parameterType="com.umi.ga.entitys.Times"
+            resultMap="breakdown_distributionResult">
+		select
+			concat(collapseInfo['plantform'],' ',collapseInfo['systemVersion']) as property,
+			count(1) as count,
+			"breakdown_os" as flag
+		from
+			collapseInfo
+		where
+		 	day = #{times} and collapseInfo['plantform'] is not null and collapseInfo['systemVersion'] is not null
+		group by
+			concat(collapseInfo['plantform'],' ',collapseInfo['systemVersion'])
+		order by count desc
+	</select>
+
+    <select id="hiveSelectBreakdownNetwork" parameterType="com.umi.ga.entitys.Times"
+            resultMap="breakdown_distributionResult">
+		select
+			if(collapseinfo['networkStates']='','UNKNOW',collapseinfo['networkStates']) as property,
+			count(1) as count,
+			'breakdown_network' as flag
+		from
+			collapseinfo
+		where
+			day=#{times} and collapseinfo['networkStates'] is not null
+		group by if(collapseinfo['networkStates']='','UNKNOW',collapseinfo['networkStates'])
+		order by count desc
+	</select>
+
+    <select id="hiveSelectBreakdownRunMemory" parameterType="com.umi.ga.entitys.Times"
+            resultMap="breakdown_distributionResult">
+		select
+			NVL(ceiling(regexp_replace(collapseinfo['memoryTotalInfo'],'k','')/1048576),"UNKNOW") as property,
+			count(1) as count,
+			"breakdown_memory" as flag
+		from
+			collapseinfo
+		where
+		 	day = #{times} and collapseinfo['memoryTotalInfo'] is not null
+		group by
+			NVL(ceiling(regexp_replace(collapseinfo['memoryTotalInfo'],'k','')/1048576),"UNKNOW")
+		order by count desc
+	</select>
+
+    <select id="hiveSelectBreakdownCPU" parameterType="com.umi.ga.entitys.Times"
+            resultMap="breakdown_distributionResult">
+		select
+			if(collapseinfo['cpuName']='','UNKNOW',collapseinfo['cpuName']) as property,
+			count(1) as count,
+			"breakdown_cpu" as flag
+		from
+			collapseinfo
+		where
+		 	day = #{times} and collapseinfo['cpuName'] is not null
+		group by
+			if(collapseinfo['cpuName']='','UNKNOW',collapseinfo['cpuName'])
+		order by count desc
+	</select>
+
+    <select id="hiveSelectBreakdownGPU" parameterType="com.umi.ga.entitys.Times"
+            resultMap="breakdown_distributionResult">
+		select
+			if(collapseinfo['gpuRenderer']='','UNKNOW',collapseinfo['gpuRenderer']) as property,
+			count(1) as count,
+			"breakdown_gpu" as flag
+		from
+			collapseinfo
+		where
+		 	day = #{times} and collapseinfo['gpuRenderer'] is not null
+		group by
+			if(collapseinfo['gpuRenderer']='','UNKNOW',collapseinfo['gpuRenderer'])
+		order by count desc
+	</select>
+
+    <!--
+        mysql
+    -->
+
+    <select id="selectBreakdown" parameterType="com.umi.ga.entitys.Times" resultMap="breakdown_distributionResult">
+		select
+			count as count,
+			property as property,
+			flag as flag,
+			timeDate as timeDate
+		from
+			breakdown_distribution
+		where
+				flag ='numOfBreakdown'
+			and
+				timeDate = #{times}
+		ORDER BY property ASC
+	</select>
+
+    <select id="selectBreakdownNow" parameterType="com.umi.ga.entitys.Times" resultMap="TimesReulstMap">
+		select
+			time as times
+		from
+			collapseInfo
+		where
+			time between #{startTime} and #{endTime}
+
+	</select>
+
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into breakdown_distribution
+        (
+        `count`,
+        `property`,
+        `flag`,
+        `timeDate`
+        )
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                #{item.count},#{item.property},#{item.flag},#{item.timedate}
+            </trim>
+        </foreach>
+    </insert>
+
+    <select id="selectBreakdownScreenResolutionNow" parameterType="com.umi.ga.entitys.Times" resultMap="breakdown_distributionResult">
+		select concat(screen_height1,'*',screen_width1) as property,count(1) as count,'breakdown_resolution' as flag
+        from collapseInfo where time between #{startTime} and #{endTime}
+        group by property order by count desc limit 10
+	</select>
+
+    <select id="selectBreakdownBrandNow" parameterType="com.umi.ga.entitys.Times"
+            resultMap="breakdown_distributionResult">
+		select device_brand as property,count(1) as count,'breakdown_brand' as flag
+		from collapseInfo where time between #{startTime} and #{endTime} and device_brand is not null
+		group by property order by count desc
+	</select>
+
+    <select id="selectBreakdownOSNow" parameterType="com.umi.ga.entitys.Times" resultMap="breakdown_distributionResult">
+        select concat(plant_form,' ',system_version) as property,count(1) as count,'breakdown_os' as flag
+        from collapseInfo where time between #{startTime} and #{endTime} and plant_form is not null and system_version is not null
+        group by property order by count desc limit 10
+	</select>
+
+	<select id="selectBreakdownNetworkNow" parameterType="com.umi.ga.entitys.Times" resultMap="breakdown_distributionResult">
+		select
+			network_states as property,
+			count(1) as count,
+			'breakdown_network' as flag
+		from
+			collapseInfo
+		where
+			time between #{startTime} and #{endTime}
+		group by property
+
+	</select>
+
+    <select id="selectBreakdownRunMemoryNow" parameterType="com.umi.ga.entitys.Times" resultMap="breakdown_distributionResult">
+        select CEILING(memory_totalInfo/1048576)  as property,count(1) as count, 'breakdown_memory' as flag
+        from collapseInfo where time between #{startTime} and #{endTime} and memory_totalInfo is not null
+        group by property order by count desc
+	</select>
+
+    <select id="selectBreakdownCPUNow" parameterType="com.umi.ga.entitys.Times"
+            resultMap="breakdown_distributionResult">
+        select cpu_name as property,count(1) as count
+        from collapseInfo where time between #{startTime} and #{endTime}
+        group by property order by count desc
+	</select>
+
+    <select id="selectBreakdownGPUNow" parameterType="com.umi.ga.entitys.Times" resultMap="breakdown_distributionResult">
+        select gpu_renderer as property,count(1) as count
+        from collapseInfo where time between #{startTime} and #{endTime}
+        group by property order by count desc
+	</select>
+
+
+
+	<select id="selectBreakdownScreenResolution" parameterType="java.util.List" resultMap="breakdown_distributionResult">
+		select
+			property as property,
+			ifnull(sum(count),0) as count,
+			flag as flag
+		from
+			breakdown_distribution
+		where
+			flag = 'breakdown_resolution'
+		and
+			timeDate in
+		(
+		<foreach collection="list" item="item" index="index" separator=",">
+			<trim prefix="" suffix="" suffixOverrides=",">
+				#{item.times}
+			</trim>
+		</foreach>
+		)
+		group by
+			property
+		order by count desc limit 10
+
+	</select>
+
+	<select id="selectBreakdownBrand" parameterType="java.util.List" resultMap="breakdown_distributionResult">
+		select
+		property as property,
+		ifnull(sum(count),0) as count,
+		flag as flag
+		from
+		breakdown_distribution
+		where
+		flag = 'breakdown_brand'
+		and
+		timeDate in
+		(
+		<foreach collection="list" item="item" index="index" separator=",">
+			<trim prefix="" suffix="" suffixOverrides=",">
+				#{item.times}
+			</trim>
+		</foreach>
+		)
+		group by
+		property
+		order by count desc limit 10
+	</select>
+
+	<select id="selectBreakdownOS" parameterType="java.util.List" resultMap="breakdown_distributionResult">
+		select
+		property as property,
+		ifnull(sum(count),0) as count,
+		flag as flag
+		from
+		breakdown_distribution
+		where
+		flag = 'breakdown_os'
+		and
+		timeDate in
+		(
+		<foreach collection="list" item="item" index="index" separator=",">
+			<trim prefix="" suffix="" suffixOverrides=",">
+				#{item.times}
+			</trim>
+		</foreach>
+		)
+		group by property
+		order by count desc limit 10
+	</select>
+
+	<select id="selectBreakdownNetwork" parameterType="java.util.List" resultMap="breakdown_distributionResult">
+		select
+			property as property,
+			ifnull(sum(count),0) as count,
+			flag as flag
+		from
+			breakdown_distribution
+		where
+		flag = 'breakdown_network'
+		and
+		timeDate in
+		(
+		<foreach collection="list" item="item" index="index" separator=",">
+			<trim prefix="" suffix="" suffixOverrides=",">
+				#{item.times}
+			</trim>
+		</foreach>
+		)
+		group by property
+		order by count desc limit 10
+	</select>
+
+	<select id="selectBreakdownRunMemory" parameterType="java.util.List" resultMap="breakdown_distributionResult">
+		select
+		property as property,
+		ifnull(sum(count),0) as count,
+		flag as flag
+		from
+		breakdown_distribution
+		where
+		flag = 'breakdown_memory'
+		and
+		timeDate in
+		(
+		<foreach collection="list" item="item" index="index" separator=",">
+			<trim prefix="" suffix="" suffixOverrides=",">
+				#{item.times}
+			</trim>
+		</foreach>
+		)
+		group by
+		property
+		order by count desc
+	</select>
+
+	<select id="selectBreakdownCPU" parameterType="java.util.List" resultMap="breakdown_distributionResult">
+		select
+		property as property,
+		ifnull(sum(count),0) as count,
+		flag as flag
+		from
+		breakdown_distribution
+		where
+		flag = 'breakdown_cpu'
+		and
+		timeDate in
+		(
+		<foreach collection="list" item="item" index="index" separator=",">
+			<trim prefix="" suffix="" suffixOverrides=",">
+				#{item.times}
+			</trim>
+		</foreach>
+		)
+		group by
+		property
+		order by count desc limit 10
+	</select>
+
+	<select id="selectBreakdownGPU" parameterType="java.util.List" resultMap="breakdown_distributionResult">
+		select
+		property as property,
+		ifnull(sum(count),0) as count,
+		flag as flag
+		from
+		breakdown_distribution
+		where
+		flag = 'breakdown_gpu'
+		and
+		timeDate in
+		(
+		<foreach collection="list" item="item" index="index" separator=",">
+			<trim prefix="" suffix="" suffixOverrides=",">
+				#{item.times}
+			</trim>
+		</foreach>
+		)
+		group by
+		property
+		order by count desc limit 10
+	</select>
+
+	<select id="selectBreakdownCPUSpecial" parameterType="com.umi.ga.entitys.Times" resultMap="breakdown_distributionResult">
+		select
+			count as count,
+			property as property,
+			flag as flag,
+			timeDate as timedate
+		from
+			breakdown_distribution
+		where
+			timeDate between #{startTime} and #{endTime} and property = #{type}
+		order by timedate asc
+	</select>
+
+	<select id="selectBreakdownGPUSpecial" parameterType="com.umi.ga.entitys.Times" resultMap="breakdown_distributionResult">
+		select
+			count as count,
+			property as property,
+			flag as flag,
+			timeDate as timedate
+		from
+			breakdown_distribution
+		where
+			timeDate between #{startTime} and #{endTime} and property = #{type}
+		order by timedate asc
+	</select>
+
+	<select id="selectBreakdownCount" parameterType="java.util.List" resultMap="TimesReulstMap">
+		select
+			ifnull(sum(count),0) as count
+		from
+			breakdown_distribution
+		where
+			flag='numOfBreakdown'
+		and
+			timeDate in
+		(
+		<foreach collection="list" item="item" index="index" separator=",">
+			<trim prefix="" suffix="" suffixOverrides=",">
+				'${item.times}'
+			</trim>
+		</foreach>
+		)
+	</select>
+
+	<select id="selectBreakdownCountNow" parameterType="com.umi.ga.entitys.Times" resultMap="TimesReulstMap">
+		select
+			count(1) as count
+		from
+			collapseInfo
+		where
+			time between #{startTime} and #{endTime}
+	</select>
+
+</mapper>

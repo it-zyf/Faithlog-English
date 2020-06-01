@@ -1,0 +1,466 @@
+.real-top{
+	width: 100%;
+	height: 100px;
+}
+.real-top>.p-float{
+	width: 15%;
+	height: 100px;
+	background-color: #202020;
+	float: left;
+	margin-left: 1.6%;
+	text-align: center;
+	color: #345965;
+	font-size: 25px;
+	cursor: pointer;
+	color: white;
+}
+.real-top>.p-float:hover{
+	background-color: #656565;
+}
+#real-p1{
+	margin-left:25px ;
+}
+#real-histogram{
+	float: left;
+	width: 80px;
+	height: 30px;
+	background-color: #1E9FFF;
+	margin-bottom: 15px;
+	margin-left: 15px;
+	margin-right: 15px;
+	line-height: 5px;
+}
+#real-sheet{
+	float: left;
+	width: 80px;
+	height: 30px;
+	background-color: #1E9FFF;
+	line-height: 5px;
+}
+#real-histogram:hover{
+	background-color: #1E9FFF;
+	color: white;
+}
+#real-sheet:hover{
+	background-color: #1E9FFF;
+	color: white;
+}
+.real-yin{
+	display: none;
+}
+.real-yinA{
+	display: none;
+}
+.real-yin2{
+	display: none;
+}
+.real-yin3{
+	display: none;
+}
+.real-yin4{
+	display: none;
+}
+.real-table{
+	-webkit-animation-name: fadeIn; /*动画名称*/
+    -webkit-animation-duration: 1s; /*动画持续时间*/
+    -webkit-animation-iteration-count: 1; /*动画次数*/
+    -webkit-animation-delay: 0s; /*延迟时间*/
+}
+.real-table-A{
+	-webkit-animation-name: fadeIn; /*动画名称*/
+    -webkit-animation-duration: 1s; /*动画持续时间*/
+    -webkit-animation-iteration-count: 1; /*动画次数*/
+    -webkit-animation-delay: 0s; /*延迟时间*/
+}
+.real-table-one{
+	-webkit-animation-name: fadeIn; /*动画名称*/
+    -webkit-animation-duration: 1s; /*动画持续时间*/
+    -webkit-animation-iteration-count: 1; /*动画次数*/
+    -webkit-animation-delay: 0s; /*延迟时间*/
+}
+.real-table-two{
+	-webkit-animation-name: fadeIn; /*动画名称*/
+    -webkit-animation-duration: 1s; /*动画持续时间*/
+    -webkit-animation-iteration-count: 1; /*动画次数*/
+    -webkit-animation-delay: 0s; /*延迟时间*/
+}
+.real-table-four{
+	-webkit-animation-name: fadeIn; /*动画名称*/
+    -webkit-animation-duration: 1s; /*动画持续时间*/
+    -webkit-animation-iteration-count: 1; /*动画次数*/
+    -webkit-animation-delay: 0s; /*延迟时间*/
+}
+#div-one{
+	-webkit-animation-name: fadeIn; /*动画名称*/
+    -webkit-animation-duration: 1s; /*动画持续时间*/
+    -webkit-animation-iteration-count: 1; /*动画次数*/
+    -webkit-animation-delay: 0s; /*延迟时间*/
+}
+#div-A{
+	-webkit-animation-name: fadeIn; /*动画名称*/
+    -webkit-animation-duration: 1s; /*动画持续时间*/
+    -webkit-animation-iteration-count: 1; /*动画次数*/
+    -webkit-animation-delay: 0s; /*延迟时间*/
+}
+#div-two{
+	-webkit-animation-name: fadeIn; /*动画名称*/
+    -webkit-animation-duration: 1s; /*动画持续时间*/
+    -webkit-animation-iteration-count: 1; /*动画次数*/
+    -webkit-animation-delay: 0s; /*延迟时间*/
+}
+#div-three{
+	-webkit-animation-name: fadeIn; /*动画名称*/
+    -webkit-animation-duration: 1s; /*动画持续时间*/
+    -webkit-animation-iteration-count: 1; /*动画次数*/
+    -webkit-animation-delay: 0s; /*延迟时间*/
+}
+#div-four{
+	-webkit-animation-name: fadeIn; /*动画名称*/
+    -webkit-animation-duration: 1s; /*动画持续时间*/
+    -webkit-animation-iteration-count: 1; /*动画次数*/
+    -webkit-animation-delay: 0s; /*延迟时间*/
+}
+.real-table>table{
+	width: 100%;
+	height: 100%;
+	margin-top: 90px;
+	border: 0;
+}
+
+.real-table>table>thead>tr>th{
+	width: 33%;
+	height: 30px;
+	background-color: #202020;
+	color: white;
+	border: 0;
+}
+.real-table>table>tbody>tr>td{
+	width: 33%;
+	height: 30px;
+	border: 0;
+	background-color: #202020;
+	color: white;
+}
+.real-table>table>tbody>tr>th{
+	text-align: center;
+	background-color: #202020;
+	color: white;
+}
+.real-table-one>table{
+	width: 100%;
+	height: 100%;
+	margin-top: 90px;
+	border: 0;
+}
+
+.real-table-one>table>thead>tr>th{
+	width: 33%;
+	height: 30px;
+	/*background-color: #C1E2E9;*/
+	border: 0;
+	background-color: #202020;
+	color: white;
+}
+.real-table-one>table>tbody>tr>td{
+	width: 33%;
+	height: 30px;
+	border: 0;
+	background-color: #202020;
+	color: white;
+}
+.real-table-one>table>tbody>tr>th{
+	text-align: center;
+	background-color: #202020;
+	color: white;
+}
+
+.real-table-A>table{
+	width: 100%;
+	height: 100%;
+	margin-top: 90px;
+	border: 0;
+}
+
+.real-table-A>table>thead>tr>th{
+	width: 33%;
+	height: 30px;
+	/*background-color: #C1E2E9;*/
+	border: 0;
+	background-color: #202020;
+	color: white;
+}
+.real-table-A>table>tbody>tr>td{
+	width: 33%;
+	height: 30px;
+	border: 0;
+	background-color: #202020;
+	color: white;
+}
+.real-table-A>table>tbody>tr>th{
+	text-align: center;
+	background-color: #202020;
+	color: white;
+}
+
+.real-table-two>table{
+	width: 100%;
+	height: 100%;
+	margin-top: 90px;
+	border: 0;
+}
+
+.real-table-two>table>thead>tr>th{
+	width: 33%;
+	height: 30px;
+	/*background-color: #C1E2E9;*/
+	border: 0;
+	background-color: #202020;
+	color: white;
+}
+.real-table-two>table>tbody>tr>td{
+	width: 33%;
+	height: 30px;
+	border: 0;
+	background-color: #202020;
+	color: white;
+}
+.real-table-two>table>tbody>tr>th{
+	text-align: center;
+	background-color: #202020;
+	color: white;
+}
+.real-table-four>table{
+	width: 100%;
+	height: 100%;
+	margin-top: 90px;
+	border: 0;
+}
+
+.real-table-four>table>thead>tr>th{
+	width: 33%;
+	height: 30px;
+	/*background-color: #C1E2E9;*/
+	border: 0;
+	background-color: #202020;
+	color: white;
+}
+.real-table-four>table>tbody>tr>td{
+	width: 33%;
+	height: 30px;
+	border: 0;
+	background-color: #202020;
+	color: white;
+}
+.real-table-four>table>tbody>tr>th{
+	text-align: center;
+	background-color: #202020;
+	color: white;
+}
+#real-btn{
+	float: right;
+	width: 95px;
+	height: 30px;
+	margin-right: 15px;
+	background-color: #1E9FFF;
+	color: white;
+	line-height: 5px;
+}
+#real-btnA{
+	float: right;
+	width: 95px;
+	height: 30px;
+	margin-right: 15px;
+	background-color: #1E9FFF;
+	color: white;
+	line-height: 5px;
+}
+#real-btn2{
+	float: right;
+	width: 95px;
+	height: 30px;
+	margin-right: 15px;
+	background-color: #1E9FFF;
+	color: white;
+	line-height: 5px;
+}
+#real-btn3{
+	float: right;
+	width: 95px;
+	height: 30px;
+	margin-right: 15px;
+	background-color: #1E9FFF;
+	color: white;
+	line-height: 5px;
+}
+#real-btn4{
+	float: right;
+	width: 95px;
+	height: 30px;
+	margin-right: 15px;
+	background-color: #1E9FFF;
+	color: white;
+	line-height: 5px;
+}
+.conceal{
+	display: none;
+}
+.reveal{
+	display: block;
+}
+#real-histogram2{
+	float: left;
+	width: 80px;
+	height: 30px;
+	background-color: #1E9FFF;
+	margin-bottom: 15px;
+	margin-left: 15px;
+	margin-right: 15px;
+	line-height: 5px;
+}
+#real-histogramA{
+	float: left;
+	width: 80px;
+	height: 30px;
+	background-color: #1E9FFF;
+	margin-bottom: 15px;
+	margin-left: 15px;
+	margin-right: 15px;
+	line-height: 5px;
+}
+#real-histogramA:hover{
+	background-color: #c1dfe9;
+}
+#real-histogram2:hover{
+	background-color: #c1dfe9;
+}
+#real-sheet2{
+	float: left;
+	width: 80px;
+	height: 30px;
+	background-color: #1E9FFF;
+	line-height: 5px;
+}
+#real-sheet2:hover{
+	background-color:#c1dfe9 ;
+}
+#real-sheetA{
+	float: left;
+	width: 80px;
+	height: 30px;
+	background-color: #1E9FFF;
+	line-height: 5px;
+}
+#real-sheetA:hover{
+	background-color:#c1dfe9 ;
+}
+#real-histogram3{
+	float: left;
+	width: 80px;
+	height: 30px;
+	background-color: #1E9FFF;
+	margin-bottom: 15px;
+	margin-left: 15px;
+	margin-right: 15px;
+	line-height: 5px;
+}
+#real-sheet3{
+	float: left;
+	width: 80px;
+	height: 30px;
+	background-color: #1E9FFF;
+	line-height: 5px;
+}
+#real-histogram3:hover{
+	background-color: #c1dfe9;
+}
+#real-sheet3:hover{
+	background-color:#c1dfe9 ;
+}
+#real-histogram4{
+	float: left;
+	width: 80px;
+	height: 30px;
+	background-color: #1E9FFF;
+	margin-bottom: 15px;
+	margin-left: 15px;
+	margin-right: 15px;
+	line-height: 5px;
+}
+#real-sheet4{
+	float: left;
+	width: 80px;
+	height: 30px;
+	background-color: #1E9FFF;
+	line-height: 5px;
+}
+#real-histogram4:hover{
+	background-color: #c1dfe9;
+}
+#real-sheet4:hover{
+	background-color:#c1dfe9 ;
+}
+#cha{
+	width: 60px;
+	height: 35px;
+	background-color: #1E9FFF;
+	color: white;
+}
+#teambtn{
+	display: inline-block;
+	width: 60px;
+    height: 35px;
+    background-color: #C1DFE9;
+	border: 0px;
+	border-radius: 5px;
+	margin-left: 15px;
+	text-align: center;
+	line-height: 35px;
+	display: none;
+}
+#teambtn2{
+	display: inline-block;
+	width: 60px;
+    height: 35px;
+    background-color: #C1DFE9;
+	border: 0px;
+	border-radius: 5px;
+	margin-left: 15px;
+	text-align: center;
+	line-height: 35px;
+	display: none;
+}
+.classpageinner{
+	position: relative;
+}
+.fenxi{
+	width: 98%;
+	height: 85%;
+	background-color: #202020;
+	position: absolute;
+	top: 11%;
+	left: 1%;
+	z-index: 99;
+	display: none;
+}
+.fenxipass{
+	width: 20px;
+	height: 20px;
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	/* background-color: red; */
+	z-index: 99;
+	text-align: center;
+	color: black;
+	line-height: 20px;
+	font-size: 20px;
+	cursor: pointer;
+}
+#exampleop tr th,#exampleop2 tr th{
+	background: #202020;
+	color: white;
+}
+#exampleop tr td,#exampleop2 tr td{
+	background: #202020;
+	color: white;
+}

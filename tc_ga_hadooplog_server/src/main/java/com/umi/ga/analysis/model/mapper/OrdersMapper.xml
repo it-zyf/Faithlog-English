@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="Orders">
+	<resultMap id="ordersResult" type="com.umi.ga.analysis.model.Orders">
+		<result property="id" column="id"/>
+		<result property="orderNum" column="order_num"/>
+		<result property="orderStatus" column="order_status"/>
+		<result property="orderAmount" column="order_amount"/>
+		<result property="paidAmount" column="paid_amount"/>
+		<result property="productNum" column="product_num"/>
+		<result property="buyCounts" column="buy_counts"/>
+		<result property="orderDescribe" column="order_describe"/>
+		<result property="userId" column="user_id"/>
+		<result property="notifyTime" column="notify_time"/>
+		<result property="createTime" column="create_time"/>
+		<result property="paidTime" column="paid_time"/>
+		<result property="gmtRefund" column="gmt_refund"/>
+		<result property="gmtClose" column="gmt_close"/>
+		<result property="tradeNo" column="trade_no"/>
+		<result property="outBizNo" column="out_biz_no"/>
+		<result property="buyerLogonId" column="buyer_logon_id"/>
+		<result property="sellerId" column="seller_id"/>
+		<result property="sellerEmail" column="seller_email"/>
+		<result property="invoiceAmount" column="invoice_amount"/>
+		<result property="buyerPayAmount" column="buyer_pay_amount"/>
+		<result property="goodsName" column="goods_name"/>
+		<result property="goodsDetails" column="goods_details"/>
+		<result property="payType" column="pay_type"/>
+		<result property="moneyUnit" column="money_unit"/>
+		<result property="roleId" column="role_id"/>
+		<result property="appId" column="app_id"/>
+</resultMap>
+
+	<sql id="commonColumns">
+	    <![CDATA[
+        `id`,
+        `order_num`,
+        `order_status`,
+        `order_amount`,
+        `paid_amount`,
+        `product_num`,
+        `buy_counts`,
+        `order_describe`,
+        `user_id`,
+        `notify_time`,
+        `create_time`,
+        `paid_time`,
+        `gmt_refund`,
+        `gmt_close`,
+        `trade_no`,
+        `out_biz_no`,
+        `buyer_logon_id`,
+        `seller_id`,
+        `seller_email`,
+        `invoice_amount`,
+        `buyer_pay_amount`,
+        `goods_name`,
+        `goods_details`,
+        `pay_type`,
+        `money_unit`,
+        `role_id`,
+        `app_id`
+	    ]]>
+	</sql>
+
+	<sql id="dynamicWhere">
+		<where>
+			<if test="@Ognl@isNotEmpty(id)">
+				AND `id` = #{id}
+			</if>
+			<if test="@Ognl@isNotEmpty(orderNum)">
+				AND `order_num` = #{orderNum}
+			</if>
+			<if test="@Ognl@isNotEmpty(orderStatus)">
+				AND `order_status` = #{orderStatus}
+			</if>
+			<if test="@Ognl@isNotEmpty(orderAmount)">
+				AND `order_amount` = #{orderAmount}
+			</if>
+			<if test="@Ognl@isNotEmpty(paidAmount)">
+				AND `paid_amount` = #{paidAmount}
+			</if>
+			<if test="@Ognl@isNotEmpty(productNum)">
+				AND `product_num` = #{productNum}
+			</if>
+			<if test="@Ognl@isNotEmpty(buyCounts)">
+				AND `buy_counts` = #{buyCounts}
+			</if>
+			<if test="@Ognl@isNotEmpty(orderDescribe)">
+				AND `order_describe` = #{orderDescribe}
+			</if>
+			<if test="@Ognl@isNotEmpty(userId)">
+				AND `user_id` = #{userId}
+			</if>
+			<if test="@Ognl@isNotEmpty(notifyTime)">
+				AND `notify_time` = #{notifyTime}
+			</if>
+			<if test="@Ognl@isNotEmpty(createTime)">
+				AND `create_time` = #{createTime}
+			</if>
+			<if test="@Ognl@isNotEmpty(paidTime)">
+				AND `paid_time` = #{paidTime}
+			</if>
+			<if test="@Ognl@isNotEmpty(gmtRefund)">
+				AND `gmt_refund` = #{gmtRefund}
+			</if>
+			<if test="@Ognl@isNotEmpty(gmtClose)">
+				AND `gmt_close` = #{gmtClose}
+			</if>
+			<if test="@Ognl@isNotEmpty(tradeNo)">
+				AND `trade_no` = #{tradeNo}
+			</if>
+			<if test="@Ognl@isNotEmpty(outBizNo)">
+				AND `out_biz_no` = #{outBizNo}
+			</if>
+			<if test="@Ognl@isNotEmpty(buyerLogonId)">
+				AND `buyer_logon_id` = #{buyerLogonId}
+			</if>
+			<if test="@Ognl@isNotEmpty(sellerId)">
+				AND `seller_id` = #{sellerId}
+			</if>
+			<if test="@Ognl@isNotEmpty(sellerEmail)">
+				AND `seller_email` = #{sellerEmail}
+			</if>
+			<if test="@Ognl@isNotEmpty(invoiceAmount)">
+				AND `invoice_amount` = #{invoiceAmount}
+			</if>
+			<if test="@Ognl@isNotEmpty(buyerPayAmount)">
+				AND `buyer_pay_amount` = #{buyerPayAmount}
+			</if>
+			<if test="@Ognl@isNotEmpty(goodsName)">
+				AND `goods_name` = #{goodsName}
+			</if>
+			<if test="@Ognl@isNotEmpty(goodsDetails)">
+				AND `goods_details` = #{goodsDetails}
+			</if>
+			<if test="@Ognl@isNotEmpty(payType)">
+				AND `pay_type` = #{payType}
+			</if>
+			<if test="@Ognl@isNotEmpty(moneyUnit)">
+				AND `money_unit` = #{moneyUnit}
+			</if>
+			<if test="@Ognl@isNotEmpty(roleId)">
+				AND `role_id` = #{roleId}
+			</if>
+			<if test="@Ognl@isNotEmpty(appId)">
+				AND `app_id` = #{appId}
+			</if>
+		</where>
+	</sql>
+
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="Orders">
+    <![CDATA[
+        INSERT INTO `orders` (
+        	`id`,
+        	`order_num`,
+        	`order_status`,
+        	`order_amount`,
+        	`paid_amount`,
+        	`product_num`,
+        	`buy_counts`,
+        	`order_describe`,
+        	`user_id`,
+        	`notify_time`,
+        	`create_time`,
+        	`paid_time`,
+        	`gmt_refund`,
+        	`gmt_close`,
+        	`trade_no`,
+        	`out_biz_no`,
+        	`buyer_logon_id`,
+        	`seller_id`,
+        	`seller_email`,
+        	`invoice_amount`,
+        	`buyer_pay_amount`,
+        	`goods_name`,
+        	`goods_details`,
+        	`pay_type`,
+        	`money_unit`,
+        	`role_id`,
+        	`app_id`
+        )
+        VALUES (
+        	#{id},
+        	#{orderNum},
+        	#{orderStatus},
+        	#{orderAmount},
+        	#{paidAmount},
+        	#{productNum},
+        	#{buyCounts},
+        	#{orderDescribe},
+        	#{userId},
+        	#{notifyTime},
+        	#{createTime},
+        	#{paidTime},
+        	#{gmtRefund},
+        	#{gmtClose},
+        	#{tradeNo},
+        	#{outBizNo},
+        	#{buyerLogonId},
+        	#{sellerId},
+        	#{sellerEmail},
+        	#{invoiceAmount},
+        	#{buyerPayAmount},
+        	#{goodsName},
+        	#{goodsDetails},
+        	#{payType},
+        	#{moneyUnit},
+        	#{roleId},
+        	#{appId}
+
+        )
+    ]]>
+	</insert>
+
+	<update id="update" parameterType="Orders">
+    <![CDATA[
+        UPDATE `orders` SET
+	        `id` = #{id},
+	        `order_num` = #{orderNum},
+	        `order_status` = #{orderStatus},
+	        `order_amount` = #{orderAmount},
+	        `paid_amount` = #{paidAmount},
+	        `product_num` = #{productNum},
+	        `buy_counts` = #{buyCounts},
+	        `order_describe` = #{orderDescribe},
+	        `user_id` = #{userId},
+	        `notify_time` = #{notifyTime},
+	        `create_time` = #{createTime},
+	        `paid_time` = #{paidTime},
+	        `gmt_refund` = #{gmtRefund},
+	        `gmt_close` = #{gmtClose},
+	        `trade_no` = #{tradeNo},
+	        `out_biz_no` = #{outBizNo},
+	        `buyer_logon_id` = #{buyerLogonId},
+	        `seller_id` = #{sellerId},
+	        `seller_email` = #{sellerEmail},
+	        `invoice_amount` = #{invoiceAmount},
+	        `buyer_pay_amount` = #{buyerPayAmount},
+	        `goods_name` = #{goodsName},
+	        `goods_details` = #{goodsDetails},
+	        `pay_type` = #{payType},
+	        `money_unit` = #{moneyUnit},
+	        `role_id` = #{roleId},
+	        `app_id` = #{appId}
+        WHERE 
+	        ID = #{id}
+    ]]>
+	</update>
+
+	<delete id="delete" parameterType="map">
+    <![CDATA[
+        delete from `orders`
+    ]]>
+		<include refid="dynamicWhere"/>
+	</delete>
+
+	<select id="getById" resultMap="ordersResult">
+		SELECT <include refid="commonColumns" />
+	    <![CDATA[
+		    FROM `orders`
+	        WHERE
+		        ID = #{id}
+	    ]]>
+	</select>
+
+    <select id="count" resultType="long">
+        SELECT count(*) FROM `orders` 
+		<include refid="dynamicWhere"/>    
+    </select>
+  <select id="pageSelect" resultMap="ordersResult">
+    	SELECT 
+    		<include refid="commonColumns" />
+	    FROM `orders` 
+		<include refid="dynamicWhere"/>
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+  </select>
+
+
+
+
+	<select id="selectBy" parameterType="Orders" resultMap="ordersResult">
+		select
+		<include refid="commonColumns"/>
+		from orders
+		<include refid="dynamicWhere"/>
+		LIMIT #{pageIndex} ,#{pageSize}
+	</select>
+
+	<select id="getCount" parameterType="Orders" resultType="Long">
+
+		select count(*) from orders
+		<include refid="dynamicWhere"/>
+	</select>
+
+
+</mapper>

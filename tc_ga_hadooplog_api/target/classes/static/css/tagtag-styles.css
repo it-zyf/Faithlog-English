@@ -1,0 +1,118 @@
+body{
+    margin: 0 auto;
+    background-color:#f3f3f4;
+}
+.left{
+    min-width: 170px ;
+    width: 13%;
+    height: 100%;
+    background:#121212 ;
+    position: fixed;
+    margin-top: 59px;
+}
+.nav{
+    width: 100%;
+}
+.right{
+    width: 87%;
+    float:right;
+    background: #363636;
+}
+.el-submenu .el-menu-item{
+    min-width: auto !important;
+}
+.el-menu-item.is-active{
+    background-color: #4d5055 !important;
+}
+.el-menu-item:hover{
+    background-color:  #4d5055 !important;
+}
+.el-submenu__title:hover{
+    background-color:  #4d5055 !important;
+}
+.el-submenu.is-active.is-opened{
+    background-color: #0d0d0d !important;
+}
+.el-menu.el-menu--inline{
+    background-color: #0d0d0d !important;
+}
+a{
+    text-decoration:none;
+    color:white !important;
+}
+a:hover{
+    text-decoration:none;
+}
+.el-menu-item-group__title{
+    display: none;
+}
+.topTag{
+    color: #fff;
+    height: 60px;
+    line-height: 60px;
+    font-size: 20px;
+    font-weight: 300;
+    background:#121212 ;
+    padding-left: 2%;
+}
+.cancelbtn{
+    line-height: 32px;
+    font-size: 14px;
+    height: 32px;
+    border-radius: 22px;
+    text-align: center;
+    width: 150px;
+    float:right;
+}
+.el-menu{
+    border:none !important;
+}
+.laydate-btns-clear,.laydate-btns-confirm{
+    color:white;
+}
+.layui-laydate-content td.laydate-selected{
+    background:#4a2cf8 !important;
+}
+/*.layui-laydate-main {*/
+/*width: 240px !important;*/
+/*}*/
+/*.layui-laydate-range {*/
+/*width: 485px !important;*/
+/*}*/
+.highcharts-root{
+    padding-left:20px !important;
+    padding-right:40px !important;
+}
+.layui-nav{
+    background-color: #121212 !important;
+}
+.layui-nav .layui-nav-more {
+    top:65% !important;
+}
+.layui-nav-bar{
+    background-color: #121212 !important;
+}
+.layui-nav-child{
+
+    min-width: 80% !important;
+    border-radius: 4px !important;
+}
+.triangle-up {
+    position: absolute;
+    left: 10%;
+    top: -36%;
+    width: 0;
+    height: 0;
+    border-left: 4px solid transparent;
+    border-right: 7px solid transparent;
+    border-bottom: 10px solid white;
+}
+.exitIn:hover .kkk{
+    color:#2953FF !important;
+}
+@media screen and (max-width: 1385px) {
+    .topTag{
+        font-size:18px;
+    }
+
+}

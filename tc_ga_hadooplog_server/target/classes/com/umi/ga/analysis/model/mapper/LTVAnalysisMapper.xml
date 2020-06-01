@@ -1,0 +1,578 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="LTVAnalysis">
+	<resultMap id="ltv_analysisResult" type="LTVAnalysis">
+		<result property="id" column="id"/>
+		<result property="timedate" column="timeDate"/>
+		<result property="serverid" column="serverId"/>
+		<result property="channelid" column="channelId"/>
+		<result property="registerNumber" column="register_number"/>
+		<result property="firstLogin" column="first_login"/>
+		<result property="firstPayAmount" column="first_pay_amount"/>
+		<result property="payAmount" column="pay_amount"/>
+		<result property="oneLtv" column="one_ltv"/>
+		<result property="twoLtv" column="two_ltv"/>
+		<result property="threeLtv" column="three_ltv"/>
+		<result property="fourLtv" column="four_ltv"/>
+		<result property="fiveLtv" column="five_ltv"/>
+		<result property="sixLtv" column="six_ltv"/>
+		<result property="sevenLtv" column="seven_ltv"/>
+		<result property="eightLtv" column="eight_ltv"/>
+		<result property="nineLtv" column="nine_ltv"/>
+		<result property="tenLtv" column="ten_ltv"/>
+		<result property="elevenLtv" column="eleven_ltv"/>
+		<result property="twelveLtv" column="twelve_ltv"/>
+		<result property="thirteenLtv" column="thirteen_ltv"/>
+		<result property="fourteenLtv" column="fourteen_ltv"/>
+		<result property="fifteenLtv" column="fifteen_ltv"/>
+		<result property="sixteenLtv" column="sixteen_ltv"/>
+		<result property="seventeenLtv" column="seventeen_ltv"/>
+		<result property="eighteenLtv" column="eighteen_ltv"/>
+		<result property="nineteenLtv" column="nineteen_ltv"/>
+		<result property="twentyLtv" column="twenty_ltv"/>
+		<result property="twentyoneLtv" column="twentyone_ltv"/>
+		<result property="twentytwoLtv" column="twentytwo_ltv"/>
+		<result property="twentythreeLtv" column="twentythree_ltv"/>
+		<result property="twentyfourLtv" column="twentyfour_ltv"/>
+		<result property="twentyfiveLtv" column="twentyfive_ltv"/>
+		<result property="twentysixLtv" column="twentysix_ltv"/>
+		<result property="twentysevenLtv" column="twentyseven_ltv"/>
+		<result property="twentyeightLtv" column="twentyeight_ltv"/>
+		<result property="twentynineLtv" column="twentynine_ltv"/>
+		<result property="thirtyLtv" column="thirty_ltv"/>
+		<result property="ninetyLtv" column="ninety_ltv"/>
+		<result property="hundredtwentyLtv" column="hundredtwenty_ltv"/>
+		<result property="hundredfiftyLtv" column="hundredfifty_ltv"/>
+		<result property="hundredeightyLtv" column="hundredeighty_ltv"/>
+		<result property="threehundredsixtyLtv" column="threehundredsixty_ltv"/>
+</resultMap>
+
+	<resultMap id="flagResult" type="com.umi.ga.entitys.Flag">
+		<result column="id" jdbcType="VARCHAR" property="id"/>
+		<result column="flag" jdbcType="VARCHAR" property="flag"/>
+		<result column="name" jdbcType="VARCHAR" property="name"/>
+		<result column="type" jdbcType="VARCHAR" property="type"/>
+		<result column="time" jdbcType="VARCHAR" property="time"/>
+		<result column="number" jdbcType="INTEGER" property="number"/>
+	</resultMap>
+
+	<sql id="commonColumns">
+	    <![CDATA[
+        `id`,
+        `timeDate`,
+        `serverId`,
+        `channelId`,
+
+	    ]]>
+	</sql>
+
+	<sql id="dynamicWhere">
+		<where>
+			<if test="@Ognl@isNotEmpty(id)">
+				AND `id` = #{id}
+			</if>
+			<if test="@Ognl@isNotEmpty(timedate)">
+				AND `timeDate` = #{timedate}
+			</if>
+			<if test="@Ognl@isNotEmpty(serverid)">
+				AND `serverId` = #{serverid}
+			</if>
+			<if test="@Ognl@isNotEmpty(channelid)">
+				AND `channelId` = #{channelid}
+			</if>
+			<if test="@Ognl@isNotEmpty(registerNumber)">
+				AND `register_number` = #{registerNumber}
+			</if>
+			<if test="@Ognl@isNotEmpty(firstLogin)">
+				AND `first_login` = #{firstLogin}
+			</if>
+			<if test="@Ognl@isNotEmpty(firstPayAmount)">
+				AND `first_pay_amount` = #{firstPayAmount}
+			</if>
+			<if test="@Ognl@isNotEmpty(payAmount)">
+				AND `pay_amount` = #{payAmount}
+			</if>
+			<if test="@Ognl@isNotEmpty(oneLtv)">
+				AND `one_ltv` = #{oneLtv}
+			</if>
+			<if test="@Ognl@isNotEmpty(twoLtv)">
+				AND `two_ltv` = #{twoLtv}
+			</if>
+			<if test="@Ognl@isNotEmpty(threeLtv)">
+				AND `three_ltv` = #{threeLtv}
+			</if>
+			<if test="@Ognl@isNotEmpty(fourLtv)">
+				AND `four_ltv` = #{fourLtv}
+			</if>
+			<if test="@Ognl@isNotEmpty(fiveLtv)">
+				AND `five_ltv` = #{fiveLtv}
+			</if>
+			<if test="@Ognl@isNotEmpty(sixLtv)">
+				AND `six_ltv` = #{sixLtv}
+			</if>
+			<if test="@Ognl@isNotEmpty(sevenLtv)">
+				AND `seven_ltv` = #{sevenLtv}
+			</if>
+			<if test="@Ognl@isNotEmpty(eightLtv)">
+				AND `eight_ltv` = #{eightLtv}
+			</if>
+			<if test="@Ognl@isNotEmpty(nineLtv)">
+				AND `nine_ltv` = #{nineLtv}
+			</if>
+			<if test="@Ognl@isNotEmpty(tenLtv)">
+				AND `ten_ltv` = #{tenLtv}
+			</if>
+			<if test="@Ognl@isNotEmpty(elevenLtv)">
+				AND `eleven_ltv` = #{elevenLtv}
+			</if>
+			<if test="@Ognl@isNotEmpty(twelveLtv)">
+				AND `twelve_ltv` = #{twelveLtv}
+			</if>
+			<if test="@Ognl@isNotEmpty(thirteenLtv)">
+				AND `thirteen_ltv` = #{thirteenLtv}
+			</if>
+			<if test="@Ognl@isNotEmpty(fourteenLtv)">
+				AND `fourteen_ltv` = #{fourteenLtv}
+			</if>
+			<if test="@Ognl@isNotEmpty(fifteenLtv)">
+				AND `fifteen_ltv` = #{fifteenLtv}
+			</if>
+			<if test="@Ognl@isNotEmpty(sixteenLtv)">
+				AND `sixteen_ltv` = #{sixteenLtv}
+			</if>
+			<if test="@Ognl@isNotEmpty(seventeenLtv)">
+				AND `seventeen_ltv` = #{seventeenLtv}
+			</if>
+			<if test="@Ognl@isNotEmpty(eighteenLtv)">
+				AND `eighteen_ltv` = #{eighteenLtv}
+			</if>
+			<if test="@Ognl@isNotEmpty(nineteenLtv)">
+				AND `nineteen_ltv` = #{nineteenLtv}
+			</if>
+			<if test="@Ognl@isNotEmpty(twentyLtv)">
+				AND `twenty_ltv` = #{twentyLtv}
+			</if>
+			<if test="@Ognl@isNotEmpty(twentyoneLtv)">
+				AND `twentyone_ltv` = #{twentyoneLtv}
+			</if>
+			<if test="@Ognl@isNotEmpty(twentytwoLtv)">
+				AND `twentytwo_ltv` = #{twentytwoLtv}
+			</if>
+			<if test="@Ognl@isNotEmpty(twentythreeLtv)">
+				AND `twentythree_ltv` = #{twentythreeLtv}
+			</if>
+			<if test="@Ognl@isNotEmpty(twentyfourLtv)">
+				AND `twentyfour_ltv` = #{twentyfourLtv}
+			</if>
+			<if test="@Ognl@isNotEmpty(twentyfiveLtv)">
+				AND `twentyfive_ltv` = #{twentyfiveLtv}
+			</if>
+			<if test="@Ognl@isNotEmpty(twentysixLtv)">
+				AND `twentysix_ltv` = #{twentysixLtv}
+			</if>
+			<if test="@Ognl@isNotEmpty(twentysevenLtv)">
+				AND `twentyseven_ltv` = #{twentysevenLtv}
+			</if>
+			<if test="@Ognl@isNotEmpty(twentyeightLtv)">
+				AND `twentyeight_ltv` = #{twentyeightLtv}
+			</if>
+			<if test="@Ognl@isNotEmpty(twentynineLtv)">
+				AND `twentynine_ltv` = #{twentynineLtv}
+			</if>
+			<if test="@Ognl@isNotEmpty(thirtyLtv)">
+				AND `thirty_ltv` = #{thirtyLtv}
+			</if>
+			<if test="@Ognl@isNotEmpty(ninetyLtv)">
+				AND `ninety_ltv` = #{ninetyLtv}
+			</if>
+			<if test="@Ognl@isNotEmpty(hundredtwentyLtv)">
+				AND `hundredtwenty_ltv` = #{hundredtwentyLtv}
+			</if>
+			<if test="@Ognl@isNotEmpty(hundredfiftyLtv)">
+				AND `hundredfifty_ltv` = #{hundredfiftyLtv}
+			</if>
+			<if test="@Ognl@isNotEmpty(hundredeightyLtv)">
+				AND `hundredeighty_ltv` = #{hundredeightyLtv}
+			</if>
+			<if test="@Ognl@isNotEmpty(threehundredsixtyLtv)">
+				AND `threehundredsixty_ltv` = #{threehundredsixtyLtv}
+			</if>
+		</where>
+	</sql>
+
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="LTVAnalysis">
+    <![CDATA[
+        INSERT INTO `ltv_analysis` (
+        	`timeDate`,
+        	`serverId`,
+        	`channelId`,
+        	`register_number`,
+        	`first_login`,
+        	`first_pay_amount`,
+        	`pay_amount`,
+        	`one_ltv`,
+        	`two_ltv`,
+        	`three_ltv`,
+        	`four_ltv`,
+        	`five_ltv`,
+        	`six_ltv`,
+        	`seven_ltv`,
+        	`eight_ltv`,
+        	`nine_ltv`,
+        	`ten_ltv`,
+        	`eleven_ltv`,
+        	`twelve_ltv`,
+        	`thirteen_ltv`,
+        	`fourteen_ltv`,
+        	`fifteen_ltv`,
+        	`sixteen_ltv`,
+        	`seventeen_ltv`,
+        	`eighteen_ltv`,
+        	`nineteen_ltv`,
+        	`twenty_ltv`,
+        	`twentyone_ltv`,
+        	`twentytwo_ltv`,
+        	`twentythree_ltv`,
+        	`twentyfour_ltv`,
+        	`twentyfive_ltv`,
+        	`twentysix_ltv`,
+        	`twentyseven_ltv`,
+        	`twentyeight_ltv`,
+        	`twentynine_ltv`,
+        	`thirty_ltv`,
+        	`sixty_ltv`,
+        	`ninety_ltv`,
+        	`hundredtwenty_ltv`,
+        	`hundredfifty_ltv`,
+        	`hundredeighty_ltv`,
+        	`threehundredsixty_ltv`
+        )
+        VALUES (
+        	#{timedate},
+        	#{serverid},
+        	#{channelid},
+        	#{registerNumber},
+        	#{firstLogin},
+        	#{firstPayAmount},
+        	#{payAmount},
+        	#{oneLtv},
+        	#{twoLtv},
+        	#{threeLtv},
+        	#{fourLtv},
+        	#{fiveLtv},
+        	#{sixLtv},
+        	#{sevenLtv},
+        	#{eightLtv},
+        	#{nineLtv},
+        	#{tenLtv},
+        	#{elevenLtv},
+        	#{twelveLtv},
+        	#{thirteenLtv},
+        	#{fourteenLtv},
+        	#{fifteenLtv},
+        	#{sixteenLtv},
+        	#{seventeenLtv},
+        	#{eighteenLtv},
+        	#{nineteenLtv},
+        	#{twentyLtv},
+        	#{twentyoneLtv},
+        	#{twentytwoLtv},
+        	#{twentythreeLtv},
+        	#{twentyfourLtv},
+        	#{twentyfiveLtv},
+        	#{twentysixLtv},
+        	#{twentysevenLtv},
+        	#{twentyeightLtv},
+        	#{twentynineLtv},
+        	#{thirtyLtv},
+        	#{sixtyLtv},
+        	#{ninetyLtv},
+        	#{hundredtwentyLtv},
+        	#{hundredfiftyLtv},
+        	#{hundredeightyLtv},
+        	#{threehundredsixtyLtv}
+
+        )
+    ]]>
+	</insert>
+
+	<update id="update" parameterType="LTVAnalysis">
+    <![CDATA[
+        UPDATE `ltv_analysis` SET
+	        `id` = #{id},
+	        `timeDate` = #{timedate},
+	        `serverId` = #{serverid},
+	        `channelId` = #{channelid},
+	        `register_number` = #{registerNumber},
+	        `first_login` = #{firstLogin},
+	        `first_pay_amount` = #{firstPayAmount},
+	        `pay_amount` = #{payAmount},
+	        `one_ltv` = #{oneLtv},
+	        `two_ltv` = #{twoLtv},
+	        `three_ltv` = #{threeLtv},
+	        `four_ltv` = #{fourLtv},
+	        `five_ltv` = #{fiveLtv},
+	        `six_ltv` = #{sixLtv},
+	        `seven_ltv` = #{sevenLtv},
+	        `eight_ltv` = #{eightLtv},
+	        `nine_ltv` = #{nineLtv},
+	        `ten_ltv` = #{tenLtv},
+	        `eleven_ltv` = #{elevenLtv},
+	        `twelve_ltv` = #{twelveLtv},
+	        `thirteen_ltv` = #{thirteenLtv},
+	        `fourteen_ltv` = #{fourteenLtv},
+	        `fifteen_ltv` = #{fifteenLtv},
+	        `sixteen_ltv` = #{sixteenLtv},
+	        `seventeen_ltv` = #{seventeenLtv},
+	        `eighteen_ltv` = #{eighteenLtv},
+	        `nineteen_ltv` = #{nineteenLtv},
+	        `twenty_ltv` = #{twentyLtv},
+	        `twentyone_ltv` = #{twentyoneLtv},
+	        `twentytwo_ltv` = #{twentytwoLtv},
+	        `twentythree_ltv` = #{twentythreeLtv},
+	        `twentyfour_ltv` = #{twentyfourLtv},
+	        `twentyfive_ltv` = #{twentyfiveLtv},
+	        `twentysix_ltv` = #{twentysixLtv},
+	        `twentyseven_ltv` = #{twentysevenLtv},
+	        `twentyeight_ltv` = #{twentyeightLtv},
+	        `twentynine_ltv` = #{twentynineLtv},
+	        `thirty_ltv` = #{thirtyLtv},
+	        `ninety_ltv` = #{ninetyLtv},
+	        `hundredtwenty_ltv` = #{hundredtwentyLtv},
+	        `hundredfifty_ltv` = #{hundredfiftyLtv},
+	        `hundredeighty_ltv` = #{hundredeightyLtv},
+	        `threehundredsixty_ltv` = #{threehundredsixtyLtv}
+        WHERE
+	        ID = #{id}
+    ]]>
+	</update>
+
+	<delete id="delete" parameterType="map">
+    <![CDATA[
+        delete from `ltv_analysis`
+    ]]>
+		<include refid="dynamicWhere"/>
+	</delete>
+
+	<select id="getById" resultMap="ltv_analysisResult">
+		SELECT <include refid="commonColumns" />
+	    <![CDATA[
+		    FROM `ltv_analysis`
+	        WHERE
+		        ID = #{id}
+	    ]]>
+	</select>
+
+    <select id="count" resultType="long">
+        SELECT count(*) FROM `ltv_analysis`
+		<include refid="dynamicWhere"/>
+    </select>
+  <select id="pageSelect" resultMap="ltv_analysisResult">
+    	SELECT
+    		<include refid="commonColumns" />
+	    FROM `ltv_analysis`
+		<include refid="dynamicWhere"/>
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+  </select>
+
+	<!--
+		###
+		###
+	-->
+
+	<!--
+		hive
+	-->
+	<select id="hiveSelectRegisterNumber" parameterType="com.umi.ga.entitys.Times" resultType="java.lang.Integer">
+		select
+			NVL(count(distinct user_id),0) as number
+		from
+			faith_server.server_account_create
+		where
+			log_time between unix_timestamp(concat(#{times},' 00:00:00'))*1000 and unix_timestamp(concat(#{times},' 23:59:59'))*1000 and log_time is not null
+			<if test="@Ognl@isNotEmpty(serverId)">
+				and server_id = #{serverId}
+			</if>
+			<if test="null != channelId">
+				and channel_id = #{channelId}
+			</if>
+	</select>
+
+	<select id="hiveSelectFirstLogin" parameterType="com.umi.ga.entitys.Times" resultMap="flagResult">
+		select
+			user_id as flag,min(log_time) as time
+		from
+			faith_server.server_role_login
+		where
+			log_time <![CDATA[ <= ]]> unix_timestamp(concat(#{times},' 23:59:59'))*1000 and log_time is not null
+			<if test="@Ognl@isNotEmpty(serverId)">
+				and server_id = #{serverId}
+			</if>
+			<if test="null != channelId">
+				and channel_id = #{channelId}
+			</if>
+		group by
+			user_id
+		having
+			min(log_time) between unix_timestamp(concat(#{times},' 00:00:00'))*1000 and unix_timestamp(concat(#{times},' 23:59:59'))*1000
+	</select>
+
+	<!--
+		impala
+	-->
+	<select id="hiveSelectLtvLast" parameterType="com.umi.ga.entitys.Times" resultType="com.umi.ga.entitys.AnalysisData">
+		select
+			server_id as serverId, channel_id as channelId, target_time as timeDate, days, round(order_amount,2) as num
+		from
+		(
+			select
+				a.game_id,a.server_id,a.channel_id,a.target_time,sum(a.order_amount) as order_amount,datediff(a.begin_time,a.target_time) + 1 as days
+			from
+			(
+				-- 今日付费角色的创建时间
+				select
+					r.game_id,r.server_id,r.channel_id,r.user_id,r.role_id,sum(r.order_amount) as order_amount,
+					from_timestamp(rc.date_time,"yyyy-MM-dd") as target_time,
+					from_timestamp(r.date_time,"yyyy-MM-dd") as begin_time
+				from
+					faith_server.server_recharge_success r
+				left join
+				(
+					select game_id,server_id,channel_id,user_id,role_id,min(date_time) as date_time
+					from faith_server.server_role_login
+					group by game_id,server_id,channel_id,user_id,role_id
+				) rc
+				on r.game_id = rc.game_id and r.server_id = rc.server_id and r.user_id = rc.user_id and r.role_id = rc.role_id
+				where
+					cast(r.day_time as string) = replace(#{times},"-","") and "" != r.server_id and "" != r.channel_id
+				group by r.game_id,r.server_id,r.channel_id,r.user_id,r.role_id,rc.date_time,r.date_time
+				order by r.server_id,r.channel_id,rc.date_time
+			) a
+			group by a.game_id,a.server_id,a.channel_id,a.target_time,days
+		) a
+		where days > 0 and days <![CDATA[ <= ]]> 30
+		or days = 60 or days = 90
+		or days = 120 or days = 150
+		or days = 180 or days = 360
+		order by game_id,server_id,channel_id,days
+	</select>
+
+	<!--
+		mysql
+	-->
+	<select id="queryLTVAnalysis" parameterType="com.umi.ga.entitys.Times" resultMap="ltv_analysisResult">
+		select
+			`timeDate` AS `timeDate`,
+			SUM(`register_number`) AS register_number,
+			SUM(`first_login`) AS first_login,
+			SUM(`first_pay_amount`) AS `first_pay_amount`,
+			SUM(`pay_amount`) AS `pay_amount`,
+			IFNULL(ROUND(SUM(`one_ltv` * `first_login`)/SUM(`first_login`),2),0.00) AS `one_ltv`,
+			IFNULL(ROUND(SUM(`two_ltv` * `first_login`)/SUM(`first_login`),2),0.00) AS `two_ltv`,
+			IFNULL(ROUND(SUM(`three_ltv` * `first_login`)/SUM(`first_login`),2),0.00) AS `three_ltv`,
+			IFNULL(ROUND(SUM(`four_ltv` * `first_login`)/SUM(`first_login`),2),0.00) AS `four_ltv`,
+			IFNULL(ROUND(SUM(`five_ltv` * `first_login`)/SUM(`first_login`),2),0.00) AS `five_ltv`,
+			IFNULL(ROUND(SUM(`six_ltv` * `first_login`)/SUM(`first_login`),2),0.00) AS `six_ltv`,
+			IFNULL(ROUND(SUM(`seven_ltv` * `first_login`)/SUM(`first_login`),2),0.00) AS `seven_ltv`,
+			IFNULL(ROUND(SUM(`eight_ltv` * `first_login`)/SUM(`first_login`),2),0.00) AS `eight_ltv`,
+			IFNULL(ROUND(SUM(`nine_ltv` * `first_login`)/SUM(`first_login`),2),0.00) AS `nine_ltv`,
+			IFNULL(ROUND(SUM(`ten_ltv` * `first_login`)/SUM(`first_login`),2),0.00) AS `ten_ltv`,
+			IFNULL(ROUND(SUM(`eleven_ltv` * `first_login`)/SUM(`first_login`),2),0.00) AS `eleven_ltv`,
+			IFNULL(ROUND(SUM(`twelve_ltv` * `first_login`)/SUM(`first_login`),2),0.00) AS `twelve_ltv`,
+			IFNULL(ROUND(SUM(`thirteen_ltv` * `first_login`)/SUM(`first_login`),2),0.00) AS `thirteen_ltv`,
+			IFNULL(ROUND(SUM(`fourteen_ltv` * `first_login`)/SUM(`first_login`),2),0.00) AS `fourteen_ltv`,
+			IFNULL(ROUND(SUM(`fifteen_ltv` * `first_login`)/SUM(`first_login`),2),0.00) AS `fifteen_ltv`,
+			IFNULL(ROUND(SUM(`sixteen_ltv` * `first_login`)/SUM(`first_login`),2),0.00) AS `sixteen_ltv`,
+			IFNULL(ROUND(SUM(`seventeen_ltv` * `first_login`)/SUM(`first_login`),2),0.00) AS `seventeen_ltv`,
+			IFNULL(ROUND(SUM(`eighteen_ltv` * `first_login`)/SUM(`first_login`),2),0.00) AS `eighteen_ltv`,
+			IFNULL(ROUND(SUM(`nineteen_ltv` * `first_login`)/SUM(`first_login`),2),0.00) AS `nineteen_ltv`,
+			IFNULL(ROUND(SUM(`twenty_ltv` * `first_login`)/SUM(`first_login`),2),0.00) AS `twenty_ltv`,
+			IFNULL(ROUND(SUM(`twentyone_ltv` * `first_login`)/SUM(`first_login`),2),0.00) AS `twentyone_ltv`,
+			IFNULL(ROUND(SUM(`twentytwo_ltv` * `first_login`)/SUM(`first_login`),2),0.00) AS `twentytwo_ltv`,
+			IFNULL(ROUND(SUM(`twentythree_ltv` * `first_login`)/SUM(`first_login`),2),0.00) AS `twentythree_ltv`,
+			IFNULL(ROUND(SUM(`twentyfour_ltv` * `first_login`)/SUM(`first_login`),2),0.00) AS `twentyfour_ltv`,
+			IFNULL(ROUND(SUM(`twentyfive_ltv` * `first_login`)/SUM(`first_login`),2),0.00) AS `twentyfive_ltv`,
+			IFNULL(ROUND(SUM(`twentysix_ltv` * `first_login`)/SUM(`first_login`),2),0.00) AS `twentysix_ltv`,
+			IFNULL(ROUND(SUM(`twentyseven_ltv` * `first_login`)/SUM(`first_login`),2),0.00) AS `twentyseven_ltv`,
+			IFNULL(ROUND(SUM(`twentyeight_ltv` * `first_login`)/SUM(`first_login`),2),0.00) AS `twentyeight_ltv`,
+			IFNULL(ROUND(SUM(`twentynine_ltv` * `first_login`)/SUM(`first_login`),2),0.00) AS `twentynine_ltv`,
+			IFNULL(ROUND(SUM(`thirty_ltv` * `first_login`)/SUM(`first_login`),2),0.00) AS `thirty_ltv`,
+			IFNULL(ROUND(SUM(`ninety_ltv` * `first_login`)/SUM(`first_login`),2),0.00) AS `ninety_ltv`,
+			IFNULL(ROUND(SUM(`hundredtwenty_ltv` * `first_login`)/SUM(`first_login`),2),0.00) AS `hundredtwenty_ltv`,
+			IFNULL(ROUND(SUM(`hundredfifty_ltv` * `first_login`)/SUM(`first_login`),2),0.00) AS `hundredfifty_ltv`,
+			IFNULL(ROUND(SUM(`hundredeighty_ltv` * `first_login`)/SUM(`first_login`),2),0.00) AS `hundredeighty_ltv`,
+			IFNULL(ROUND(SUM(`threehundredsixty_ltv` * `first_login`)/SUM(`first_login`),2),0.00) AS `threehundredsixty_ltv`
+		from
+			ltv_analysis
+		<where>
+			<if test="@Ognl@isNotEmpty(serverId)">
+				serverId in (${serverId})
+			</if>
+			<if test="null != channelId">
+				and channelId in (${channelId})
+			</if>
+			<if test="@Ognl@isNotEmpty(startTime) and @Ognl@isNotEmpty(endTime)">
+				and timeDate between #{startTime} and #{endTime}
+			</if>
+		</where>
+		group by timeDate
+		order by timeDate desc
+	</select>
+
+	<update id="updateLTV" parameterType="com.umi.ga.entitys.Times">
+		update
+			ltv_analysis
+		set
+			${type}=#{number}
+		where
+			timeDate=#{startTime}
+			and serverId=#{serverId} and channelId=#{channelId}
+	</update>
+
+	<insert id="insertBatch" parameterType="java.util.List">
+	   INSERT INTO `ltv_analysis`
+	    (
+        	`timeDate`,
+        	`serverId`,
+        	`channelId`,
+        	`register_number`,
+        	`first_login`,
+        	`first_pay_amount`,
+        	`pay_amount`,
+        	`one_ltv`
+        )
+        VALUES
+		<foreach collection="list" item="item" index="index" separator=",">
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				#{item.timedate},
+				#{item.serverid},
+				#{item.channelid},
+				#{item.registerNumber},
+				#{item.firstLogin},
+				#{item.firstPayAmount},
+				#{item.payAmount},
+				#{item.oneLtv}
+			</trim>
+		</foreach>
+	</insert>
+
+	<delete id="deleteBatch" parameterType="LTVAnalysis">
+		delete from ltv_analysis where timeDate = #{timedate}
+	</delete>
+
+	<update id="updateLTVBatch" parameterType="java.util.List">
+		<foreach collection="list" item="item" index="index" separator=";">
+			update
+				ltv_analysis
+			set
+				${item.days} = #{item.num}
+			where
+				timeDate = #{item.timeDate} and serverId = #{item.serverId} and channelId = #{item.channelId}
+		</foreach>
+	</update>
+</mapper>

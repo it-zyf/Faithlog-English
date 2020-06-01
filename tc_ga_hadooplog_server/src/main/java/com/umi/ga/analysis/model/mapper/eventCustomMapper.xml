@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="eventCustom">
+	<resultMap id="event_customResult" type="eventCustom">
+		<result property="id" column="id"/>
+		<result property="customName" column="custom_name"/>
+		<result property="eventIdGroup" column="event_id_group"/>
+		<result property="createTime" column="create_time"/>
+		<result property="state" column="state"/>
+</resultMap>
+
+	<sql id="commonColumns">
+	    <![CDATA[
+        `id`,
+        `custom_name`,
+        `event_id_group`,
+        `create_time`,
+        `state`
+	    ]]>
+	</sql>
+
+	<sql id="dynamicWhere">
+		<where>
+			<if test="@Ognl@isNotEmpty(id)">
+				AND `id` = #{id}
+			</if>
+			<if test="@Ognl@isNotEmpty(customName)">
+				AND `custom_name` = #{customName}
+			</if>
+			<if test="@Ognl@isNotEmpty(eventIdGroup)">
+				AND `event_id_group` = #{eventIdGroup}
+			</if>
+			<if test="@Ognl@isNotEmpty(createTime)">
+				AND `create_time` = #{createTime}
+			</if>
+			<if test="@Ognl@isNotEmpty(state)">
+				AND `state` = #{state}
+			</if>
+		</where>
+	</sql>
+
+	<select id="selectCustomEventList"   parameterType="com.umi.ga.entitys.Times" resultMap="event_customResult">
+		select * from event_custom;
+	</select>
+
+	<select id="hiveSelectStartTime" parameterType="com.umi.ga.entitys.Times" resultMap="event_customResult">
+		select currency['event']  as custom_name,count(currency['event']) as event_id_group from currency  where day=#{times} group by currency['event']
+	</select>
+
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="eventCustom">
+    <![CDATA[
+        INSERT INTO `event_custom` (
+        	`custom_name`,
+        	`event_id_group`,
+        	`create_time`,
+        	`state`
+        )
+        VALUES (
+        	#{customName},
+        	#{eventIdGroup},
+        	#{createTime},
+        	0
+
+        )
+    ]]>
+	</insert>
+
+	<update id="update" parameterType="eventCustom">
+    <![CDATA[
+        UPDATE `event_custom` SET
+	        `id` = #{id},
+	        `custom_name` = #{customName},
+	        `event_id_group` = #{eventIdGroup},
+	        `create_time` = #{createTime},
+	        `state` = #{state}
+        WHERE
+	        ID = #{id}
+    ]]>
+	</update>
+
+	<delete id="delete" parameterType="map">
+    <![CDATA[
+        delete from `event_custom`
+    ]]>
+		<include refid="dynamicWhere"/>
+	</delete>
+
+	<select id="getById" resultMap="event_customResult">
+		SELECT <include refid="commonColumns" />
+	    <![CDATA[
+		    FROM `event_custom`
+	        WHERE
+		        ID = #{id}
+	    ]]>
+	</select>
+	<insert id="insertBatch" parameterType="java.util.List">
+		insert into event_custom
+		(
+		`custom_name`,
+		`event_id_group`,
+		`create_time`,
+		`state`
+		)
+		values
+		<foreach collection="list" item="item" index="index" separator=",">
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				<if test="item.customName != null">
+					#{item.customName},#{item.eventIdGroup},#{item.createTime},0
+				</if>
+			</trim>
+		</foreach>
+	</insert>
+    <select id="count" resultType="long">
+        SELECT count(*) FROM `event_custom`
+		<include refid="dynamicWhere"/>
+    </select>
+  <select id="pageSelect" resultMap="event_customResult">
+    	SELECT
+    		<include refid="commonColumns" />
+	    FROM `event_custom`
+		<include refid="dynamicWhere"/>
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+  </select>
+
+
+	<select id="testImpala" resultType="java.lang.String">
+		select gameid as id from faithtest.serveraccountcreate1 limit 20
+	</select>
+
+</mapper>

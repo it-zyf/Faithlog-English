@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+  <meta http-equiv="content-type" content="text/html" charset="utf-8">
+  <title>商场购买</title>
+  <!-- Bootstrap Styles-->
+  <link href="../css/bootstrap.min.css" rel="stylesheet" />
+  <script src="../js/jquery.min.js"></script>
+  <script src="../js/bootstrap.min.js"></script>
+  <link href="https://cdn.bootcss.com/element-ui/2.12.0/theme-chalk/index.css" rel="stylesheet">
+  <!--bs multiselect  -->
+  <script src="../js/multiple/bootstrap-multiselect.js"></script>
+  <link rel="stylesheet" href="../js/multiple/bootstrap-multiselect.css" />
+  <link rel="stylesheet" type="text/css" href="../css/animate.min.css" />
+  <!-- FontAwesome Styles-->
+  <link href="../css/font-awesome.css" rel="stylesheet" />
+  <!-- Morris Chart Styles-->
+  <link href="../js/morris/morris-0.4.3.min.css" rel="stylesheet" />
+  <!-- Google Fonts-->
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+  <link rel="stylesheet" href="./css/taskDrain.css" />
+  <link rel="stylesheet" href="../js/bootstrap-table/bootstrap-table.css" />
+  <script src="../js/bootstrap-table/bootstrap-table.min.js"></script>
+  <link rel="stylesheet" href="../laydate-master/src/theme/default/laydate.css" />
+  <link rel="stylesheet" href="../js/loading/jquery.mloading.css" />
+  <script src="../js/loading/jquery.mloading.js"></script>
+  <style>
+    #market option {
+      background-color: #202020 !important;
+      color: #999 !important;
+    }
+  </style>
+</head>
+
+<body style="background-color: #202020;min-width:1580px;">
+  <div id="wrapper">
+    <!-- main结构-->
+    <div id="navigation"></div>
+    <div id="page-wrapper" style="overflow-x: hidden;">
+      <div id="page-inner" class="classpageinner" style="min-height: 930px;color: white;">
+        <div class="form-group col-xs-12"
+          style="float: left;margin-bottom: 20px;width:100%;margin-top:4.5%;border: 1px solid #707070;height: 60px;"
+          id="dangerLine">
+          <div class="col-xs-3 col-sm-3 col-xs-3" style="margin-top: 1%;width:16%;" id="serverCos">
+            <div class="myown">
+              <label style="line-height: 28px;float:left;margin-right:2%;" class="lableServer">区服&nbsp;</label>
+              <select name="district" multiple="multiple" size="5" id="district"
+                style=" border-radius: 0; width: 251px;height: 30px;display: none" class="form-control">
+              </select>
+            </div>
+          </div>
+          <div class="form-group col-xs-3 col-xs-pull-0 col-sm-3" id="data_5" style="margin-top:1%;width: 16%">
+            <div style="font-size:14px" class="timeTime">
+              <label style="float:left;margin-right:2%;line-height: 28px;" class="lableServer">日期</label>
+              <el-date-picker class="timePick" value-format="yyyy-MM-dd" v-model="ruleForm.dateValue" type="daterange"
+                align="bottom" unlink-panels range-separator="~" start-placeholder="开始日期" end-placeholder="结束日期"
+                :picker-options="pickerOptions">
+              </el-date-picker>
+            </div>
+          </div>
+          <div class="col-xs-3 col-sm-3 col-xs-3" style="margin-top: 1%;width: 16%;">
+            <div class="myown">
+              <label style="float:left;margin-right:2%;line-height: 28px;" class="lableServer">渠道号</label>
+              <select name="district" multiple="multiple" size="5" id="channel"
+                style=" border-radius: 0; width: 251px;height: 30px;display: none" class="form-control">
+
+              </select>
+            </div>
+          </div>
+          <div class="col-xs-3 col-sm-3 col-xs-3" style="margin-top: 1%;width: 20%;">
+            <div class="myown">
+              <label style="float:left;margin-right:2%;line-height: 28px;" class="lableServer">商店选择</label>
+              <select id="market" style=" border-radius: 0; width: 230px;height: 30px;background-color: transparent !important;color: #999
+                !important; padding: 0;" class="form-control">
+                <option value="">全部</option>
+                <option value="34000001">推荐商店</option>
+                <option value="34000002">常用道具</option>
+                <option value="34000003">成长变强</option>
+                <option value="34000004">紫钻商店-变强道具</option>
+                <option value="34000005">蓝钻商店-VIP商店</option>
+                <option value="34000006">限时商店1</option>
+                <option value="34000007">古币商店1</option>
+                <option value="34000008">古币商店2</option>
+                <option value="34000009">军团橙装碎片</option>
+                <option value="34000010">军团护符</option>
+                <option value="34000011">魔晶兑换2</option>
+                <option value="34000012">魔晶兑换3</option>
+                <option value="34000013">绑金商店</option>
+                <option value="34000014">金币商店-改绑金商店</option>
+                <option value="34000015">祈福积分兑换页签1</option>
+                <option value="34000016">祈福积分兑换页签2</option>
+                <option value="34000017">祈福积分兑换页签3</option>
+                <option value="34000018">军团商店物品兑换分页</option>
+                <option value="34000019">荣耀商店物品兑换分页</option>
+                <option value="34000020">助战商店</option>
+                <option value="34000021">外形商店</option>
+                <option value="34000022">紫钻商店-常用道具</option>
+                <option value="34000023">绑钻商店3</option>
+                <option value="34000024">寻宝1</option>
+                <option value="34000025">寻宝2</option>
+                <option value="34000026">跨服商店</option>
+                <option value="34000027">红钻商店-常用</option>
+                <option value="34000028">天梯商店</option>
+                <option value="34000029">红钻商店-变强道具</option>
+                <option value="34000030">助战商店技能书</option>
+              </select>
+            </div>
+          </div>
+          <button type="button" id="cha" class="btn" onclick="onblu()">查询</button>
+        </div>
+
+        <div
+          style="float: left;text-align:center;width: 100%;margin-bottom: 2%;padding: 1% 1% 0 1%;margin-top: 1%;border:1px solid #707070">
+          <div class="real-table-All">
+            <div>
+              <i style="background: url('../image/exp2.png')" class="real-btnAll"></i>
+            </div>
+            <div class="titleLoadAdd"
+              style="font-size: 12px;float: left;padding-top: 1%;margin-left:50%;margin-bottom:8%;margin-top:8%;text-align: center;color:#ffffff;"
+              id="loadtable"><i class="el-icon-loading" style="font-size: 28px;vertical-align: middle;"></i>
+              <div style="margin-top: 5px">加载中...</div>
+            </div>
+            <table id="real-datatableAll" style="text-align: center;table-layout: fixed;">
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="https://cdn.bootcss.com/element-ui/2.12.0/index.js"></script>
+<script src="../js/bootstrap-table/bootstrap-table.min.js"></script>
+<script src="../js/jquery.table2excel.js"></script>
+<script src="../laydate-master/src/laydate.js"></script>
+<script src="./js/urlGet.js"></script>
+<script src="./js/shoppingMarket.js"></script>
+<script type="text/javascript">
+  localStorage.setItem('navigation', '5-7')
+  $('#navigation').load('navHaddup.html')
+  var vm = new Vue({
+    el: '#data_5',
+    data: {
+      msg: 'hello',
+      pickerOptions: {
+        disabledDate(time) {
+          return time.getTime() > Date.now();
+        },
+        shortcuts: [{
+            text: '今日',
+            onClick(picker) {
+              var end = new Date();
+              var start = new Date();
+              picker.$emit('pick', [start, end]);
+            }
+          },
+          {
+            text: '昨日',
+            onClick(picker) {
+              var end = new Date();
+              var start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24);
+              end.setTime(end.getTime() - 3600 * 1000 * 24);
+              picker.$emit('pick', [start, end]);
+            }
+          }, {
+            text: '近7日',
+            onClick(picker) {
+              var end = new Date();
+              var start = new Date();
+              end.setTime(end.getTime() - 3600 * 1000 * 24);
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit('pick', [start, end]);
+            }
+          }, {
+            text: '近30日',
+            onClick(picker) {
+              var end = new Date();
+              var start = new Date();
+              end.setTime(end.getTime() - 3600 * 1000 * 24);
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+              picker.$emit('pick', [start, end]);
+            }
+          }, {
+            text: '全部',
+            onClick(picker) {
+              var end = new Date();
+              end.setTime(end.getTime() - 3600 * 1000 * 24);
+              var start = new Date('2019-10-9 00:00:00');
+              picker.$emit('pick', [start, end]);
+            }
+          }
+        ]
+      },
+      ruleForm: {
+        dateValue: ""
+      },
+    },
+    computed: {
+      timeDefault() {
+        var date = new Date();
+        var oneweekdate = new Date(date - 24 * 3600 * 1000);
+        var s1 = oneweekdate.getFullYear() + "-" + (oneweekdate.getMonth() + 1) + "-" + (oneweekdate
+          .getDate());
+        return s1;
+      },
+      timeDefaultLast() {
+        var date = new Date();
+        var oneweekdate = new Date(date - 30 * 24 * 3600 * 1000);
+        var y = oneweekdate.getFullYear();
+        var m = oneweekdate.getMonth() + 1;
+        var d = oneweekdate.getDate();
+        var formatwdate = y + '-' + m + '-' + d;
+        return formatwdate;
+      }
+    },
+    mounted() {
+      // 初始化查询，默认为前一周
+      this.ruleForm.dateValue = [this.timeDefaultLast, this.timeDefault];
+    },
+    methods: {
+      handleOpen(key, keyPath) {
+        console.log(key, keyPath);
+      },
+      handleClose(key, keyPath) {
+        console.log(key, keyPath);
+      },
+    }
+  })
+  window.setInterval(function () {
+    var monthtt = document.getElementsByClassName('el-icon-arrow-right')
+    var yeartt = document.getElementsByClassName('el-icon-d-arrow-right')
+    monthtt[0].disabled = false
+    monthtt[0].classList.remove("is-disabled");
+    yeartt[0].disabled = false
+    yeartt[0].classList.remove("is-disabled");
+  }, 400)
+  $("#real-btnT").click(function () {
+    $("#real-datatableT").table2excel({
+      exclude: ".noExl",
+      name: "Excel Document Name",
+      filename: "myFileName",
+      exclude_img: true,
+      exclude_links: true,
+      exclude_inputs: true,
+    });
+  });
+  //付费金额
+  $(".real-btnAll").click(function () {
+    $("#real-datatableAll").table2excel({
+      exclude: ".noExl",
+      name: "Excel Document Name",
+      filename: "myFileName",
+      exclude_img: true,
+      exclude_links: true,
+      exclude_inputs: true,
+    });
+  });
+  var winWidth = 0,
+    winHeight = 0;
+
+  function changebleWidthHeight() {
+    if (window.innerWidth)
+      winWidth = window.innerWidth;
+    else if ((document.body) && (document.body.clientWidth))
+      winWidth = document.body.clientWidth;
+    //获取窗口高度
+    if (window.innerHeight)
+      winHeight = window.innerHeight;
+    else if ((document.body) && (document.body.clientHeight))
+      winHeight = document.body.clientHeight;
+    //通过深入Document内部对body进行检测，获取窗口大小
+    if (document.documentElement && document.documentElement.clientHeight && document.documentElement.clientWidth) {
+      winHeight = document.documentElement.clientHeight;
+      winWidth = document.documentElement.clientWidth;
+    }
+
+    document.getElementById("serverCos").style.width = winWidth - 50
+    document.getElementById("data_5").style.width = winWidth - 40
+
+  }
+  window.onresize = changebleWidthHeight();
+</script>
+</body>
+
+</html>

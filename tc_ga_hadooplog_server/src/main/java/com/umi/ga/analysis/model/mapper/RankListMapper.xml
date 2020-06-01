@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="RankListLog">
+    <resultMap id="all_trendResult" type="RankListLog">
+        <result property="rankingIndex" column="ranking_index"/>
+        <result property="userId" column="user_id"/>
+        <result property="roleId" column="role_id"/>
+        <result property="roleName" column="role_name"/>
+        <result property="roleType" column="role_type"/>
+        <result property="roleLevel" column="role_level"/>
+        <result property="battlePoints" column="battle_points"/>
+        <result property="vipLevel" column="vip_level"/>
+        <result property="supportingName" column="supporting_name"/>
+        <result property="peak" column="peak"/>
+    </resultMap>
+
+    <sql id="commonColumns">
+	game_id ,
+    channel_id ,
+    media_id ,
+    device_id ,
+    version_name ,
+    version_code ,
+    user_id ,
+    server_id ,
+    log_time ,
+	role_id ,
+	role_name ,
+	role_level ,
+	role_gender,
+	battle_points,
+	role_type ,
+	vip_level,
+	log_name,
+	ranking_index,
+	   vip_level,
+	   supporting_name,
+	   peak
+	</sql>
+
+    <select id="select_rankingList" parameterType="com.umi.ga.entitys.RankingEntity" resultMap="all_trendResult">
+        select
+        b.user_id as user_id,
+        a.role_id as role_id,
+        a.role_name as role_name,
+        b.role_type as role_type,
+        max(b.role_level) as role_level,
+        max(b.battle_points ) as battle_points,
+        max (b.vip_level) as vip_level,
+        a.supporting_name as supporting_name,
+        max(a.ranking_value) as peak,
+        ROW_NUMBER() OVER(ORDER BY max(a.ranking_value) DESC) as ranking_index
+        from faith_server.server_rank_list_log a
+        left join faith_server.server_role_login b on a.role_id=b.role_id
+        <trim prefix="where" suffixOverrides="and">
+            <if test="null != rankingType and '' !=rankingType or rankingType==0">
+                a.ranking_type=${rankingType} and
+            </if>
+            <if test="null != serverId and '' != serverId">
+                a.server_id in
+                <foreach collection="stringsArray" item="serverId" index="index" open="(" close=")" separator=",">
+                    #{serverId}
+                </foreach>
+                and
+            </if>
+            <if test="startTime != null and startTime != '' and  endTime != null and endTime != ''">
+                from_timestamp(a.date_time, 'yyyy-MM-dd')  between #{startTime} and #{endTime} and
+            </if>
+            <if test="channelId != null and channelId !='' ">
+                 a.channel_id in
+                <foreach collection="channelArray" item="channelId" index="index" open="(" close=")" separator=",">
+                    #{channelId}
+                </foreach>
+            </if>
+
+        </trim>
+       group by b.user_id,a.role_id,a.role_name,b.role_type,a.supporting_name  order by peak desc
+    </select>
+
+    <select id="select_rankingList_count" parameterType="com.umi.ga.entitys.RankingEntity" resultType="int">
+        select
+        count(*)
+        from
+        (select
+        b.user_id as user_id,
+        a.role_id as role_id,
+        a.role_name as role_name,
+        b.role_type as role_type,
+        b.role_level as role_level,
+        b.battle_points as battle_points,
+        b.vip_level as vip_level,
+        a.supporting_name as supporting_name,
+        a.ranking_value as rank_value
+        from faith_server.server_rank_list_log a
+        left join faith_server.server_role_login b on a.role_id=b.role_id
+        <trim prefix="where" suffixOverrides="and">
+            <if test="null != rankingType and '' !=rankingType or rankingType==0">
+                a.ranking_type=${rankingType} and
+            </if>
+            <if test="null != serverId and '' != serverId">
+                a.server_id in
+                <foreach collection="stringsArray" item="serverId" index="index" open="(" close=")" separator=",">
+                    #{serverId}
+                </foreach>
+                and
+            </if>
+            <if test="startTime != null and startTime != '' and  endTime != null and endTime != ''">
+                from_timestamp(a.date_time, 'yyyy-MM-dd')  between #{startTime} and #{endTime} and
+            </if>
+            <if test="channelId != null and channelId !='' ">
+               a.channel_id in
+                <foreach collection="channelArray" item="channelId" index="index" open="(" close=")" separator=",">
+                    #{channelId}
+                </foreach>
+            </if>
+
+        </trim>
+        order by a.ranking_value desc)a
+    </select>
+
+
+</mapper>

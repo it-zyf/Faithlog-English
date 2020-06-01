@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="CrossServerBossKillLog">
+	<resultMap id="cross_server_boss_kill_logResult" type="CrossServerBossKillLog">
+		<result column="game_id" property="gameId" />
+		<result column="channel_id" property="channelId" />
+		<result column="media_id" property="mediaId" />
+		<result column="device_id" property="deviceId" />
+		<result column="version_name" property="versionName" />
+		<result column="version_code" property="versionCode" />
+		<result column="user_id" property="accountId" />
+		<result column="server_id"  property="serverId" />
+		<result column="log_time"  property="logTime" />
+		<result column="role_id" property="roleId" />
+		<result column="role_name"  property="roleName" />
+		<result column="role_level" property="roleLevel" />
+		<result column="role_gender"  property="roleGender" />
+		<result column="battle_points"  property="rolePower" />
+		<result column="role_type" property="roleType" />
+		<result column="vip_level" property="vipLevel" />
+		<result column="log_name" property="logName" />
+		<result property="bossId" column="boss_id"/>
+		<result property="killLegionId" column="kill_legion_id"/>
+		<result property="killLegionName" column="kill_legion_name"/>
+		<result property="top1Id" column="top1_id"/>
+		<result property="top1Name" column="top1_name"/>
+		<result property="top2Id" column="top2_id"/>
+		<result property="top2Name" column="top2_name"/>
+		<result property="top3Id" column="top3_id"/>
+		<result property="top3Name" column="top3_name"/>
+
+</resultMap>
+	<sql id="Base_Column_List">
+	 game_id ,
+   channel_id ,
+   media_id ,
+   device_id ,
+   version_name ,
+   version_code ,
+   user_id ,
+   server_id ,
+   from_timestamp(date_time, 'yyyy-MM-dd HH:mm:ss') as log_time,
+    role_id ,
+    role_name ,
+    role_level ,
+    role_gender ,
+    battle_points ,
+    role_type ,
+    vip_level ,
+    log_name ,
+		boss_id,
+	kill_legion_id,
+	kill_legion_name,
+	top1_id,
+	top1_name,
+	top2_id,
+	top2_name,
+	top3_id,
+	top3_name
+
+
+  </sql>
+
+	<select id="findLegionList" parameterType="com.umi.ga.entitys.Condition" resultMap="cross_server_boss_kill_logResult">
+		select
+		 <include refid="Base_Column_List"></include>
+		 from faith_server.server_cross_server_boss_kill
+		<trim prefix="where" suffixOverrides="and">
+			<if test="null != serverId and '' != serverId">
+				server_Id in
+				<foreach collection="stringsArray" item="serverId" index="index" open="(" close=")" separator=",">
+					#{serverId}
+				</foreach>
+				and
+			</if>
+			<if test="startTime != null and startTime != '' and  endTime != null and endTime != ''">
+				 from_timestamp(date_time, 'yyyy-MM-dd')  between #{startTime} and #{endTime} and
+			</if>
+		</trim>
+		ORDER BY log_time DESC limit  ${pageSize}  offset ${pageIndex}
+	</select>
+
+
+	<select id="findLegionListCount" parameterType="com.umi.ga.entitys.Condition" resultType="int">
+		select
+		count(*)
+		from faith_server.server_cross_server_boss_kill
+		<trim prefix="where" suffixOverrides="and">
+			<if test="null != serverId and '' != serverId">
+				server_Id in
+				<foreach collection="stringsArray" item="serverId" index="index" open="(" close=")" separator=",">
+					#{serverId}
+				</foreach>
+				and
+			</if>
+			<if test="startTime != null and startTime != '' and  endTime != null and endTime != ''">
+				 from_timestamp(date_time, 'yyyy-MM-dd')  between #{startTime} and #{endTime} and
+			</if>
+		</trim>
+	</select>
+
+
+
+</mapper>

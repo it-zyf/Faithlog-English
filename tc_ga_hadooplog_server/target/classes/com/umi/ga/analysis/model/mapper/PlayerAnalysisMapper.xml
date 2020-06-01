@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="PlayerAnalysis">
+
+    <select id="queryRechargeRanking" parameterType="com.umi.ga.entitys.Flag" resultType="PlayerAnalysis">
+        SELECT
+            a.server_Id as serverId,
+            a.channel_Id as channelId,
+            a.user_Id as accountId,
+            a.role_Id as roleId,
+            a.role_name as roleName,
+            a.role_type as roleType,
+            b.role_level as roleLevel,
+            a.vip_level as vipLevel,
+            round(a.total_Pay_Amount,2) as totalPayAmount,
+            a.pay_Count as payCount,
+            round(a.min_Pay,2) as minPay,
+            round(a.max_Pay,2) as maxPay,
+            round(a.avg_Pay,2)as avgPay,
+            a.first_Recharge_Time as firstRechargeTime,
+            a.last_Recharge_Time as lastRechargeTime,
+            b.logout_Time as logoutTime,
+            IFNULL(b.battle_Points,0) as battlePoints,
+            ROW_NUMBER() OVER(ORDER BY a.total_Pay_Amount DESC) as rank
+        FROM
+            (
+                SELECT
+                    server_Id,channel_Id,user_Id,role_Id,role_Name,role_type,SUM(order_Amount) AS total_Pay_Amount,COUNT(1) AS pay_Count,
+                    MIN(order_Amount) AS min_Pay,MAX(order_Amount) AS max_Pay,round(SUM(order_Amount)/COUNT(1),3) AS avg_Pay,MIN(date_time) AS first_Recharge_Time,
+                    MAX(date_time) AS last_Recharge_Time,max(vip_level) as vip_level
+                FROM
+                    faith_server.server_recharge_success
+                <where>
+                        from_unixtime(cast(log_Time / 1000 as bigint), 'yyyy-MM-dd') between #{startTime} and #{endTime}
+                    <if test="@Ognl@isNotEmpty(serverId)">
+                        and server_Id in (${serverId})
+                    </if>
+                    <if test="@Ognl@isNotEmpty(channelId)">
+                        and channel_Id in (${channelId})
+                    </if>
+                </where>
+                GROUP BY server_Id,channel_Id,user_Id,role_Id,role_Name,role_type
+                ORDER BY total_Pay_Amount DESC
+            ) a
+            LEFT JOIN
+            (
+                SELECT
+                    server_Id,channel_Id,user_Id,role_Id,role_Name,max(role_level) as role_level,MAX(date_time) AS logout_Time,MAX(battle_Points) AS battle_Points
+                FROM
+                    faith_server.server_role_login
+                <where>
+                        from_unixtime(cast(log_Time / 1000 as bigint), 'yyyy-MM-dd') between #{startTime} and #{endTime}
+                    <if test="@Ognl@isNotEmpty(serverId)">
+                        and server_Id in (${serverId})
+                    </if>
+                    <if test="@Ognl@isNotEmpty(channelId)">
+                        and channel_Id in (${channelId})
+                    </if>
+                </where>
+                GROUP BY server_Id,channel_Id,user_Id,role_Id,role_Name
+                ORDER BY battle_Points DESC
+            ) b
+            ON a.server_Id=b.server_Id AND a.channel_Id=b.channel_Id AND a.user_Id=b.user_Id AND a.role_Id=b.role_Id and "" != a.server_Id and "" != a.channel_Id
+    </select>
+
+    <select id="hiveLevelAway" parameterType="com.umi.ga.entitys.Flag" resultType="com.umi.ga.entitys.Flag">
+        SELECT
+            IFNULL(r.role_Level,0) as flag,
+            IFNULL(COUNT(b.role_Id),0) as number,
+            #{startTime} as startTime,
+            #{endTime} as endTime,
+            #{startTimeSecond} as startTimeSecond,
+            #{endTimeSecond} as endTimeSecond
+        FROM
+            (
+                SELECT a.server_Id,a.channel_Id,a.role_Id FROM
+                    (
+                        SELECT
+                            DISTINCT server_Id,channel_Id,role_Id
+                        FROM
+                            faith_server.server_role_create
+                        <where>
+                                from_unixtime(cast(log_Time / 1000 as bigint), 'yyyy-MM-dd') between #{startTime} and #{endTime}
+                            <if test="@Ognl@isNotEmpty(serverId)">
+                                and server_Id in (${serverId})
+                            </if>
+                            <if test="@Ognl@isNotEmpty(channelId)">
+                                and channel_Id in (${channelId})
+                            </if>
+                        </where>
+                        ORDER BY server_Id ASC,channel_Id ASC
+                    ) a
+                    WHERE
+                        a.role_Id
+                            NOT IN
+                            (
+                                SELECT DISTINCT role_Id FROM faith_server.server_role_login where from_unixtime(cast(log_Time / 1000 as bigint), 'yyyy-MM-dd') between #{startTimeSecond} and #{endTimeSecond}
+                            )
+                ORDER BY 1 ASC,2 ASC,3 ASC
+            ) b
+            LEFT JOIN
+            (
+                SELECT
+                    server_Id,channel_Id,role_Id,MAX(role_Level) AS role_Level
+                FROM
+                    faith_server.server_role_login
+                <where>
+                        from_unixtime(cast(log_Time / 1000 as bigint), 'yyyy-MM-dd') between #{startTime} and #{endTimeSecond}
+                    <if test="@Ognl@isNotEmpty(serverId)">
+                        and server_Id in (${serverId})
+                    </if>
+                    <if test="@Ognl@isNotEmpty(channelId)">
+                        and channel_Id in (${channelId})
+                    </if>
+                </where>
+                GROUP BY server_Id,channel_Id,role_Id
+                ORDER BY 1 ASC,2 ASC,3 ASC
+            ) r
+            ON b.server_Id=r.server_Id AND b.channel_Id=r.channel_Id AND b.role_Id=r.role_Id and "" != b.server_Id and "" != b.channel_Id
+        GROUP BY r.role_Level
+        ORDER BY 1 ASC
+    </select>
+
+    <select id="hiveQueryCurrencyType" parameterType="com.umi.ga.entitys.Flag" resultType="com.umi.ga.entitys.CurrencyData">
+        select
+            distinct currency_Id as type
+        from
+            faith_server.server_currency_change
+        order by 1 asc
+    </select>
+
+    <select id="hiveQueryCurrency" parameterType="com.umi.ga.entitys.Flag" resultType="com.umi.ga.entitys.CurrencyData">
+        SELECT
+            change_type as flag,
+            currency_Id as type,
+            change_Describe as name,
+            IFNULL(SUM(NVL(cast(change_Count as bigint),0)),0) AS number,
+            #{startTime} as startTime,
+            #{endTime} as endTime
+        FROM
+            faith_server.server_currency_change
+        <where>
+                from_unixtime(cast(log_Time / 1000 as bigint), 'yyyy-MM-dd') between #{startTime} and #{endTime} and "" != server_Id and "" != channel_Id
+            <if test="@Ognl@isNotEmpty(serverId)">
+                and server_Id in (${serverId})
+            </if>
+            <if test="@Ognl@isNotEmpty(channelId)">
+                and channel_Id in (${channelId})
+            </if>
+            <if test="@Ognl@isNotEmpty(type)">
+                and currency_Id = #{type}
+            </if>
+            <if test="@Ognl@isNotEmpty(flag)">
+                and cast(change_Type as string) = #{flag}
+            </if>
+        </where>
+        GROUP BY change_Type,currency_Id,change_Describe
+        ORDER BY 1 ASC, 4 DESC
+    </select>
+
+    <select id="hiveQueryGoods" parameterType="com.umi.ga.entitys.Flag" resultType="com.umi.ga.entitys.Flag">
+        SELECT
+            change_Type as flag,
+            prop_Id as type,
+            change_Describe as name,
+            IFNULL(SUM(NVL(cast(change_Count as bigint),0)),0) AS number,
+            #{startTime} as startTime,
+            #{endTime} as endTime
+        FROM
+            faith_server.server_prop_change
+        <where>
+                from_unixtime(cast(log_Time / 1000 as bigint), 'yyyy-MM-dd') between #{startTime} and #{endTime} and "" != server_Id and "" != channel_Id
+            <if test="@Ognl@isNotEmpty(serverId)">
+                and server_Id in (${serverId})
+            </if>
+            <if test="@Ognl@isNotEmpty(channelId)">
+                and channel_Id in (${channelId})
+            </if>
+            <if test="@Ognl@isNotEmpty(type)">
+                and prop_Id = #{type}
+            </if>
+            <if test="@Ognl@isNotEmpty(flag)">
+                and cast(change_Type as string) = #{flag}
+            </if>
+        </where>
+        GROUP BY change_Type,prop_Id,change_Describe
+        ORDER BY 1 ASC, 2 ASC, 4 ASC
+    </select>
+
+
+    <select id="hiveQueryStoreType" parameterType="com.umi.ga.entitys.Flag" resultType="com.umi.ga.entitys.MallLog">
+        select
+            distinct cost_Money_Type as goodsId
+        from
+            faith_server.server_buy_goods
+        order by cast(cost_Money_Type as bigint) asc
+    </select>
+
+    <select id="hiveQueryMallLog" parameterType="com.umi.ga.entitys.Flag" resultType="com.umi.ga.entitys.MallLog">
+        SELECT
+            goods_Id as goodsId,
+            item_Id as itemId,
+            IFNULL(SUM(cast(buy_Num as bigint) * cast(item_num_per_goods as bigint)),0) as totalNum,
+            cost_Money_Type as costMoneyType,
+            IFNULL(SUM(NVL(cast(cost_Money_Num as bigint),0)),0) as constMoneyNum,
+            #{startTime} as startTime,
+            #{endTime} as endTime,
+            row_number() over(order by goods_Id asc,IFNULL(SUM(NVL(cast(cost_Money_Num as bigint),0)),0) desc) as rank
+        FROM
+            faith_server.server_buy_goods
+        <where>
+                from_unixtime(cast(log_Time / 1000 as bigint), 'yyyy-MM-dd') between #{startTime} and #{endTime} and "" != server_Id and "" != channel_Id
+            <if test="@Ognl@isNotEmpty(serverId)">
+                and server_Id in (${serverId})
+            </if>
+            <if test="@Ognl@isNotEmpty(channelId)">
+                and channel_Id in (${channelId})
+            </if>
+            <if test="@Ognl@isNotEmpty(type)">
+                and cast(goods_Id as string) = #{type}
+            </if>
+        </where>
+        GROUP BY goods_Id,item_Id,cost_Money_Type
+        ORDER BY goodsId ASC, constMoneyNum DESC
+    </select>
+
+    <select id="hiveQueryLegionLog" parameterType="com.umi.ga.entitys.Flag" resultType="com.umi.ga.entitys.LegionLog">
+        SELECT
+        server_Id as serverId,
+        channel_Id as channelId,
+        legion_Name as legionName,
+        legion_Level as legionLevel,
+        max(legion_Power) as legionPower,
+        legion_Num as legionNum,
+        row_number() over(order by max(legion_Power) desc) as rank,
+        #{startTime} as startTime,
+        #{endTime} as endTime
+        FROM
+        faith_server.server_legion_log
+        <where>
+            from_unixtime(cast(log_Time / 1000 as bigint), 'yyyy-MM-dd') between #{startTime} and #{endTime} and "" != server_Id and "" != channel_Id
+            <if test="@Ognl@isNotEmpty(serverId)">
+                and server_Id in (${serverId})
+            </if>
+            <if test="@Ognl@isNotEmpty(channelId)">
+                and channel_Id in (${channelId})
+            </if>
+        </where>
+        group by server_id,channel_id,legion_name,legion_level,legion_num
+    </select>
+
+    <select id="hiveQueryActivePlayer" parameterType="com.umi.ga.entitys.Flag" resultType="com.umi.ga.analysis.model.PlayerAnalysis">
+        SELECT
+            c.server_Id as serverId,
+            c.channel_Id as channelId,
+            c.user_Id as accountId,
+            c.role_Id as roleId,
+            c.role_Name as roleName,
+            c.role_Type as roleType,
+            c.role_Level as roleLevel,
+            c.battle_Points as battlePoints,
+            NVL(d.vip_Level,0) as vipLevel,
+            row_number() over(order by c.battle_Points desc) as rank,
+            #{startTime} as startTime,
+            #{endTime} as endTime
+        FROM
+        (
+            SELECT
+                a.server_Id,a.channel_Id,a.user_Id,a.role_Id,a.role_Name,a.role_Type,b.role_Level,b.battle_Points
+            FROM
+            (
+                SELECT distinct server_Id,channel_Id,user_Id,role_Id,role_Name,role_Type
+                FROM faith_server.server_role_create
+                <where>
+                        from_unixtime(cast(log_Time / 1000 as bigint), 'yyyy-MM-dd') between #{startTime} and #{endTime} and "" != server_Id and "" != channel_Id
+                    <if test="@Ognl@isNotEmpty(serverId)">
+                        and server_Id in (${serverId})
+                    </if>
+                    <if test="@Ognl@isNotEmpty(channelId)">
+                        and channel_Id in (${channelId})
+                    </if>
+                </where>
+                ORDER BY 1 ASC, 2 ASC, 3 ASC, 4 ASC
+            ) a
+            INNER JOIN
+            (
+                SELECT server_Id,channel_Id,user_Id,role_Id,MAX(role_Level) AS role_Level,MAX(battle_Points) AS battle_Points
+                FROM faith_server.server_role_login
+                <where>
+                        from_unixtime(cast(log_Time / 1000 as bigint), 'yyyy-MM-dd') between #{startTimeSecond} and #{endTimeSecond}
+                    <if test="@Ognl@isNotEmpty(serverId)">
+                        and server_Id in (${serverId})
+                    </if>
+                    <if test="@Ognl@isNotEmpty(channelId)">
+                        and channel_Id in (${channelId})
+                    </if>
+                </where>
+                GROUP BY server_Id,channel_Id,user_Id,role_Id
+                ORDER BY 1 ASC, 2 ASC, 3 ASC, 4 ASC
+            ) b
+            ON a.server_Id=b.server_Id AND a.channel_Id=b.channel_Id AND a.user_Id=b.user_Id AND a.role_Id=b.role_Id
+            ORDER BY 1 ASC, 2 ASC, 7 DESC
+        ) c
+        LEFT JOIN
+        (
+            SELECT server_Id,channel_Id,user_Id,role_Id,MAX(vip_Level) AS vip_Level
+            FROM faith_server.server_vip_upgrade
+            <where>
+                    from_unixtime(cast(log_Time / 1000 as bigint), 'yyyy-MM-dd') between #{startTime} and #{endTimeSecond}
+                <if test="@Ognl@isNotEmpty(serverId)">
+                    and server_Id in (${serverId})
+                </if>
+                <if test="@Ognl@isNotEmpty(channelId)">
+                    and channel_Id in (${channelId})
+                </if>
+            </where>
+            GROUP BY server_Id,channel_Id,user_Id,role_Id
+            ORDER BY 1 ASC,2 ASC, 5 DESC
+        ) d
+        ON c.server_Id=d.server_Id AND c.channel_Id=d.channel_Id AND c.user_Id=d.user_Id AND c.role_Id=d.role_Id and "" != c.server_Id and "" != c.channel_Id
+    </select>
+
+    <select id="hiveQueryVipLevel" parameterType="com.umi.ga.entitys.Flag" resultType="com.umi.ga.entitys.VipRetain">
+        select
+            distinct vip_Level as vipLevel
+        from
+            faith_server.server_role_login
+        order by cast(vip_Level as bigint) asc
+    </select>
+
+    <!-- 有待优化 -->
+    <select id="hiveQueryVipRetain" parameterType="com.umi.ga.entitys.Flag" resultType="com.umi.ga.entitys.VipRetain">
+        select
+            a.server_Id as serverId,
+            a.channel_Id as channelId,
+            nvl(b.vip_Level,-1) as viplevel,
+            nvl(count(a.role_Id),0) as num,
+            count(c.role_Id) as two,
+            count(d.role_Id) as three,
+            count(e.role_Id) as seven,
+            count(f.role_Id) as fourteen,
+            count(g.role_Id) as thirty,
+            count(h.role_Id) as sixty,
+            #{startTime} as timeDate
+        from
+        (
+            select distinct server_Id,channel_Id,user_Id,role_Id
+            from faith_server.server_role_create
+            where
+                    from_unixtime(cast(log_Time / 1000 as bigint), 'yyyy-MM-dd') = #{startTime}
+                <if test="@Ognl@isNotEmpty(serverId)">
+                    and server_Id in (${serverId})
+                </if>
+                <if test="@Ognl@isNotEmpty(channelId)">
+                    and channel_Id in (${channelId})
+                </if>
+        ) a
+        left join
+        (
+            select server_Id,channel_Id,user_Id,role_Id,max(vip_Level) as vip_Level
+            from faith_server.server_vip_upgrade
+            <where>
+                    from_unixtime(cast(log_Time / 1000 as bigint), 'yyyy-MM-dd') = #{startTime}
+                <if test="@Ognl@isNotEmpty(serverId)">
+                    and server_Id in (${serverId})
+                </if>
+                <if test="@Ognl@isNotEmpty(channelId)">
+                    and channel_Id in (${channelId})
+                </if>
+            </where>
+            group by server_Id,channel_Id,user_Id,role_Id
+            <if test="@Ognl@isNotEmpty(type)">
+                having cast(max(vip_Level) as string) in (${type})
+            </if>
+        ) b
+        on a.server_Id=b.server_Id and a.channel_Id=b.channel_Id and a.user_Id=b.user_Id and a.role_Id=b.role_Id
+        left join
+        (
+             select distinct server_Id,channel_Id,user_Id,role_Id from faith_server.server_role_login
+             where  from_unixtime(cast(log_Time / 1000 as bigint), 'yyyy-MM-dd') = from_unixtime(unix_timestamp(days_add(#{startTime},1)),'yyyy-MM-dd')
+        ) c
+        on a.server_Id=c.server_Id and a.channel_Id=c.channel_Id and a.user_Id=c.user_Id and a.role_Id=c.role_Id
+        left join
+        (
+             select distinct server_Id,channel_Id,user_Id,role_Id from faith_server.server_role_login
+             where  from_unixtime(cast(log_Time / 1000 as bigint), 'yyyy-MM-dd') = from_unixtime(unix_timestamp(days_add(#{startTime},2)),'yyyy-MM-dd')
+        ) d
+        on a.server_Id=d.server_Id and a.channel_Id=d.channel_Id and a.user_Id=d.user_Id and a.role_Id=d.role_Id
+        left join
+        (
+             select distinct server_Id,channel_Id,user_Id,role_Id from faith_server.server_role_login
+             where  from_unixtime(cast(log_Time / 1000 as bigint), 'yyyy-MM-dd') = from_unixtime(unix_timestamp(days_add(#{startTime},6)),'yyyy-MM-dd')
+        ) e
+        on a.server_Id=e.server_Id and a.channel_Id=e.channel_Id and a.user_Id=e.user_Id and a.role_Id=e.role_Id
+        left join
+        (
+             select distinct server_Id,channel_Id,user_Id,role_Id from faith_server.server_role_login
+             where  from_unixtime(cast(log_Time / 1000 as bigint), 'yyyy-MM-dd') = from_unixtime(unix_timestamp(days_add(#{startTime},13)),'yyyy-MM-dd')
+        ) f
+        on a.server_Id=f.server_Id and a.channel_Id=f.channel_Id and a.user_Id=f.user_Id and a.role_Id=f.role_Id
+        left join
+        (
+             select distinct server_Id,channel_Id,user_Id,role_Id from faith_server.server_role_login
+             where  from_unixtime(cast(log_Time / 1000 as bigint), 'yyyy-MM-dd') = from_unixtime(unix_timestamp(days_add(#{startTime},29)),'yyyy-MM-dd')
+        ) g
+        on a.server_Id=g.server_Id and a.channel_Id=g.channel_Id and a.user_Id=g.user_Id and a.role_Id=g.role_Id
+        left join
+        (
+             select distinct server_Id,channel_Id,user_Id,role_Id from faith_server.server_role_login
+             where  from_unixtime(cast(log_Time / 1000 as bigint), 'yyyy-MM-dd') = from_unixtime(unix_timestamp(days_add(#{startTime},59)),'yyyy-MM-dd')
+        ) h
+        on a.server_Id=h.server_Id and a.channel_Id=h.channel_Id and a.user_Id=h.user_Id and a.role_Id=h.role_Id
+        group by a.server_Id,a.channel_Id,b.vip_Level
+        order by vip_Level desc
+    </select>
+</mapper>
