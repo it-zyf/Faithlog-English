@@ -20,7 +20,7 @@
         <mybatis-spring.version>1.3.1</mybatis-spring.version>
         <HikariCP.version>3.1.0</HikariCP.version>
         <jredis.version>2.9.0</jredis.version>
-        <mysql-connector.version>5.1.29</mysql-connector.version>
+        <mysql-connector.version>8.0.16</mysql-connector.version>
         <rapid-core.version>4.0.5</rapid-core.version>
         <spring-cloud.version>Finchley.RELEASE</spring-cloud.version>
     </properties>
